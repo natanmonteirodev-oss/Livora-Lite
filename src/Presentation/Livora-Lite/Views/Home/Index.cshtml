@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "Livora - Gestão de Aluguéis";
+}
+
+<!-- Hero Section -->
+<section class="livora-hero">
+    <div class="container h-100 d-flex flex-column justify-content-center">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="livora-hero-title">🌿 Livora</h1>
+                <p class="livora-hero-subtitle">Tudo sobre seu aluguel, em um só lugar</p>
+                <p class="livora-hero-description">
+                    Simplifique a relação entre pessoas e imóveis. Clareza, controle e confiança 
+                    para o aluguel de longa duração no Brasil.
+                </p>
+                <div class="mt-4">
+                    <a href="@Url.Action("Register", "Auth")" class="btn btn-primary btn-lg me-3">Começar Agora</a>
+                    <a href="#pilares" class="btn btn-outline-primary btn-lg">Saiba Mais</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="livora-hero-image">
+                    <div class="placeholder-illustration">
+                        📱
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Propósito Section -->
+<section class="livora-purpose py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="livora-section-title">🎯 Nosso Propósito</h2>
+            <p class="livora-section-subtitle">
+                Facilitar a vida de quem aluga, de quem é dono e de quem administra imóveis.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <p class="livora-purpose-text">
+                    A Livora existe para reduzir ruídos, centralizar informações e transformar 
+                    o aluguel em um processo mais transparente, previsível e organizado para 
+                    todos os envolvidos.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pilares Section -->
+<section class="livora-pillars py-5" id="pilares">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="livora-section-title">🧩 Para Quem É Livora?</h2>
+            <p class="livora-section-subtitle">Conectando locatários, locadores e empresas em um único ecossistema</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Locatário -->
+            <div class="col-lg-4 col-md-6">
+                <div class="livora-card livora-card-teal">
+                    <div class="livora-card-icon">👤</div>
+                    <h3 class="livora-card-title">Livora Home</h3>
+                    <p class="livora-card-subtitle">Locatário</p>
+                    <p class="livora-card-description">
+                        Tudo sobre seu aluguel, sem complicação.
+                    </p>
+                    <ul class="livora-card-features">
+                        <li>Controle de despesas</li>
+                        <li>Histórico centralizado</li>
+                        <li>Transparência total</li>
+                    </ul>
+                    <p class="livora-card-emotion">
+                        <strong>Emoção:</strong> Segurança e controle
+                    </p>
+                </div>
+            </div>
+
+            <!-- Locador -->
+            <div class="col-lg-4 col-md-6">
+                <div class="livora-card livora-card-coral">
+                    <div class="livora-card-icon">🏠</div>
+                    <h3 class="livora-card-title">Livora Owner</h3>
+                    <p class="livora-card-subtitle">Locador</p>
+                    <p class="livora-card-description">
+                        Seus imóveis organizados, seus aluguéis sob controle.
+                    </p>
+                    <ul class="livora-card-features">
+                        <li>Gestão de imóveis</li>
+                        <li>Recebimentos organizados</li>
+                        <li>Visão completa da carteira</li>
+                    </ul>
+                    <p class="livora-card-emotion">
+                        <strong>Emoção:</strong> Tranquilidade e visão
+                    </p>
+                </div>
+            </div>
+
+            <!-- Empresas -->
+            <div class="col-lg-4 col-md-6">
+                <div class="livora-card livora-card-peach">
+                    <div class="livora-card-icon">🏢</div>
+                    <h3 class="livora-card-title">Livora Pro</h3>
+                    <p class="livora-card-subtitle">Empresas & Consultores</p>
+                    <p class="livora-card-description">
+                        Gestão profissional de imóveis, do seu jeito.
+                    </p>
+                    <ul class="livora-card-features">
+                        <li>Múltiplos imóveis e clientes</li>
+                        <li>Organização operacional</li>
+                        <li>Escalabilidade garantida</li>
+                    </ul>
+                    <p class="livora-card-emotion">
+                        <strong>Emoção:</strong> Escala e eficiência
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Personalidade Section -->
+<section class="livora-personality py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="livora-section-title">🧠 Quem Somos</h2>
+            <p class="livora-section-subtitle">A personalidade de Livora</p>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6 col-lg-2">
+                <div class="livora-trait">
+                    <div class="trait-emoji">🎯</div>
+                    <h4 class="trait-title">Clara</h4>
+                    <p class="trait-description">Informação fácil, sem ruído</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-2">
+                <div class="livora-trait">
+                    <div class="trait-emoji">✅</div>
+                    <h4 class="trait-title">Confiável</h4>
+                    <p class="trait-description">Dados organizados e rastreáveis</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-2">
+                <div class="livora-trait">
+                    <div class="trait-emoji">🤝</div>
+                    <h4 class="trait-title">Próxima</h4>
+                    <p class="trait-description">Fala simples e sincera</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-2">
+                <div class="livora-trait">
+                    <div class="trait-emoji">⚡</div>
+                    <h4 class="trait-title">Moderna</h4>
+                    <p class="trait-description">Tecnologia ao favor do cotidiano</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-2">
+                <div class="livora-trait">
+                    <div class="trait-emoji">🇧🇷</div>
+                    <h4 class="trait-title">Brasileira</h4>
+                    <p class="trait-description">Entende regras e desafios locais</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="livora-cta py-5">
+    <div class="container text-center">
+        <h2 class="livora-section-title">Pronto para simplificar seus aluguéis?</h2>
+        <p class="livora-section-subtitle mb-4">
+            Junte-se a milhares de brasileiros que já confiam na Livora
+        </p>
+        <a href="@Url.Action("Register", "Auth")" class="btn btn-light btn-lg px-5">Comece Agora Gratuitamente</a>
+    </div>
+</section>

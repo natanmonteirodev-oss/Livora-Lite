@@ -1,0 +1,378 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.livora-main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 60px);
+}
+
+.livora-main {
+  flex: 1;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* ============================================
+   LIVORA LANDING PAGE STYLES
+   ============================================ */
+
+:root {
+  --livora-primary: #0081a7;
+  --livora-secondary: #00afb9;
+  --livora-cream: #fdfcdc;
+  --livora-peach: #fed9b7;
+  --livora-coral: #f07167;
+}
+
+/* Hero Section */
+.livora-hero {
+  background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+  color: white;
+  min-height: 100vh;
+  padding: 80px 20px;
+}
+
+.livora-hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.livora-hero-subtitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.livora-hero-description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  opacity: 0.95;
+  max-width: 500px;
+}
+
+.livora-hero .btn-primary {
+  background-color: var(--livora-cream);
+  border-color: var(--livora-cream);
+  color: var(--livora-primary);
+  font-weight: 600;
+  padding: 12px 32px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.livora-hero .btn-primary:hover {
+  background-color: white;
+  border-color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.livora-hero .btn-outline-primary {
+  color: white;
+  border-color: white;
+  font-weight: 600;
+  padding: 12px 32px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.livora-hero .btn-outline-primary:hover {
+  background-color: white;
+  border-color: white;
+  color: var(--livora-primary);
+  transform: translateY(-3px);
+}
+
+.livora-hero-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.placeholder-illustration {
+  font-size: 12rem;
+  opacity: 0.9;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Purpose Section */
+.livora-purpose {
+  background-color: var(--livora-cream);
+  border-top: 4px solid var(--livora-secondary);
+}
+
+.livora-purpose-text {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--livora-primary);
+  font-weight: 500;
+}
+
+/* Section Titles */
+.livora-section-title {
+  color: var(--livora-primary);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.livora-section-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Pillars Section */
+.livora-pillars {
+  background-color: #f9f9f9;
+}
+
+/* Cards */
+.livora-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border-top: 6px solid var(--livora-secondary);
+  height: 100%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.livora-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.livora-card-teal {
+  border-top-color: var(--livora-secondary);
+}
+
+.livora-card-coral {
+  border-top-color: var(--livora-coral);
+}
+
+.livora-card-peach {
+  border-top-color: var(--livora-peach);
+}
+
+.livora-card-icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
+.livora-card-title {
+  color: var(--livora-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.livora-card-subtitle {
+  color: var(--livora-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.livora-card-description {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+.livora-card-features {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.livora-card-features li {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  padding-left: 0;
+}
+
+.livora-card-features li::before {
+  content: "✓ ";
+  color: var(--livora-secondary);
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.livora-card-emotion {
+  color: var(--livora-coral);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border-top: 2px solid #eee;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+/* Personality Section */
+.livora-personality {
+  background: linear-gradient(180deg, white 0%, var(--livora-cream) 100%);
+  padding: 80px 20px;
+}
+
+.livora-trait {
+  background: white;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  height: 100%;
+}
+
+.livora-trait:hover {
+  border-color: var(--livora-secondary);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 175, 185, 0.15);
+}
+
+.trait-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.trait-title {
+  color: var(--livora-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.trait-description {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* CTA Section */
+.livora-cta {
+  background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+  color: white;
+  padding: 80px 20px;
+}
+
+.livora-cta .livora-section-title {
+  color: white;
+  font-size: 2.5rem;
+}
+
+.livora-cta .livora-section-subtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.15rem;
+}
+
+.livora-cta .btn-light {
+  background-color: var(--livora-cream);
+  border-color: var(--livora-cream);
+  color: var(--livora-primary);
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.livora-cta .btn-light:hover {
+  background-color: white;
+  border-color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+.livora-footer {
+  margin-top: auto;
+}
+
+.livora-footer a:hover {
+  color: white !important;
+  text-decoration: underline !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .livora-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .livora-hero-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .livora-hero-description {
+    font-size: 1rem;
+  }
+
+  .livora-section-title {
+    font-size: 2rem;
+  }
+
+  .livora-card {
+    padding: 30px 20px;
+  }
+
+  .livora-card-icon {
+    font-size: 2.5rem;
+  }
+
+  .livora-card-title {
+    font-size: 1.25rem;
+  }
+
+  .placeholder-illustration {
+    font-size: 6rem;
+  }
+
+  .livora-hero {
+    min-height: auto;
+    padding: 60px 20px;
+  }
+}
