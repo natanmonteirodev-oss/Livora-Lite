@@ -60,7 +60,12 @@ builder.Services.AddAuthentication("CookieAuth")
 // Injeção de dependências
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAppSettingsRepository, AppSettingsRepository>();
+builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
+builder.Services.AddScoped<IPropertyStatusRepository, PropertyStatusRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
 
 var app = builder.Build();
 
@@ -80,6 +85,29 @@ using (var scope = app.Services.CreateScope())
             Key = "SessionTimeoutMinutes",
             Value = "5"
         });
+    }
+
+    // Seed property types
+    var propertyTypeRepo = scope.ServiceProvider.GetRequiredService<IPropertyTypeRepository>();
+    var existingTypes = await propertyTypeRepo.GetAllAsync();
+    if (!existingTypes.Any())
+    {
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Casa" });
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Apartamento" });
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Kitnet" });
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Salão Comercial" });
+    }
+
+    // Seed property statuses
+    var propertyStatusRepo = scope.ServiceProvider.GetRequiredService<IPropertyStatusRepository>();
+    var existingStatuses = await propertyStatusRepo.GetAllAsync();
+    if (!existingStatuses.Any())
+    {
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Disponível" });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Alugado" });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Manutenção" });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Reservado" });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Inativo" });
     }
 }
 

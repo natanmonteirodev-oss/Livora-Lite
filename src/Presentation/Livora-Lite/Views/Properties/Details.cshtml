@@ -1,0 +1,73 @@
+@model Livora_Lite.Application.DTO.PropertyDTO
+
+@{
+    ViewData["Title"] = "Detalhes do Imóvel";
+}
+
+<h1>Detalhes do Imóvel</h1>
+
+<div>
+    <h4>Imóvel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Nome</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <dt class="col-sm-2">Tipo</dt>
+        <dd class="col-sm-10">@Model.PropertyType?.Name</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.PropertyStatus?.Name</dd>
+
+        <dt class="col-sm-2">Área</dt>
+        <dd class="col-sm-10">@Model.Area m²</dd>
+
+        <dt class="col-sm-2">Quartos</dt>
+        <dd class="col-sm-10">@Model.Bedrooms</dd>
+
+        <dt class="col-sm-2">Banheiros</dt>
+        <dd class="col-sm-10">@Model.Bathrooms</dd>
+
+        <dt class="col-sm-2">Vagas</dt>
+        <dd class="col-sm-10">@Model.ParkingSpaces</dd>
+
+        <dt class="col-sm-2">Valor Sugerido</dt>
+        <dd class="col-sm-10">@Model.SuggestedRentValue.ToString("C")</dd>
+
+        <dt class="col-sm-2">Descrição</dt>
+        <dd class="col-sm-10">@Model.Description</dd>
+    </dl>
+
+    <h4>Endereço</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Rua</dt>
+        <dd class="col-sm-10">@Model.Address?.Street</dd>
+
+        <dt class="col-sm-2">Número</dt>
+        <dd class="col-sm-10">@Model.Address?.Number</dd>
+
+        <dt class="col-sm-2">Complemento</dt>
+        <dd class="col-sm-10">@Model.Address?.Complement</dd>
+
+        <dt class="col-sm-2">Bairro</dt>
+        <dd class="col-sm-10">@Model.Address?.Neighborhood</dd>
+
+        <dt class="col-sm-2">Cidade</dt>
+        <dd class="col-sm-10">@Model.Address?.City</dd>
+
+        <dt class="col-sm-2">Estado</dt>
+        <dd class="col-sm-10">@Model.Address?.State</dd>
+
+        <dt class="col-sm-2">CEP</dt>
+        <dd class="col-sm-10">@Model.Address?.ZipCode</dd>
+
+        <dt class="col-sm-2">País</dt>
+        <dd class="col-sm-10">@Model.Address?.Country</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>
