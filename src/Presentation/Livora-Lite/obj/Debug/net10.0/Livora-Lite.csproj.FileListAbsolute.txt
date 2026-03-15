@@ -234,3 +234,7 @@ C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\bin\Debug\net10.0\
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite\obj\Debug\net10.0\Livora-Lite.sourcelink.json

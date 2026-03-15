@@ -7,7 +7,6 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Livora_Lite.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -30,15 +29,15 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        @if (Context.Session.GetString("UserId") != null)
+                        @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    👤 @Context.Session.GetString("UserName")
+                                    👤 @User.Identity.Name
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" style="background-color: white;">
                                     <li><a class="dropdown-item" href="#">Minha Conta</a></li>
-                                    <li><a class="dropdown-item" href="#">Configurações</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Settings" asp-action="Index">Configurações</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Sair</a></li>
                                 </ul>

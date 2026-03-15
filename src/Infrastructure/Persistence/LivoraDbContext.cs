@@ -10,6 +10,7 @@ namespace Livora_Lite.Infrastructure.Persistence
         }
 
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<AppSettings> AppSettings { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +54,31 @@ namespace Livora_Lite.Infrastructure.Persistence
                 // Índice para IsActive
                 entity.HasIndex(e => e.IsActive)
                     .HasDatabaseName("IX_User_IsActive");
+            });
+
+            // Configuração da entidade AppSettings
+            modelBuilder.Entity<AppSettings>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Key)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Value)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                // Índice único para Key
+                entity.HasIndex(e => e.Key)
+                    .IsUnique()
+                    .HasDatabaseName("IX_AppSettings_Key_Unique");
             });
         }
     }

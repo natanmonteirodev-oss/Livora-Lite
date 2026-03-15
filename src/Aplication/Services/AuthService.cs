@@ -4,16 +4,24 @@ using Livora_Lite.Domain.Entities;
 using Livora_Lite.Domain.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace Livora_Lite.Application.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
+        private readonly IAppSettingsRepository _appSettingsRepository;
 
-        public AuthService(IUserRepository userRepository)
+        public AuthService(IUserRepository userRepository, IConfiguration configuration, IAppSettingsRepository appSettingsRepository)
         {
             _userRepository = userRepository;
+            _configuration = configuration;
+            _appSettingsRepository = appSettingsRepository;
         }
 
         public async Task<AuthResponseDTO> LoginAsync(LoginRequestDTO request)
@@ -48,6 +56,8 @@ namespace Livora_Lite.Application.Services
                     };
                 }
 
+                var token = await GenerateJwtToken(user);
+
                 var userDTO = new UserDTO
                 {
                     Id = user.Id,
@@ -60,7 +70,8 @@ namespace Livora_Lite.Application.Services
                 {
                     Success = true,
                     Message = "Login realizado com sucesso.",
-                    User = userDTO
+                    User = userDTO,
+                    Token = token
                 };
             }
             catch (Exception ex)
@@ -137,6 +148,8 @@ namespace Livora_Lite.Application.Services
 
                 var createdUser = await _userRepository.CreateAsync(user);
 
+                var token = await GenerateJwtToken(createdUser);
+
                 var userDTO = new UserDTO
                 {
                     Id = createdUser.Id,
@@ -149,7 +162,8 @@ namespace Livora_Lite.Application.Services
                 {
                     Success = true,
                     Message = "Usuário registrado com sucesso.",
-                    User = userDTO
+                    User = userDTO,
+                    Token = token
                 };
             }
             catch (Exception ex)
@@ -189,6 +203,40 @@ namespace Livora_Lite.Application.Services
                 var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return Convert.ToBase64String(hashedBytes);
             }
+        }
+
+        private async Task<string> GenerateJwtToken(User user)
+        {
+            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+            var jwtIssuer = _configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer is not configured");
+            var jwtAudience = _configuration["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience is not configured");
+
+            var timeoutSetting = await _appSettingsRepository.GetByKeyAsync("SessionTimeoutMinutes");
+            int timeoutMinutes = 5; // default
+            if (timeoutSetting != null && int.TryParse(timeoutSetting.Value, out int parsed))
+            {
+                timeoutMinutes = parsed;
+            }
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtIssuer,
+                audience: jwtAudience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(timeoutMinutes),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private static bool ValidatePassword(string password, string hash)

@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Configurações";
+}
+
+<h1>Configurações do Sistema</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<form asp-action="UpdateTimeout" method="post">
+    <div class="form-group">
+        <label for="sessionTimeoutMinutes">Timeout de Sessão (minutos)</label>
+        <input type="number" class="form-control" id="sessionTimeoutMinutes" name="sessionTimeoutMinutes" value="@ViewBag.SessionTimeout" min="1" max="1440" required />
+        <small class="form-text text-muted">Tempo de inatividade antes da sessão expirar (1-1440 minutos).</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
