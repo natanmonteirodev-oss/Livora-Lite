@@ -1,0 +1,71 @@
+@model Livora_Lite.Application.DTO.AuditLogDTO
+
+@{
+    ViewData["Title"] = "Detalhes do Log de Auditoria";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Log de Auditoria</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Usuário
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName) (ID: @Html.DisplayFor(model => model.UserId))
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Action)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Action)
+        </dd>
+        <dt class="col-sm-2">
+            Entidade
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Entity) (ID: @Html.DisplayFor(model => model.EntityId))
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class="col-sm-2">
+            Alterações
+        </dt>
+        <dd class="col-sm-10">
+            <pre>@Html.DisplayFor(model => model.Changes)</pre>
+        </dd>
+        @if (!string.IsNullOrEmpty(Model.OldValues))
+        {
+            <dt class="col-sm-2">
+                Valores Antigos
+            </dt>
+            <dd class="col-sm-10">
+                <pre>@Html.DisplayFor(model => model.OldValues)</pre>
+            </dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.NewValues))
+        {
+            <dt class="col-sm-2">
+                Novos Valores
+            </dt>
+            <dd class="col-sm-10">
+                <pre>@Html.DisplayFor(model => model.NewValues)</pre>
+            </dd>
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Voltar para Lista</a>
+</div>

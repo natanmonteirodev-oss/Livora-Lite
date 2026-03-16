@@ -64,8 +64,26 @@ builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IPropertyTypeRepository, PropertyTypeRepository>();
 builder.Services.AddScoped<IPropertyStatusRepository, PropertyStatusRepository>();
+builder.Services.AddScoped<ITenantRepository, TenantRepository>();
+builder.Services.AddScoped<ITenantStatusRepository, TenantStatusRepository>();
+builder.Services.AddScoped<IContractRepository, ContractRepository>();
+builder.Services.AddScoped<IContractStatusRepository, ContractStatusRepository>();
+builder.Services.AddScoped<IBillingRepository, BillingRepository>();
+builder.Services.AddScoped<IBillingStatusRepository, BillingStatusRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IContractService, ContractService>();
+builder.Services.AddScoped<IBillingService, BillingService>();
+builder.Services.AddScoped<IBillingStatusService, BillingStatusService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+builder.Services.AddScoped<IMaintenanceRequestRepository, MaintenanceRequestRepository>();
+builder.Services.AddScoped<IMaintenanceRequestService, MaintenanceRequestService>();
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 
 var app = builder.Build();
 
@@ -108,6 +126,52 @@ using (var scope = app.Services.CreateScope())
         await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Manutenção" });
         await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Reservado" });
         await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Inativo" });
+    }
+
+    // Seed tenant statuses
+    var tenantStatusRepo = scope.ServiceProvider.GetRequiredService<ITenantStatusRepository>();
+    var existingTenantStatuses = await tenantStatusRepo.GetAllAsync();
+    if (!existingTenantStatuses.Any())
+    {
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Ativo" });
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Inativo" });
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Em Processo de Mudança" });
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Desistente" });
+    }
+
+    // Seed contract statuses
+    var contractStatusRepo = scope.ServiceProvider.GetRequiredService<IContractStatusRepository>();
+    var existingContractStatuses = await contractStatusRepo.GetAllAsync();
+    if (!existingContractStatuses.Any())
+    {
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Ativo" });
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Encerrado" });
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Cancelado" });
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Em renovação" });
+    }
+
+    // Seed billing statuses
+    var billingStatusRepo = scope.ServiceProvider.GetRequiredService<IBillingStatusRepository>();
+    var existingBillingStatuses = await billingStatusRepo.GetAllAsync();
+    if (!existingBillingStatuses.Any())
+    {
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Pendente" });
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Pago" });
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Atrasado" });
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Cancelado" });
+    }
+
+    // Seed payment methods
+    var paymentMethodRepo = scope.ServiceProvider.GetRequiredService<IPaymentMethodRepository>();
+    var existingPaymentMethods = await paymentMethodRepo.GetAllAsync();
+    if (!existingPaymentMethods.Any())
+    {
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Dinheiro" });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "PIX" });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Transferência Bancária" });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cartão de Crédito" });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cartão de Débito" });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cheque" });
     }
 }
 

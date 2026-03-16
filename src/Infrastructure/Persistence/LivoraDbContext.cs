@@ -15,6 +15,16 @@ namespace Livora_Lite.Infrastructure.Persistence
         public DbSet<Address> Addresses { get; set; } = null!;
         public DbSet<PropertyType> PropertyTypes { get; set; } = null!;
         public DbSet<PropertyStatus> PropertyStatuses { get; set; } = null!;
+        public DbSet<Tenant> Tenants { get; set; } = null!;
+        public DbSet<TenantStatus> TenantStatuses { get; set; } = null!;
+        public DbSet<Contract> Contracts { get; set; } = null!;
+        public DbSet<ContractStatus> ContractStatuses { get; set; } = null!;
+        public DbSet<Billing> Billings { get; set; } = null!;
+        public DbSet<BillingStatus> BillingStatuses { get; set; } = null!;
+        public DbSet<Payment> Payments { get; set; } = null!;
+        public DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
+        public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; } = null!;
+        public DbSet<AuditLog> AuditLogs { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -221,6 +231,301 @@ namespace Livora_Lite.Infrastructure.Persistence
                     .WithMany()
                     .HasForeignKey(p => p.PropertyStatusId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configuração da entidade TenantStatus
+            modelBuilder.Entity<TenantStatus>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Índice único para Name
+                entity.HasIndex(e => e.Name)
+                    .IsUnique()
+                    .HasDatabaseName("IX_TenantStatus_Name_Unique");
+            });
+
+            // Configuração da entidade Tenant
+            modelBuilder.Entity<Tenant>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Document)
+                    .IsRequired()
+                    .HasMaxLength(20); // CPF or CNPJ
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.CurrentAddress)
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Foreign key
+                entity.HasOne(t => t.TenantStatus)
+                    .WithMany()
+                    .HasForeignKey(t => t.TenantStatusId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configuração da entidade ContractStatus
+            modelBuilder.Entity<ContractStatus>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Índice único para Name
+                entity.HasIndex(e => e.Name)
+                    .IsUnique()
+                    .HasDatabaseName("IX_ContractStatus_Name_Unique");
+            });
+
+            // Configuração da entidade Contract
+            modelBuilder.Entity<Contract>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.StartDate)
+                    .IsRequired();
+
+                entity.Property(e => e.RentValue)
+                    .IsRequired()
+                    .HasColumnType("decimal(18,2)");
+
+                entity.Property(e => e.DueDay)
+                    .IsRequired();
+
+                entity.Property(e => e.LateFee)
+                    .HasColumnType("decimal(18,2)")
+                    .HasDefaultValue(0);
+
+                entity.Property(e => e.InterestRate)
+                    .HasColumnType("decimal(18,2)")
+                    .HasDefaultValue(0);
+
+                entity.Property(e => e.SecurityDeposit)
+                    .HasColumnType("decimal(18,2)")
+                    .HasDefaultValue(0);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Foreign keys
+                entity.HasOne(c => c.Property)
+                    .WithMany()
+                    .HasForeignKey(c => c.PropertyId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(c => c.Tenant)
+                    .WithMany()
+                    .HasForeignKey(c => c.TenantId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(c => c.ContractStatus)
+                    .WithMany()
+                    .HasForeignKey(c => c.ContractStatusId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configuração da entidade BillingStatus
+            modelBuilder.Entity<BillingStatus>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Índice único para Name
+                entity.HasIndex(e => e.Name)
+                    .IsUnique()
+                    .HasDatabaseName("IX_BillingStatus_Name_Unique");
+            });
+
+            // Configuração da entidade Billing
+            modelBuilder.Entity<Billing>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Period)
+                    .IsRequired()
+                    .HasMaxLength(7); // MM/YYYY
+
+                entity.Property(e => e.Amount)
+                    .IsRequired()
+                    .HasColumnType("decimal(18,2)");
+
+                entity.Property(e => e.DueDate)
+                    .IsRequired();
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Foreign keys
+                entity.HasOne(b => b.Contract)
+                    .WithMany()
+                    .HasForeignKey(b => b.ContractId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(b => b.BillingStatus)
+                    .WithMany()
+                    .HasForeignKey(b => b.BillingStatusId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Índice único para período por contrato
+                entity.HasIndex(b => new { b.ContractId, b.Period })
+                    .IsUnique()
+                    .HasDatabaseName("IX_Billing_Contract_Period_Unique");
+            });
+
+            // Configuração da entidade PaymentMethod
+            modelBuilder.Entity<PaymentMethod>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Índice único para Name
+                entity.HasIndex(e => e.Name)
+                    .IsUnique()
+                    .HasDatabaseName("IX_PaymentMethod_Name_Unique");
+            });
+
+            // Configuração da entidade Payment
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.PaymentDate)
+                    .IsRequired();
+
+                entity.Property(e => e.AmountPaid)
+                    .IsRequired()
+                    .HasColumnType("decimal(18,2)");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Foreign keys
+                entity.HasOne(p => p.Billing)
+                    .WithMany(b => b.Payments)
+                    .HasForeignKey(p => p.BillingId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(p => p.PaymentMethod)
+                    .WithMany()
+                    .HasForeignKey(p => p.PaymentMethodId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configuração da entidade MaintenanceRequest
+            modelBuilder.Entity<MaintenanceRequest>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.RequestDate)
+                    .IsRequired();
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                // Foreign keys
+                entity.HasOne(mr => mr.Property)
+                    .WithMany()
+                    .HasForeignKey(mr => mr.PropertyId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(mr => mr.Contract)
+                    .WithMany()
+                    .HasForeignKey(mr => mr.ContractId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
         }
     }

@@ -1,0 +1,86 @@
+@model Livora_Lite.Application.DTO.MaintenanceRequestDTO
+
+@{
+    ViewData["Title"] = "Detalhes da Solicitação de Manutenção";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Solicitação de Manutenção</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Imóvel
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Property.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Endereço
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Property?.Address != null)
+            {
+                @($"{Model.Property.Address.Street}, {Model.Property.Address.Number} - {Model.Property.Address.City}")
+            }
+            else
+            {
+                <span class="text-muted">N/A</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Contrato
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Contract != null)
+            {
+                @($"Contrato #{Model.Contract.Id} - {Model.Contract.Tenant?.Name}")
+            }
+            else
+            {
+                <span class="text-muted">N/A</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RequestDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RequestDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Priority)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar para Lista</a>
+</div>

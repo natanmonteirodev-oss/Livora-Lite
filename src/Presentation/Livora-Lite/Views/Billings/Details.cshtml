@@ -1,0 +1,61 @@
+@model Livora_Lite.Application.DTO.BillingDTO
+
+@{
+    ViewData["Title"] = "Detalhes da Cobrança";
+}
+
+<h1>Detalhes da Cobrança</h1>
+
+<div>
+    <h4>Cobrança</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Contrato</dt>
+        <dd class="col-sm-10">@Model.Contract?.Property?.Name - @Model.Contract?.Tenant?.Name</dd>
+
+        <dt class="col-sm-2">Período</dt>
+        <dd class="col-sm-10">@Model.Period</dd>
+
+        <dt class="col-sm-2">Valor</dt>
+        <dd class="col-sm-10">@Model.Amount.ToString("C")</dd>
+
+        <dt class="col-sm-2">Data de Vencimento</dt>
+        <dd class="col-sm-10">@Model.DueDate.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.BillingStatus?.Name</dd>
+
+        <dt class="col-sm-2">Data de Criação</dt>
+        <dd class="col-sm-10">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+    </dl>
+
+    @if (Model.Payments != null && Model.Payments.Any())
+    {
+        <h4>Pagamentos</h4>
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Data do Pagamento</th>
+                    <th>Valor Pago</th>
+                    <th>Método de Pagamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var payment in Model.Payments)
+                {
+                    <tr>
+                        <td>@payment.PaymentDate.ToString("dd/MM/yyyy")</td>
+                        <td>@payment.AmountPaid.ToString("C")</td>
+                        <td>@payment.PaymentMethod?.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>

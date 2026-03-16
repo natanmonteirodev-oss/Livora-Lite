@@ -12,15 +12,18 @@ public class PropertiesController : Controller
     private readonly IPropertyService _propertyService;
     private readonly IPropertyTypeRepository _propertyTypeRepository;
     private readonly IPropertyStatusRepository _propertyStatusRepository;
+    private readonly IAuditService _auditService;
 
     public PropertiesController(
         IPropertyService propertyService,
         IPropertyTypeRepository propertyTypeRepository,
-        IPropertyStatusRepository propertyStatusRepository)
+        IPropertyStatusRepository propertyStatusRepository,
+        IAuditService auditService)
     {
         _propertyService = propertyService;
         _propertyTypeRepository = propertyTypeRepository;
         _propertyStatusRepository = propertyStatusRepository;
+        _auditService = auditService;
     }
 
     // GET: Properties
@@ -56,7 +59,20 @@ public class PropertiesController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _propertyService.CreateAsync(request);
+            var property = await _propertyService.CreateAsync(request);
+            
+            // Registrar auditoria
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "Sistema";
+            var userName = User.Identity?.Name ?? "Sistema";
+            await _auditService.LogActionAsync(
+                userId,
+                userName,
+                "Criado",
+                "Property",
+                property.Id.ToString(),
+                $"Propriedade '{property.Name}' foi criada"
+            );
+            
             return RedirectToAction(nameof(Index));
         }
         ViewBag.PropertyTypes = await _propertyTypeRepository.GetAllAsync();
@@ -116,7 +132,20 @@ public class PropertiesController : Controller
 
         if (ModelState.IsValid)
         {
-            await _propertyService.UpdateAsync(request);
+            var property = await _propertyService.UpdateAsync(request);
+            
+            // Registrar auditoria
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "Sistema";
+            var userName = User.Identity?.Name ?? "Sistema";
+            await _auditService.LogActionAsync(
+                userId,
+                userName,
+                "Alterado",
+                "Property",
+                property.Id.ToString(),
+                $"Propriedade '{property.Name}' foi alterada"
+            );
+            
             return RedirectToAction(nameof(Index));
         }
         ViewBag.PropertyTypes = await _propertyTypeRepository.GetAllAsync();
@@ -140,6 +169,22 @@ public class PropertiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
+        var property = await _propertyService.GetByIdAsync(id);
+        if (property != null)
+        {
+            // Registrar auditoria antes de excluir
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "Sistema";
+            var userName = User.Identity?.Name ?? "Sistema";
+            await _auditService.LogActionAsync(
+                userId,
+                userName,
+                "Excluído",
+                "Property",
+                property.Id.ToString(),
+                $"Propriedade '{property.Name}' foi excluída"
+            );
+        }
+        
         await _propertyService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }

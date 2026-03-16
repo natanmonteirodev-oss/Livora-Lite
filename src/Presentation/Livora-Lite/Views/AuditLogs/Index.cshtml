@@ -1,0 +1,99 @@
+@model IEnumerable<Livora_Lite.Application.DTO.AuditLogDTO>
+
+@{
+    ViewData["Title"] = "Logs de Auditoria";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <form method="get" class="form-inline">
+            <div class="form-group mr-2">
+                <label for="entityFilter" class="mr-2">Entidade:</label>
+                <select name="entity" id="entityFilter" class="form-control">
+                    <option value="">Todas</option>
+                    <option value="Property">Imóvel</option>
+                    <option value="Contract">Contrato</option>
+                    <option value="Tenant">Inquilino</option>
+                    <option value="Payment">Pagamento</option>
+                    <option value="Billing">Cobrança</option>
+                    <option value="MaintenanceRequest">Manutenção</option>
+                </select>
+            </div>
+            <div class="form-group mr-2">
+                <label for="userFilter" class="mr-2">Usuário:</label>
+                <input type="text" name="userName" id="userFilter" class="form-control" placeholder="Nome do usuário" />
+            </div>
+            <div class="form-group mr-2">
+                <label for="dateFilter" class="mr-2">Data de:</label>
+                <input type="date" name="startDate" id="dateFilter" class="form-control" />
+            </div>
+            <div class="form-group mr-2">
+                <label for="dateToFilter" class="mr-2">até:</label>
+                <input type="date" name="endDate" id="dateToFilter" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Filtrar</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary mr-2">Limpar</a>
+            <a href="@Url.Action("Export", new { entity = Context.Request.Query["entity"], userName = Context.Request.Query["userName"], startDate = Context.Request.Query["startDate"], endDate = Context.Request.Query["endDate"] })" class="btn btn-success">Exportar CSV</a>
+        </form>
+    </div>
+</div>
+
+<p>
+    <a asp-action="ByEntity" asp-route-entity="Property" asp-route-entityId="1" class="btn btn-info">Ver Logs de Propriedade</a>
+    <a asp-action="ByEntity" asp-route-entity="Contract" asp-route-entityId="1" class="btn btn-info">Ver Logs de Contrato</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Id)
+            </th>
+            <th>
+                Usuário
+            </th>
+            <th>
+                Ação
+            </th>
+            <th>
+                Entidade
+            </th>
+            <th>
+                Data
+            </th>
+            <th>
+                Alterações
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Action)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Entity) (@Html.DisplayFor(modelItem => item.EntityId))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Changes)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalhes</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,57 @@
+@model Livora_Lite.Application.DTO.ContractDTO
+
+@{
+    ViewData["Title"] = "Detalhes do Contrato";
+}
+
+<h1>Detalhes do Contrato</h1>
+
+<div>
+    <h4>Contrato</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Imóvel</dt>
+        <dd class="col-sm-10">@Model.Property?.Name</dd>
+
+        <dt class="col-sm-2">Inquilino</dt>
+        <dd class="col-sm-10">@Model.Tenant?.Name</dd>
+
+        <dt class="col-sm-2">Data de Início</dt>
+        <dd class="col-sm-10">@Model.StartDate.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-2">Data de Fim</dt>
+        <dd class="col-sm-10">@(Model.EndDate?.ToString("dd/MM/yyyy") ?? "Indeterminado")</dd>
+
+        <dt class="col-sm-2">Valor do Aluguel</dt>
+        <dd class="col-sm-10">@Model.RentValue.ToString("C")</dd>
+
+        <dt class="col-sm-2">Dia de Vencimento</dt>
+        <dd class="col-sm-10">@Model.DueDay</dd>
+
+        <dt class="col-sm-2">Multa por Atraso</dt>
+        <dd class="col-sm-10">@Model.LateFee.ToString("C")</dd>
+
+        <dt class="col-sm-2">Juros</dt>
+        <dd class="col-sm-10">@Model.InterestRate.ToString("P")</dd>
+
+        <dt class="col-sm-2">Depósito Caução</dt>
+        <dd class="col-sm-10">@Model.SecurityDeposit.ToString("C")</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.ContractStatus?.Name</dd>
+
+        <dt class="col-sm-2">Data de Criação</dt>
+        <dd class="col-sm-10">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+
+        @if (Model.UpdatedAt.HasValue)
+        {
+            <dt class="col-sm-2">Última Atualização</dt>
+            <dd class="col-sm-10">@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+        }
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>
