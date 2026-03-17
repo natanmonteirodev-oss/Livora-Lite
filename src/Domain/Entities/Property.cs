@@ -3,6 +3,8 @@ namespace Livora_Lite.Domain.Entities
     public class Property
     {
         public int Id { get; set; }
+        public int OwnerId { get; set; }  // FK: Relacionamento com User (Owner)
+        public User? Owner { get; set; }  // Navigation property
         public string Name { get; set; } = string.Empty; // Identificação, e.g., Casa 01, Casa Centro
         public int AddressId { get; set; }
         public Address? Address { get; set; }

@@ -73,6 +73,7 @@ builder.Services.AddScoped<IBillingStatusRepository, BillingStatusRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<IContractService, ContractService>();
@@ -84,6 +85,7 @@ builder.Services.AddScoped<IMaintenanceRequestRepository, MaintenanceRequestRepo
 builder.Services.AddScoped<IMaintenanceRequestService, MaintenanceRequestService>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 
@@ -92,6 +94,10 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<LivoraDbContext>();
     dbContext.Database.Migrate();
+
+    // Seed admin user
+    var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+    await SeedData.SeedAdminUserAsync(userRepository);
 
     // Seed default settings
     var appSettingsRepo = scope.ServiceProvider.GetRequiredService<IAppSettingsRepository>();

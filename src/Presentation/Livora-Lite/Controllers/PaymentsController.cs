@@ -78,7 +78,7 @@ namespace Livora_Lite.Presentation.Controllers
                     userName,
                     "Create",
                     "Payment",
-                    paymentId.ToString(),
+                    paymentId.ToString() ?? "Unknown",
                     $"Criado pagamento de R$ {request.Amount} para cobrança ID: {request.BillingId}"
                 );
                 

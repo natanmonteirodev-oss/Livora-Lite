@@ -63,7 +63,11 @@ namespace Livora_Lite.Application.Services
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Email = user.Email
+                    Email = user.Email,
+                    Role = user.Role,
+                    IsActive = user.IsActive,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt
                 };
 
                 return new AuthResponseDTO
@@ -155,7 +159,11 @@ namespace Livora_Lite.Application.Services
                     Id = createdUser.Id,
                     FirstName = createdUser.FirstName,
                     LastName = createdUser.LastName,
-                    Email = createdUser.Email
+                    Email = createdUser.Email,
+                    Role = createdUser.Role,
+                    IsActive = createdUser.IsActive,
+                    CreatedAt = createdUser.CreatedAt,
+                    UpdatedAt = createdUser.UpdatedAt
                 };
 
                 return new AuthResponseDTO

@@ -1,43 +1,115 @@
 @model IEnumerable<Livora_Lite.Application.DTO.ContractDTO>
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Contratos";
+    ViewData["Title"] = "Contratos - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Contratos", null, true)
+    );
 }
 
-<h1>Gestão de Contratos</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item active">Contratos</li>
+        </ol>
+    </nav>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Novo Contrato</a>
-</p>
+    <!-- Header -->
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="section-title">Gestão de Contratos</h1>
+            <p class="text-muted">Gerencie todos os contratos de locação do seu portfólio</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i> Novo Contrato
+        </a>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Imóvel</th>
-            <th>Inquilino</th>
-            <th>Data Início</th>
-            <th>Data Fim</th>
-            <th>Valor Aluguel</th>
-            <th>Status</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+    <!-- Search -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="get" action="#" class="form-inline">
+                <div class="input-group w-100">
+                    <input type="text" class="form-control form-control-lg" placeholder="Pesquisar contratos..." name="search">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-header">
+                    <tr>
+                        <th>Propriedade</th>
+                        <th>Inquilino</th>
+                        <th>Início</th>
+                        <th>Fim</th>
+                        <th>Aluguel</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model?.Any() == true)
+                    {
+                        @foreach (var contract in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@contract.Property?.Name</strong>
+                                </td>
+                                <td>@contract.Tenant?.Name</td>
+                                <td>@contract.StartDate.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    @if (contract.EndDate.HasValue)
+                                    {
+                                        @contract.EndDate.Value.ToString("dd/MM/yyyy")
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Vigente</span>
+                                    }
+                                </td>
+                                <td><strong>R$ @contract.RentValue.ToString("F2")</strong></td>
+                                <td>
+                                    <span class="badge bg-info">@contract.ContractStatus?.Name</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="Edit" asp-route-id="@contract.Id" class="btn btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@contract.Id" class="btn btn-danger" title="Deletar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model?.Any() != true)
         {
-            <tr>
-                <td>@item.Property?.Name</td>
-                <td>@item.Tenant?.Name</td>
-                <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
-                <td>@(item.EndDate?.ToString("dd/MM/yyyy") ?? "Indeterminado")</td>
-                <td>@item.RentValue.ToString("C")</td>
-                <td>@item.ContractStatus?.Name</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalhes</a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Excluir</a>
-                </td>
-            </tr>
+            <div class="alert alert-info m-3">
+                <i class="fas fa-info-circle me-2"></i>
+                Nenhum contrato encontrado. <a asp-action="Create" class="alert-link">Clique aqui para criar um novo contrato</a>.
+            </div>
         }
-    </tbody>
-</table>
+
+        <div class="card-footer bg-light text-muted">
+            <small>Total de contratos: <strong>@Model?.Count() ?? 0</strong></small>
+        </div>
+    </div>
+</div>
+

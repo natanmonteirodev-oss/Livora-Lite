@@ -8,6 +8,15 @@ html {
   }
 }
 
+.navbar-brand {
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -19,6 +28,8 @@ html {
 
 body {
   margin-bottom: 60px;
+  background: linear-gradient(135deg, #0081a7 0%, #00afb9 100%);
+  min-height: 100vh;
 }
 
 .livora-main-container {
@@ -29,6 +40,16 @@ body {
 
 .livora-main {
   flex: 1;
+}
+
+/* Form pages get white background overlay */
+.livora-main-container:has(.livora-form-wrapper) {
+  background-color: white;
+}
+
+/* Index pages (lists/tables) get white background */
+.livora-main-container:has(.livora-table-wrapper) {
+  background-color: white;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -54,10 +75,13 @@ body {
 
 /* Hero Section */
 .livora-hero {
-  background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+  background: transparent;
   color: white;
   min-height: 100vh;
   padding: 80px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .livora-hero-title {
@@ -375,4 +399,457 @@ body {
     min-height: auto;
     padding: 60px 20px;
   }
+}
+
+/* ============================================
+   LIVORA PROFESSIONAL DESIGN SYSTEM
+   ============================================ */
+
+:root {
+  --livora-primary-green: #0081a7;
+  --livora-secondary-blue: #00afb9;
+  --livora-dark-blue: #0081a7;
+  --livora-light-gray: #fdfcdc;
+  --livora-white: #FFFFFF;
+  --livora-text-dark: #333333;
+  --livora-text-light: #666666;
+  --livora-border-color: #E0E0E0;
+  --livora-peach: #fed9b7;
+  --livora-coral: #f07167;
+}
+
+/* Logo and Navbar Styles */
+.navbar-brand img {
+  filter: brightness(0) invert(1);
+  transition: transform 0.2s ease;
+  max-height: 100%;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+.navbar-brand span {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+}
+
+.livora-navbar {
+  background-color: var(--livora-dark-blue) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.livora-navbar .navbar-brand {
+  color: white !important;
+}
+
+.livora-navbar .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  transition: color 0.2s ease;
+}
+
+.livora-navbar .nav-link:hover,
+.livora-navbar .nav-link.active {
+  color: var(--livora-primary-green) !important;
+}
+
+.livora-navbar .dropdown-menu {
+  background-color: var(--livora-light-gray);
+  border-color: var(--livora-border-color);
+}
+
+.livora-navbar .dropdown-item {
+  color: var(--livora-dark-blue);
+  transition: all 0.2s ease;
+}
+
+.livora-navbar .dropdown-item:hover {
+  background-color: #f0f0f0;
+  color: var(--livora-primary-green);
+}
+
+/* Form Container Styles */
+.livora-form-container {
+  background-color: var(--livora-white);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 900px;
+}
+
+/* Form wrapper with horizontal spacing */
+.livora-form-wrapper {
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+  .livora-form-wrapper {
+    padding: 0 60px;
+  }
+}
+
+.livora-form-card {
+  background-color: var(--livora-light-gray);
+  border-left: 4px solid var(--livora-primary-green);
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+/* Form Header */
+.livora-form-header {
+  margin-bottom: 25px;
+  border-bottom: 2px solid var(--livora-light-gray);
+  padding-bottom: 15px;
+}
+
+.livora-form-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--livora-dark-blue);
+  margin: 0;
+}
+
+.livora-form-subtitle {
+  font-size: 0.95rem;
+  color: var(--livora-text-light);
+  margin: 8px 0 0 0;
+}
+
+/* Form Group Styles */
+.livora-form-group {
+  margin-bottom: 20px;
+}
+
+.livora-form-label {
+  display: block;
+  font-weight: 600;
+  color: var(--livora-dark-blue);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.livora-form-label.required::after {
+  content: " *";
+  color: var(--livora-primary-green);
+  font-weight: bold;
+}
+
+.livora-form-control,
+.form-control,
+.form-select {
+  border: 1px solid var(--livora-border-color);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.livora-form-control:focus,
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--livora-secondary-blue);
+  box-shadow: 0 0 0 3px rgba(59, 168, 200, 0.1);
+  outline: none;
+}
+
+/* Button Styles */
+.btn-primary, 
+.btn-livora-primary {
+  background-color: var(--livora-primary-green);
+  border-color: var(--livora-primary-green);
+  color: white;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover, 
+.btn-livora-primary:hover {
+  background-color: #2f8a56;
+  border-color: #2f8a56;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+}
+
+.btn-secondary,
+.btn-livora-secondary {
+  background-color: var(--livora-secondary-blue);
+  border-color: var(--livora-secondary-blue);
+  color: white;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover,
+.btn-livora-secondary:hover {
+  background-color: #309fb0;
+  border-color: #309fb0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 168, 200, 0.3);
+}
+
+.btn-outline-secondary {
+  color: var(--livora-secondary-blue);
+  border-color: var(--livora-secondary-blue);
+  font-weight: 600;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--livora-secondary-blue);
+  border-color: var(--livora-secondary-blue);
+  color: white;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #c82333;
+}
+
+/* Table Styles */
+.livora-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.livora-table thead th {
+  background-color: var(--livora-dark-blue);
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.livora-table tbody tr {
+  border-bottom: 1px solid var(--livora-border-color);
+  transition: background-color 0.2s ease;
+}
+
+.livora-table tbody tr:hover {
+  background-color: var(--livora-light-gray);
+}
+
+.livora-table tbody td {
+  padding: 12px 15px;
+  color: var(--livora-text-dark);
+}
+
+/* Alert Styles */
+.alert-livora-success {
+  background-color: #d4edda;
+  border-color: var(--livora-primary-green);
+  color: #155724;
+  border-radius: 6px;
+}
+
+.alert-livora-info {
+  background-color: #d1ecf1;
+  border-color: var(--livora-secondary-blue);
+  color: #0c5460;
+  border-radius: 6px;
+}
+
+.alert-livora-warning {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+  border-radius: 6px;
+}
+
+.alert-livora-danger {
+  background-color: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+  border-radius: 6px;
+}
+
+/* Dashboard Card Styles */
+.livora-dashboard-card {
+  background-color: var(--livora-white);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-top: 4px solid var(--livora-secondary-blue);
+}
+
+.livora-dashboard-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+}
+
+.livora-dashboard-card.primary-accent {
+  border-top-color: var(--livora-primary-green);
+}
+
+.livora-dashboard-card.secondary-accent {
+  border-top-color: var(--livora-secondary-blue);
+}
+
+.livora-dashboard-card.dark-accent {
+  border-top-color: var(--livora-dark-blue);
+}
+
+.livora-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--livora-dark-blue);
+  margin: 0 0 10px 0;
+}
+
+.livora-card-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--livora-primary-green);
+  margin: 0;
+}
+
+.livora-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--livora-text-light);
+  margin: 5px 0 0 0;
+}
+
+/* Badge Styles */
+.badge-primary {
+  background-color: var(--livora-primary-green);
+  color: white;
+}
+
+.badge-secondary {
+  background-color: var(--livora-secondary-blue);
+  color: white;
+}
+
+.badge-dark {
+  background-color: var(--livora-dark-blue);
+  color: white;
+}
+
+/* Section Divider */
+.livora-section-divider {
+  border: none;
+  border-top: 2px solid var(--livora-light-gray);
+  margin: 30px 0;
+}
+
+/* Breadcrumb Custom */
+.livora-breadcrumb {
+  background-color: var(--livora-light-gray);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.livora-breadcrumb .breadcrumb {
+  margin: 0;
+  background-color: transparent;
+}
+
+.livora-breadcrumb .breadcrumb-item {
+  font-size: 0.9rem;
+  color: var(--livora-text-light);
+}
+
+.livora-breadcrumb .breadcrumb-item a {
+  color: var(--livora-secondary-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.livora-breadcrumb .breadcrumb-item a:hover {
+  color: var(--livora-primary-green);
+}
+
+.livora-breadcrumb .breadcrumb-item.active {
+  color: var(--livora-primary-green);
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .livora-form-container {
+    padding: 20px;
+  }
+
+  .livora-form-wrapper {
+    padding: 0 10px;
+  }
+
+  .livora-form-title {
+    font-size: 1.5rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  .livora-card-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* Content page wrapper for forms */
+.livora-page-content {
+  padding: 20px 0;
+}
+
+@media (min-width: 992px) {
+  .livora-page-content {
+    padding: 30px 0;
+  }
+}
+
+/* Index page table wrapper with horizontal spacing */
+.livora-table-wrapper {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+  .livora-table-wrapper {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+
+/* Header and footer consistency */
+footer {
+  background-color: var(--livora-dark-blue);
+  color: white;
+  margin-top: auto;
+  border-top: 4px solid var(--livora-primary-green);
+  box-shadow: 0 -4px 12px rgba(37, 71, 114, 0.2);
+}
+
+footer a {
+  color: var(--livora-secondary-blue);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--livora-primary-green);
+  text-decoration: underline;
+}
+
+footer h6 {
+  color: var(--livora-primary-green);
+  margin-bottom: 1rem;
 }

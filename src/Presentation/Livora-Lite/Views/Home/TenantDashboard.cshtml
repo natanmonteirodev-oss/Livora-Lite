@@ -1,0 +1,292 @@
+@model Livora_Lite.Application.DTO.TenantDashboardDTO
+@using Livora_Lite.Helpers
+@{
+    ViewData["Title"] = "Dashboard - Minha Sala";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData, 
+        new BreadcrumbHelper.BreadcrumbItem("Dashboard", null, true)
+    );
+}
+
+<div class="container-fluid mt-4">
+    <div class="livora-form-header">
+        <h1 class="livora-form-title mb-0">Minha Sala</h1>
+        <p class="livora-form-subtitle">Acompanhe seus contratos, pagamentos e solicitações de manutenção</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Contratos Ativos</h6>
+                <p class="livora-card-value">@Model.ActiveContracts</p>
+                <p class="livora-card-subtitle">Acordos em vigência</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card secondary-accent">
+                <h6 class="livora-card-title">Aluguel Mensal</h6>
+                <p class="livora-card-value">R$ @Model.TotalMonthlyRent.ToString("N2")</p>
+                <p class="livora-card-subtitle">Valor total do aluguel</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card dark-accent">
+                <h6 class="livora-card-title">Pagamentos Pendentes</h6>
+                <p class="livora-card-value">@Model.PendingPayments</p>
+                <p class="livora-card-subtitle">Cobranças pendentes</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Manutenções</h6>
+                <p class="livora-card-value">@Model.MaintenanceRequests</p>
+                <p class="livora-card-subtitle">Solicitações abertas</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert for Pending Payments -->
+    @if (Model.PendingPayments > 0)
+    {
+        <div class="alert-livora-danger" style="border: 1px solid #dc3545; border-radius: 6px; padding: 15px;">
+            <strong>Atenção!</strong> Você possui R$ @Model.PendingPaymentsAmount.ToString("N2") em pagamentos pendentes.
+        </div>
+    }
+
+    <!-- Próximo Vencimento -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: var(--livora-secondary-blue);" class="mb-0">Próximo Vencimento</h5>
+                <h3 class="livora-card-value mt-3">@Model.NextPaymentDue.ToString("dd/MM/yyyy")</h3>
+                <p class="livora-card-subtitle">
+                    @{
+                        var daysUntilNext = (Model.NextPaymentDue - DateTime.Today).TotalDays;
+                        if (daysUntilNext > 0)
+                        {
+                            @(@daysUntilNext + " dias para o vencimento")
+                        }
+                        else
+                        {
+                            @("Vencimento em atraso")
+                        }
+                    }
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: #dc3545;" class="mb-0">Valores em Atraso</h5>
+                <h3 style="color: #dc3545; font-size: 1.8rem; font-weight: 700;" class="mt-3">R$ @Model.PendingPaymentsAmount.ToString("N2")</h3>
+                <p class="livora-card-subtitle">@Model.PendingPayments pagamento(s) para pagar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs for more details -->
+    <div class="row">
+        <div class="col-12">
+            <div class="livora-form-container">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="contracts-tab" data-bs-toggle="tab" href="#contracts" role="tab">
+                            Meus Contratos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="payments-tab" data-bs-toggle="tab" href="#payments" role="tab">
+                            Histórico de Pagamentos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="maintenance-tab" data-bs-toggle="tab" href="#maintenance" role="tab">
+                            Manutenções
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content pt-4">
+                    <!-- Contracts Tab -->
+                    <div class="tab-pane fade show active" id="contracts" role="tabpanel">
+                        @if (Model.ActiveContracts_Details.Any())
+                        {
+                            @foreach (var contract in Model.ActiveContracts_Details)
+                            {
+                                <div class="livora-form-card mb-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5 class="livora-form-title">@contract.PropertyName</h5>
+                                            <p class="text-muted">@contract.PropertyAddress</p>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Início</small>
+                                                    <p class="mb-0"><strong>@contract.StartDate.ToString("dd/MM/yyyy")</strong></p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Término</small>
+                                                    <p class="mb-0">
+                                                        @if (contract.EndDate.HasValue)
+                                                        {
+                                                            @contract.EndDate.Value.ToString("dd/MM/yyyy")
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-muted">Sem prazo</span>
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-md-end">
+                                            <h4 style="color: var(--livora-primary-green);">R$ @contract.RentValue.ToString("N2")/mês</h4>
+                                            <p class="text-muted">Vencimento: Dia @contract.DueDay</p>
+                                            <div>
+                                                <span style="background-color: var(--livora-primary-green); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@contract.Status</span>
+                                                @if (contract.IsExpiringSoon)
+                                                {
+                                                    <span style="background-color: #ffc107; padding: 0.35em 0.65em; border-radius: 0.25rem; color: #333; font-size: 0.875rem;">Próximo a expirar</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">Você não possui contratos ativos no momento.</p>
+                        }
+                    </div>
+
+                    <!-- Payments Tab -->
+                    <div class="tab-pane fade" id="payments" role="tabpanel">
+                        @if (Model.RecentPayments.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="livora-table table table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Imóvel</th>
+                                            <th>Valor</th>
+                                            <th>Método de Pagamento</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var payment in Model.RecentPayments)
+                                        {
+                                            <tr>
+                                                <td>@payment.PaymentDate.ToString("dd/MM/yyyy")</td>
+                                                <td>@payment.PropertyName</td>
+                                                <td style="color: var(--livora-primary-green); font-weight: 700;">R$ @payment.Amount.ToString("N2")</td>
+                                                <td>
+                                                    <span style="background-color: var(--livora-secondary-blue); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@payment.PaymentMethod</span>
+                                                </td>
+                                                <td>
+                                                    @if (payment.Status == "Completed")
+                                                    {
+                                                        <span style="background-color: var(--livora-primary-green); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">Pago</span>
+                                                    }
+                                                    else if (payment.Status == "Pending")
+                                                    {
+                                                        <span style="background-color: #ffc107; padding: 0.35em 0.65em; border-radius: 0.25rem; color: #333; font-size: 0.875rem;">Pendente</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span style="background-color: var(--livora-secondary-blue); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@payment.Status</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Nenhum pagamento registrado.</p>
+                        }
+                    </div>
+
+                    <!-- Maintenance Tab -->
+                    <div class="tab-pane fade" id="maintenance" role="tabpanel">
+                        @if (Model.MaintenanceRequests_Details.Any())
+                        {
+                            @foreach (var maintenance in Model.MaintenanceRequests_Details)
+                            {
+                                <div class="livora-form-card mb-3">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5 class="livora-form-title">@maintenance.Title</h5>
+                                            <p class="text-muted">@maintenance.PropertyName</p>
+                                            <p>@maintenance.Description</p>
+                                        </div>
+                                        <div class="col-md-4 text-md-end">
+                                            <p class="text-muted small">@maintenance.RequestedDate.ToString("dd/MM/yyyy HH:mm")</p>
+                                            <div>
+                                                @if (maintenance.Status == "Pending")
+                                                {
+                                                    <span style="background-color: #ffc107; padding: 0.35em 0.65em; border-radius: 0.25rem; color: #333; font-size: 0.875rem;">@maintenance.Status</span>
+                                                }
+                                                else if (maintenance.Status == "In Progress")
+                                                {
+                                                    <span style="background-color: var(--livora-secondary-blue); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@maintenance.Status</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="background-color: var(--livora-primary-green); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@maintenance.Status</span>
+                                                }
+                                                <span style="background-color: var(--livora-dark-blue); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@maintenance.Priority</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">Nenhuma manutenção solicitada.</p>
+                            <a href="@Url.Action("Create", "MaintenanceRequests")" class="btn btn-primary">
+                                Solicitar Manutenção
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .nav-tabs .nav-link {
+        color: var(--livora-text-light);
+        border: none;
+        border-bottom: 2px solid transparent;
+    }
+
+    .nav-tabs .nav-link:hover {
+        border-bottom-color: var(--livora-secondary-blue);
+        color: var(--livora-secondary-blue);
+    }
+
+    .nav-tabs .nav-link.active {
+        border-bottom-color: var(--livora-primary-green);
+        color: var(--livora-primary-green);
+        background-color: transparent;
+    }
+
+    .text-md-end {
+        text-align: start;
+    }
+
+    @@media (min-width: 768px) {
+        .text-md-end {
+            text-align: end;
+        }
+    }
+</style>

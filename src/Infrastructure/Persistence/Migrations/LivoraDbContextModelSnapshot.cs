@@ -475,6 +475,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ParkingSpaces")
                         .HasColumnType("INTEGER");
 
@@ -493,6 +496,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("OwnerId");
 
                     b.HasIndex("PropertyStatusId");
 
@@ -608,9 +613,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TenantStatusId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tenants");
                 });
@@ -679,6 +689,10 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -787,6 +801,12 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Livora_Lite.Domain.Entities.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Livora_Lite.Domain.Entities.PropertyStatus", "PropertyStatus")
                         .WithMany()
                         .HasForeignKey("PropertyStatusId")
@@ -801,6 +821,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("Address");
 
+                    b.Navigation("Owner");
+
                     b.Navigation("PropertyStatus");
 
                     b.Navigation("PropertyType");
@@ -814,7 +836,15 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Livora_Lite.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("TenantStatus");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Livora_Lite.Domain.Entities.Billing", b =>

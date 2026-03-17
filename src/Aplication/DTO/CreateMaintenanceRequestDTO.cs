@@ -22,6 +22,8 @@ namespace Livora_Lite.Application.DTO
 
         [Required(ErrorMessage = "Status é obrigatório")]
         public MaintenanceStatus Status { get; set; }
+            // Propriedade adicionada para corrigir erro de compilação
+            public string Title { get; set; } = string.Empty;
     }
 
     public class UpdateMaintenanceRequestDTO

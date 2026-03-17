@@ -1,0 +1,29 @@
+@using Livora_Lite.Helpers
+
+@{
+    var breadcrumbs = ViewData["Breadcrumbs"] as List<BreadcrumbHelper.BreadcrumbItem> ?? new List<BreadcrumbHelper.BreadcrumbItem>();
+}
+
+@if (breadcrumbs.Any())
+{
+    <nav aria-label="breadcrumb" class="livora-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")" class="text-decoration-none">Início</a>
+            </li>
+            @foreach (var item in breadcrumbs)
+            {
+                @if (item.IsActive || string.IsNullOrEmpty(item.Url))
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@item.Label</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@item.Url" class="text-decoration-none">@item.Label</a>
+                    </li>
+                }
+            }
+        </ol>
+    </nav>
+}

@@ -39,7 +39,8 @@ public class AuthController : Controller
             {
                 new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
                 new Claim(ClaimTypes.Name, result.User.FirstName + " " + result.User.LastName),
-                new Claim(ClaimTypes.Email, result.User.Email)
+                new Claim(ClaimTypes.Email, result.User.Email),
+                new Claim(ClaimTypes.Role, result.User.Role)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
@@ -84,7 +85,8 @@ public class AuthController : Controller
             {
                 new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
                 new Claim(ClaimTypes.Name, result.User.FirstName + " " + result.User.LastName),
-                new Claim(ClaimTypes.Email, result.User.Email)
+                new Claim(ClaimTypes.Email, result.User.Email),
+                new Claim(ClaimTypes.Role, result.User.Role)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");

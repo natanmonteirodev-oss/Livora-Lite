@@ -33,6 +33,17 @@ namespace Livora_Lite.Infrastructure
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Property>> GetByOwnerIdAsync(int ownerId)
+        {
+            return await _context.Properties
+                .Include(p => p.Address)
+                .Include(p => p.PropertyType)
+                .Include(p => p.PropertyStatus)
+                .Include(p => p.Owner)
+                .Where(p => p.OwnerId == ownerId && p.IsActive)
+                .ToListAsync();
+        }
+
         public async Task<Property> CreateAsync(Property property)
         {
             property.CreatedAt = DateTime.UtcNow;

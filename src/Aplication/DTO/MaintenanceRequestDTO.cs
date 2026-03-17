@@ -12,6 +12,8 @@ namespace Livora_Lite.Application.DTO
         public MaintenancePriority Priority { get; set; }
         public MaintenanceStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
+            // Propriedade adicionada para corrigir erro de compilação
+            public string Title { get; set; } = string.Empty;
 
         // Navigation properties
         public PropertyDTO? Property { get; set; }

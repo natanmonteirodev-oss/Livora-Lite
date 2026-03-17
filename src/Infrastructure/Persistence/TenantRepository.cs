@@ -29,6 +29,14 @@ namespace Livora_Lite.Infrastructure
                 .ToListAsync();
         }
 
+        public async Task<Tenant?> GetByUserIdAsync(int userId)
+        {
+            return await _context.Tenants
+                .Include(t => t.TenantStatus)
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(t => t.UserId == userId && t.IsActive);
+        }
+
         public async Task<Tenant> CreateAsync(Tenant tenant)
         {
             tenant.CreatedAt = DateTime.UtcNow;

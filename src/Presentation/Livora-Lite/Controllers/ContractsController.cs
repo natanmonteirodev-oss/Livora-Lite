@@ -73,7 +73,7 @@ public class ContractsController : Controller
                 userName,
                 "Create",
                 "Contract",
-                contractId.ToString(),
+                contractId.ToString() ?? "Unknown",
                 $"Criado contrato para propriedade ID: {request.PropertyId}, inquilino ID: {request.TenantId}"
             );
             

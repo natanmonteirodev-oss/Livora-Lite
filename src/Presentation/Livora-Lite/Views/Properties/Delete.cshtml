@@ -1,32 +1,104 @@
 @model Livora_Lite.Application.DTO.PropertyDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Excluir Imóvel";
+    ViewData["Title"] = "Excluir Imóvel - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Imóveis", Url.Action("Index", "Properties")),
+        new BreadcrumbHelper.BreadcrumbItem("Excluir", null, true)
+    );
 }
 
-<h1>Excluir Imóvel</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Imóveis</a></li>
+            <li class="breadcrumb-item active">Excluir</li>
+        </ol>
+    </nav>
 
-<h3>Tem certeza que deseja excluir este imóvel?</h3>
-<div>
-    <h4>Imóvel</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Nome</dt>
-        <dd class="col-sm-10">@Model.Name</dd>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Excluir Imóvel</h1>
+        <p class="text-muted">Confirme a exclusão do imóvel</p>
+    </div>
 
-        <dt class="col-sm-2">Tipo</dt>
-        <dd class="col-sm-10">@Model.PropertyType?.Name</dd>
+    <!-- Confirmation Card -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Warning Alert -->
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Atenção!</strong> Esta ação é irreversível. O imóvel será permanentemente removido do sistema.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
-        <dt class="col-sm-2">Status</dt>
-        <dd class="col-sm-10">@Model.PropertyStatus?.Name</dd>
+            <!-- Property Information Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-danger">
+                    <h5 class="mb-0 text-white">
+                        <i class="fas fa-home me-2"></i> @Model.Name
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Tipo:</strong> @Model.PropertyType?.Name</p>
+                            <p><strong>Status:</strong> <span class="badge badge-status badge-status-@Model.PropertyStatus?.Name?.ToLower()">@Model.PropertyStatus?.Name</span></p>
+                            <p><strong>Área:</strong> @Model.Area.ToString("F2") m²</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Quartos:</strong> @Model.Bedrooms</p>
+                            <p><strong>Banheiros:</strong> @Model.Bathrooms</p>
+                            <p><strong>Valor Sugerido:</strong> R$ @Model.SuggestedRentValue.ToString("F2")</p>
+                        </div>
+                    </div>
+                    <hr />
+                    <p><strong>Endereço:</strong></p>
+                    <p>
+                        @Model.Address?.Street, @Model.Address?.Number
+                        @if (!string.IsNullOrEmpty(Model.Address?.Complement))
+                        {
+                            <span>- @Model.Address.Complement</span>
+                        }
+                        <br />
+                        @Model.Address?.Neighborhood, @Model.Address?.City - @Model.Address?.State, @Model.Address?.ZipCode
+                    </p>
+                </div>
+            </div>
 
-        <dt class="col-sm-2">Endereço</dt>
-        <dd class="col-sm-10">@Model.Address?.Street, @Model.Address?.Number - @Model.Address?.City</dd>
-    </dl>
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Excluir" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </form>
+            <!-- Confirmation Form -->
+            <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post" class="d-inline">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        <i class="fas fa-trash me-2"></i> Sim, Excluir Permanentemente
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-times me-2"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header.bg-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+
+    .alert {
+        border-left: 4px solid #dc3545;
+    }
+</style>

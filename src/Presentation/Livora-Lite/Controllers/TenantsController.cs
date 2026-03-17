@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Livora_Lite.Controllers;
 
@@ -53,23 +54,38 @@ public class TenantsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateTenantRequestDTO request)
     {
+        // Validação: TenantStatusId deve ser válido
+        if (request.TenantStatusId <= 0)
+        {
+            ModelState.AddModelError(nameof(request.TenantStatusId), "Selecione um status válido para o inquilino.");
+        }
+
         if (ModelState.IsValid)
         {
-            var tenantId = await _tenantService.CreateAsync(request);
-            
-            // Log audit
-            var userId = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
-            var userName = User.Identity?.Name ?? "Unknown";
-            await _auditService.LogActionAsync(
-                userId,
-                userName,
-                "Create",
-                "Tenant",
-                tenantId.ToString(),
-                $"Criado inquilino: {request.Name}"
-            );
-            
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var tenantId = await _tenantService.CreateAsync(request);
+                
+                // Log audit
+                var userId = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
+                var userName = User.Identity?.Name ?? "Unknown";
+                await _auditService.LogActionAsync(
+                    userId,
+                    userName,
+                    "Create",
+                    "Tenant",
+                    tenantId.ToString() ?? "Unknown",
+                    $"Criado inquilino: {request.Name}"
+                );
+                
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("FOREIGN KEY") == true)
+            {
+                ModelState.AddModelError("", "O status selecionado é inválido. Por favor, selecione um status válido.");
+                ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
+                return View(request);
+            }
         }
         ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
         return View(request);
@@ -109,23 +125,38 @@ public class TenantsController : Controller
             return NotFound();
         }
 
+        // Validação: TenantStatusId deve ser válido
+        if (request.TenantStatusId <= 0)
+        {
+            ModelState.AddModelError(nameof(request.TenantStatusId), "Selecione um status válido para o inquilino.");
+        }
+
         if (ModelState.IsValid)
         {
-            await _tenantService.UpdateAsync(request);
-            
-            // Log audit
-            var userId = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
-            var userName = User.Identity?.Name ?? "Unknown";
-            await _auditService.LogActionAsync(
-                userId,
-                userName,
-                "Update",
-                "Tenant",
-                request.Id.ToString(),
-                $"Atualizado inquilino: {request.Name}"
-            );
-            
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _tenantService.UpdateAsync(request);
+                
+                // Log audit
+                var userId = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
+                var userName = User.Identity?.Name ?? "Unknown";
+                await _auditService.LogActionAsync(
+                    userId,
+                    userName,
+                    "Update",
+                    "Tenant",
+                    request.Id.ToString(),
+                    $"Atualizado inquilino: {request.Name}"
+                );
+                
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("FOREIGN KEY") == true)
+            {
+                ModelState.AddModelError("", "O status selecionado é inválido. Por favor, selecione um status válido.");
+                ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
+                return View(request);
+            }
         }
         ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
         return View(request);

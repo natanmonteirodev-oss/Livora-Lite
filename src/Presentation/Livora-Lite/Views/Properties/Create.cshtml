@@ -1,101 +1,244 @@
 @model Livora_Lite.Application.DTO.CreatePropertyRequestDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Novo Imóvel";
+    ViewData["Title"] = "Novo Imóvel - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData, 
+        new BreadcrumbHelper.BreadcrumbItem("Imóveis", Url.Action("Index", "Properties")),
+        new BreadcrumbHelper.BreadcrumbItem("Novo Imóvel", null, true)
+    );
 }
 
-<h1>Novo Imóvel</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Imóveis</a></li>
+            <li class="breadcrumb-item active">Novo Imóvel</li>
+        </ol>
+    </nav>
 
-<form asp-action="Create" method="post">
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Cadastrar Novo Imóvel</h1>
+        <p class="text-muted">Preencha os dados do imóvel para cadastrá-lo no sistema</p>
+    </div>
+
+    <!-- Form Card -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PropertyTypeId" class="control-label"></label>
-                <select asp-for="PropertyTypeId" class="form-control" asp-items="@(new SelectList(ViewBag.PropertyTypes, "Id", "Name"))"></select>
-                <span asp-validation-for="PropertyTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PropertyStatusId" class="control-label"></label>
-                <select asp-for="PropertyStatusId" class="form-control" asp-items="@(new SelectList(ViewBag.PropertyStatuses, "Id", "Name"))"></select>
-                <span asp-validation-for="PropertyStatusId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Area" class="control-label"></label>
-                <input asp-for="Area" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="Area" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Bedrooms" class="control-label"></label>
-                <input asp-for="Bedrooms" class="form-control" type="number" />
-                <span asp-validation-for="Bedrooms" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Bathrooms" class="control-label"></label>
-                <input asp-for="Bathrooms" class="form-control" type="number" />
-                <span asp-validation-for="Bathrooms" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ParkingSpaces" class="control-label"></label>
-                <input asp-for="ParkingSpaces" class="form-control" type="number" />
-                <span asp-validation-for="ParkingSpaces" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SuggestedRentValue" class="control-label"></label>
-                <input asp-for="SuggestedRentValue" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="SuggestedRentValue" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <h4>Endereço</h4>
-            <div class="form-group">
-                <label asp-for="Address.Street" class="control-label"></label>
-                <input asp-for="Address.Street" class="form-control" />
-                <span asp-validation-for="Address.Street" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.Number" class="control-label"></label>
-                <input asp-for="Address.Number" class="form-control" />
-                <span asp-validation-for="Address.Number" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.Complement" class="control-label"></label>
-                <input asp-for="Address.Complement" class="form-control" />
-                <span asp-validation-for="Address.Complement" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.Neighborhood" class="control-label"></label>
-                <input asp-for="Address.Neighborhood" class="form-control" />
-                <span asp-validation-for="Address.Neighborhood" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.City" class="control-label"></label>
-                <input asp-for="Address.City" class="form-control" />
-                <span asp-validation-for="Address.City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.State" class="control-label"></label>
-                <input asp-for="Address.State" class="form-control" />
-                <span asp-validation-for="Address.State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.ZipCode" class="control-label"></label>
-                <input asp-for="Address.ZipCode" class="form-control" />
-                <span asp-validation-for="Address.ZipCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+        <div class="col-lg-10 mx-auto">
+            <form asp-action="Create" method="post" class="form" novalidate="">
+                <div class="card shadow-sm">
+                    <!-- Header -->
+                    <div class="card-header bg-gradient">
+                        <h5 class="mb-0">
+                            <i class="fas fa-home me-2"></i> Informações do Imóvel
+                        </h5>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <!-- Nome -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="form-label">
+                                        <i class="fas fa-heading me-2"></i> Nome do Imóvel
+                                    </label>
+                                    <input asp-for="Name" class="form-control form-control-lg" placeholder="Ex: Apartamento Centro" />
+                                    <span asp-validation-for="Name" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Tipo -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="PropertyTypeId" class="form-label">
+                                        <i class="fas fa-tag me-2"></i> Tipo de Imóvel
+                                    </label>
+                                    <select asp-for="PropertyTypeId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.PropertyTypes, "Id", "Name"))">
+                                        <option value="">-- Selecione um tipo --</option>
+                                    </select>
+                                    <span asp-validation-for="PropertyTypeId" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="PropertyStatusId" class="form-label">
+                                        <i class="fas fa-circle me-2"></i> Status
+                                    </label>
+                                    <select asp-for="PropertyStatusId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.PropertyStatuses, "Id", "Name"))">
+                                        <option value="">-- Selecione um status --</option>
+                                    </select>
+                                    <span asp-validation-for="PropertyStatusId" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Área -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Area" class="form-label">
+                                        <i class="fas fa-square me-2"></i> Área Total (m²)
+                                    </label>
+                                    <input asp-for="Area" class="form-control form-control-lg" type="number" step="0.01" placeholder="0.00" />
+                                    <span asp-validation-for="Area" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Descrição -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Description" class="form-label">
+                                        <i class="fas fa-align-left me-2"></i> Descrição
+                                    </label>
+                                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Descrição detalhada do imóvel..."></textarea>
+                                    <span asp-validation-for="Description" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <!-- Quartos -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Bedrooms" class="form-label">
+                                        <i class="fas fa-door-open me-2"></i> Quartos
+                                    </label>
+                                    <input asp-for="Bedrooms" class="form-control form-control-lg" type="number" placeholder="0" />
+                                    <span asp-validation-for="Bedrooms" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Banheiros -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Bathrooms" class="form-label">
+                                        <i class="fas fa-bath me-2"></i> Banheiros
+                                    </label>
+                                    <input asp-for="Bathrooms" class="form-control form-control-lg" type="number" placeholder="0" />
+                                    <span asp-validation-for="Bathrooms" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Vagas de Garagem -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="ParkingSpaces" class="form-label">
+                                        <i class="fas fa-square-parking me-2"></i> Vagas de Garagem
+                                    </label>
+                                    <input asp-for="ParkingSpaces" class="form-control form-control-lg" type="number" placeholder="0" />
+                                    <span asp-validation-for="ParkingSpaces" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Valor Sugerido -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="SuggestedRentValue" class="form-label">
+                                        <i class="fas fa-dollar-sign me-2"></i> Valor Sugerido de Aluguel (R$)
+                                    </label>
+                                    <input asp-for="SuggestedRentValue" class="form-control form-control-lg" type="number" step="0.01" placeholder="0.00" />
+                                    <span asp-validation-for="SuggestedRentValue" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Section -->
+                        <hr class="my-4">
+                        <h6 class="text-primary fw-bold mb-3">
+                            <i class="fas fa-map-marker-alt me-2"></i> Endereço
+                        </h6>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Rua -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.Street" class="form-label">Rua / Avenida</label>
+                                    <input asp-for="Address.Street" class="form-control" placeholder="R. Exemplo..." />
+                                    <span asp-validation-for="Address.Street" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Número -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.Number" class="form-label">Número</label>
+                                    <input asp-for="Address.Number" class="form-control" placeholder="123" />
+                                    <span asp-validation-for="Address.Number" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Complemento -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.Complement" class="form-label">Complemento (Apto, Bloco, etc.)</label>
+                                    <input asp-for="Address.Complement" class="form-control" placeholder="Apto 101" />
+                                    <span asp-validation-for="Address.Complement" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Bairro -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.Neighborhood" class="form-label">Bairro</label>
+                                    <input asp-for="Address.Neighborhood" class="form-control" placeholder="Ex: Centro..." />
+                                    <span asp-validation-for="Address.Neighborhood" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <!-- Cidade -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.City" class="form-label">Cidade</label>
+                                    <input asp-for="Address.City" class="form-control" placeholder="Ex: São Paulo..." />
+                                    <span asp-validation-for="Address.City" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Estado -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.State" class="form-label">Estado</label>
+                                    <input asp-for="Address.State" class="form-control" placeholder="SP" maxlength="2" />
+                                    <span asp-validation-for="Address.State" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- CEP -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.ZipCode" class="form-label">CEP</label>
+                                    <input asp-for="Address.ZipCode" class="form-control" placeholder="00000-000" />
+                                    <span asp-validation-for="Address.ZipCode" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- País -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address.Country" class="form-label">País</label>
+                                    <input asp-for="Address.Country" class="form-control" placeholder="Brasil" />
+                                    <span asp-validation-for="Address.Country" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="card-footer bg-light">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i> Salvar Imóvel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Criar" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </div>
-</form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--livora-primary);
+    }
+
+    .form-control-lg, .form-select-lg {
+        padding: 12px 16px;
+        font-size: 15px;
+    }
+</style>

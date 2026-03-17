@@ -1,52 +1,18 @@
 @model Livora_Lite.Application.DTO.CreateBillingRequestDTO
-
 @{
     ViewData["Title"] = "Nova Cobrança";
 }
 
-<h1>Nova Cobrança</h1>
+<div class="container mt-5 mb-5">
+    <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li><li class="breadcrumb-item"><a asp-action="Index">Cobranças</a></li><li class="breadcrumb-item active">Nova</li></ol></nav>
+    <h1 class="section-title mb-4">Nova Cobrança</h1>
+    <div class="row"><div class="col-lg-8"><form asp-action="Create" method="post" class="card shadow-sm"><div class="card-header bg-gradient"><h5 class="mb-0">Dados da Cobrança</h5></div><div class="card-body">
+        <div class="mb-3"><label asp-for="ContractId" class="form-label">Contrato</label><select asp-for="ContractId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.Contracts, "Id", "DisplayText"))"><option>Selecione...</option></select></div>
+        <div class="mb-3"><label asp-for="Period" class="form-label">Período</label><input asp-for="Period" class="form-control form-control-lg" placeholder="Ex: Janeiro/2024" /></div>
+        <div class="row"><div class="col-md-6"><div class="mb-3"><label asp-for="Amount" class="form-label">Valor</label><input asp-for="Amount" type="number" class="form-control form-control-lg" step="0.01" /></div></div><div class="col-md-6"><div class="mb-3"><label asp-for="DueDate" class="form-label">Vencimento</label><input asp-for="DueDate" type="date" class="form-control form-control-lg" /></div></div></div>
+        <div class="mb-3"><label asp-for="BillingStatusId" class="form-label">Status</label><select asp-for="BillingStatusId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.BillingStatuses, "Id", "Name"))"><option>Selecione...</option></select></div>
+    </div><div class="card-footer bg-light d-flex gap-2 justify-content-end"><a asp-action="Index" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Cancelar</a><button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Salvar</button></div></form></div></div>
+</div>
 
-<form asp-action="Create" method="post">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="ContractId" class="control-label">Contrato</label>
-                <select asp-for="ContractId" class="form-control" asp-items="@(new SelectList(ViewBag.Contracts, "Id", "Property.Name", null, "Tenant.Name"))">
-                    <option value="">Selecione um contrato</option>
-                </select>
-                <span asp-validation-for="ContractId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Period" class="control-label">Período (MM/YYYY)</label>
-                <input asp-for="Period" class="form-control" placeholder="Ex: 01/2024" />
-                <span asp-validation-for="Period" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Amount" class="control-label">Valor</label>
-                <input asp-for="Amount" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DueDate" class="control-label">Data de Vencimento</label>
-                <input asp-for="DueDate" class="form-control" type="date" />
-                <span asp-validation-for="DueDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BillingStatusId" class="control-label">Status</label>
-                <select asp-for="BillingStatusId" class="form-control" asp-items="@(new SelectList(ViewBag.BillingStatuses, "Id", "Name"))">
-                    <option value="">Selecione um status</option>
-                </select>
-                <span asp-validation-for="BillingStatusId" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
+@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
 
-    <div class="form-group">
-        <input type="submit" value="Criar" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </div>
-</form>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

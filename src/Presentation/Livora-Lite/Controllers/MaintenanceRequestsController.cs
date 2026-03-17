@@ -75,7 +75,7 @@ namespace Livora_Lite.Controllers
                     userName,
                     "Create",
                     "MaintenanceRequest",
-                    requestId.ToString(),
+                    requestId.ToString() ?? "Unknown",
                     $"Criada solicitação de manutenção: {maintenanceRequest.Title} para propriedade ID: {maintenanceRequest.PropertyId}"
                 );
                 

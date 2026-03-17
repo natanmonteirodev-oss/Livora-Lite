@@ -1,48 +1,151 @@
 @model Livora_Lite.Application.DTO.CreateTenantRequestDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Novo Inquilino";
+    ViewData["Title"] = "Novo Inquilino - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Inquilinos", Url.Action("Index", "Tenants")),
+        new BreadcrumbHelper.BreadcrumbItem("Novo Inquilino", null, true)
+    );
 }
 
-<h1>Novo Inquilino</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Inquilinos</a></li>
+            <li class="breadcrumb-item active">Novo Inquilino</li>
+        </ol>
+    </nav>
 
-<form asp-action="Create" method="post">
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Cadastrar Novo Inquilino</h1>
+        <p class="text-muted">Preencha os dados do inquilino para cadastrá-lo no sistema</p>
+    </div>
+
+    <!-- Form Card -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Document" class="control-label"></label>
-                <input asp-for="Document" class="form-control" placeholder="CPF ou CNPJ" />
-                <span asp-validation-for="Document" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" placeholder="(11) 99999-9999" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" type="email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentAddress" class="control-label"></label>
-                <textarea asp-for="CurrentAddress" class="form-control" rows="3" placeholder="Endereço atual do inquilino"></textarea>
-                <span asp-validation-for="CurrentAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TenantStatusId" class="control-label"></label>
-                <select asp-for="TenantStatusId" class="form-control" asp-items="@(new SelectList(ViewBag.TenantStatuses, "Id", "Name"))"></select>
-                <span asp-validation-for="TenantStatusId" class="text-danger"></span>
-            </div>
+        <div class="col-lg-10 mx-auto">
+            <form asp-action="Create" method="post" class="form" novalidate="">
+                <div class="card shadow-sm">
+                    <!-- Header -->
+                    <div class="card-header bg-gradient">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i> Dados Pessoais
+                        </h5>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <!-- Nome -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="form-label">
+                                        <i class="fas fa-user me-2"></i> Nome Completo
+                                    </label>
+                                    <input asp-for="Name" class="form-control form-control-lg" placeholder="Ex: João da Silva" />
+                                    <span asp-validation-for="Name" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Documento -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Document" class="form-label">
+                                        <i class="fas fa-id-card me-2"></i> CPF ou CNPJ
+                                    </label>
+                                    <input asp-for="Document" class="form-control form-control-lg" placeholder="000.000.000-00" />
+                                    <span asp-validation-for="Document" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Telefone -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Phone" class="form-label">
+                                        <i class="fas fa-phone me-2"></i> Telefone
+                                    </label>
+                                    <input asp-for="Phone" class="form-control form-control-lg" placeholder="(11) 99999-9999" />
+                                    <span asp-validation-for="Phone" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <!-- Email -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Email" class="form-label">
+                                        <i class="fas fa-envelope me-2"></i> Email
+                                    </label>
+                                    <input asp-for="Email" class="form-control form-control-lg" type="email" placeholder="exemplo@email.com" />
+                                    <span asp-validation-for="Email" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="TenantStatusId" class="form-label">
+                                        <i class="fas fa-circle me-2"></i> Status
+                                    </label>
+                                    <select asp-for="TenantStatusId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.TenantStatuses, "Id", "Name"))">
+                                        <option value="">-- Selecione um status --</option>
+                                    </select>
+                                    <span asp-validation-for="TenantStatusId" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Section -->
+                        <hr class="my-4">
+                        <h6 class="text-primary fw-bold mb-3">
+                            <i class="fas fa-map-marker-alt me-2"></i> Endereço Atual
+                        </h6>
+
+                        <!-- Current Address -->
+                        <div class="form-group mb-3">
+                            <label asp-for="CurrentAddress" class="form-label">Endereço Completo</label>
+                            <textarea asp-for="CurrentAddress" class="form-control" rows="3" placeholder="Endereço atual do inquilino..."></textarea>
+                            <span asp-validation-for="CurrentAddress" class="text-danger small d-block mt-1"></span>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="card-footer bg-light">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i> Salvar Inquilino
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Criar" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </div>
-</form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--livora-primary);
+    }
+
+    .form-control-lg, .form-select-lg {
+        padding: 12px 16px;
+        font-size: 15px;
+    }
+</style>

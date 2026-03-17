@@ -1,74 +1,136 @@
 @model Livora_Lite.Application.DTO.UpdateContractRequestDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Editar Contrato";
+    ViewData["Title"] = "Editar Contrato - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Contratos", Url.Action("Index", "Contracts")),
+        new BreadcrumbHelper.BreadcrumbItem("Editar Contrato", null, true)
+    );
 }
 
-<h1>Editar Contrato</h1>
+<div class="container mt-5 mb-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Contratos</a></li>
+            <li class="breadcrumb-item active">Editar Contrato</li>
+        </ol>
+    </nav>
 
-<form asp-action="Edit" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
+    <div class="mb-4">
+        <h1 class="section-title">Editar Contrato</h1>
+        <p class="text-muted">Atualize os dados do contrato de locação</p>
+    </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="PropertyId" class="control-label"></label>
-                <select asp-for="PropertyId" class="form-control" asp-items="@(new SelectList(ViewBag.Properties, "Id", "Name"))"></select>
-                <span asp-validation-for="PropertyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TenantId" class="control-label"></label>
-                <select asp-for="TenantId" class="form-control" asp-items="@(new SelectList(ViewBag.Tenants, "Id", "Name"))"></select>
-                <span asp-validation-for="TenantId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" type="date" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" type="date" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-                <small class="form-text text-muted">Deixe em branco para contrato indeterminado</small>
-            </div>
-            <div class="form-group">
-                <label asp-for="RentValue" class="control-label"></label>
-                <input asp-for="RentValue" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="RentValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DueDay" class="control-label"></label>
-                <input asp-for="DueDay" class="form-control" type="number" min="1" max="31" />
-                <span asp-validation-for="DueDay" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="LateFee" class="control-label"></label>
-                <input asp-for="LateFee" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="LateFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InterestRate" class="control-label"></label>
-                <input asp-for="InterestRate" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="InterestRate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SecurityDeposit" class="control-label"></label>
-                <input asp-for="SecurityDeposit" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="SecurityDeposit" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContractStatusId" class="control-label"></label>
-                <select asp-for="ContractStatusId" class="form-control" asp-items="@(new SelectList(ViewBag.ContractStatuses, "Id", "Name"))"></select>
-                <span asp-validation-for="ContractStatusId" class="text-danger"></span>
-            </div>
+        <div class="col-lg-10 mx-auto">
+            <form asp-action="Edit" method="post" class="form" novalidate="">
+                <input asp-for="Id" type="hidden" />
+                <div class="card shadow-sm">
+                    <div class="card-header bg-gradient">
+                        <h5 class="mb-0"><i class="fas fa-file-contract me-2"></i> Dados do Contrato</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PropertyId" class="form-label">Propriedade</label>
+                                    <select asp-for="PropertyId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.Properties, "Id", "Name"))">
+                                    </select>
+                                    <span asp-validation-for="PropertyId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="TenantId" class="form-label">Inquilino</label>
+                                    <select asp-for="TenantId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.Tenants, "Id", "Name"))">
+                                    </select>
+                                    <span asp-validation-for="TenantId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="StartDate" class="form-label">Data de Início</label>
+                                    <input asp-for="StartDate" type="date" class="form-control form-control-lg" />
+                                    <span asp-validation-for="StartDate" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="RentValue" class="form-label">Valor do Aluguel</label>
+                                    <input asp-for="RentValue" type="number" class="form-control form-control-lg" step="0.01" />
+                                    <span asp-validation-for="RentValue" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="EndDate" class="form-label">Data de Término</label>
+                                    <input asp-for="EndDate" type="date" class="form-control form-control-lg" />
+                                    <span asp-validation-for="EndDate" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="DueDay" class="form-label">Dia do Vencimento</label>
+                                    <input asp-for="DueDay" type="number" class="form-control form-control-lg" min="1" max="31" />
+                                    <span asp-validation-for="DueDay" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="LateFee" class="form-label">Multa por Atraso (%)</label>
+                                    <input asp-for="LateFee" type="number" class="form-control form-control-lg" step="0.01" />
+                                    <span asp-validation-for="LateFee" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="InterestRate" class="form-label">Taxa de Juros (%)</label>
+                                    <input asp-for="InterestRate" type="number" class="form-control form-control-lg" step="0.01" />
+                                    <span asp-validation-for="InterestRate" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="SecurityDeposit" class="form-label">Caução</label>
+                                    <input asp-for="SecurityDeposit" type="number" class="form-control form-control-lg" step="0.01" />
+                                    <span asp-validation-for="SecurityDeposit" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContractStatusId" class="form-label">Status</label>
+                                    <select asp-for="ContractStatusId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.ContractStatuses, "Id", "Name"))">
+                                    </select>
+                                    <span asp-validation-for="ContractStatusId" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-light">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i> Atualizar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Salvar" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </div>
-</form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    .card-header { background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%); color: #ffffff; }
+    .card-header h5 { color: #ffffff; }
+    .form-label { font-weight: 600; color: var(--livora-primary); }
+</style>
+

@@ -1,121 +1,348 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Livora_Lite</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="author" content="Livora" />
+    <title>@ViewData["Title"] - Livora</title>
+    <link rel="shortcut icon" href="~/images/Livora.png" type="image/svg+xml" />
+    
+    <meta name="description" content="Livora - Gestão de Imóveis e Contratos" />
+    <meta name="keywords" content="imóveis, contratos, gestão" />
+
+    <!-- Bootstrap CSS -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="~/css/tiny-slider.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/livora-custom.css" rel="stylesheet" asp-append-version="true">
+    
+    <style>
+        :root {
+            --livora-primary: #0081a7;
+            --livora-secondary: #00afb9;
+            --livora-accent: #f07167;
+            --livora-light: #fdfcdc;
+            --livora-peach: #fed9b7;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            margin-bottom: 60px;
+        }
+        
+        .custom-navbar {
+            background-color: var(--livora-primary) !important;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .custom-navbar .navbar-brand {
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .custom-navbar .navbar-brand img {
+            max-height: 45px;
+            width: auto;
+        }
+        
+        .custom-navbar .custom-navbar-nav li a {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .custom-navbar .custom-navbar-nav li a:hover {
+            color: #ffffff !important;
+        }
+        
+        .custom-navbar .custom-navbar-cta {
+            margin-left: 40px !important;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+            color: #ffffff;
+            padding: 80px 0;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .btn-secondary {
+            background-color: var(--livora-accent) !important;
+            border-color: var(--livora-accent) !important;
+            color: #ffffff !important;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e85a52 !important;
+            border-color: #e85a52 !important;
+        }
+        
+        .section-title {
+            color: var(--livora-primary);
+            font-weight: 700;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+        
+        .product-section {
+            padding: 60px 0;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .table {
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .table thead {
+            background-color: var(--livora-primary);
+            color: #ffffff;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .form-control, .form-select {
+            border-color: #e0e0e0;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--livora-primary);
+            box-shadow: 0 0 0 0.2rem rgba(0, 129, 167, 0.25);
+        }
+        
+        .livora-footer {
+            background-color: var(--livora-primary);
+            color: #ffffff;
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+        
+        .livora-footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none !important;
+        }
+        
+        .livora-footer a:hover {
+            color: #ffffff;
+            text-decoration: none !important;
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--livora-primary);
+            font-weight: 600;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--livora-secondary);
+            font-weight: 500;
+        }
+        
+        .badge {
+            background-color: var(--livora-secondary);
+            color: #ffffff;
+        }
+        
+        .btn-primary {
+            background-color: var(--livora-primary) !important;
+            border-color: var(--livora-primary) !important;
+        }
+        
+        .btn-primary:hover {
+            background-color: #006a8b !important;
+            border-color: #006a8b !important;
+        }
+        
+        .alert-info {
+            background-color: rgba(0, 129, 167, 0.1);
+            border-color: var(--livora-primary);
+            color: var(--livora-primary);
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark" style="background-color: #0081a7;">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold fs-5" asp-area="" asp-controller="Home" asp-action="Index">
-                    🌿 Livora
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Properties" asp-action="Index">Imóveis</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Tenants" asp-action="Index">Inquilinos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Contracts" asp-action="Index">Contratos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Billings" asp-action="Index">Cobranças</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Payments" asp-action="Index">Pagamentos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="MaintenanceRequests" asp-action="Index">Manutenção</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="AuditLogs" asp-action="Index">Auditoria</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        @if (User.Identity?.IsAuthenticated == true)
+    <!-- Start Header/Navigation -->
+    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" role="navigation">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/Livora.png" alt="Livora Logo" style="height: 45px; width: auto;" />
+                <span>Livora</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        @* Menu Livora Home *@
+                        @if (User.IsInRole("Home") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    👤 @User.Identity.Name
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-home"></i> Inquilinos
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" style="background-color: white;">
-                                    <li><a class="dropdown-item" href="#">Minha Conta</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Settings" asp-action="Index">Configurações</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Sair</a></li>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Tenants" asp-action="Index">Listar Inquilinos</a></li>
                                 </ul>
                             </li>
                         }
-                        else
+
+                        @* Menu Livora Owner *@
+                        @if (User.IsInRole("Owner") || User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="Auth" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white fw-bold" asp-controller="Auth" asp-action="Register">Registrar</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-building"></i> Imóveis
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Properties" asp-action="Index">Listar Imóveis</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Contracts" asp-action="Index">Contratos</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Billings" asp-action="Index">Cobranças</a></li>
+                                </ul>
                             </li>
                         }
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="livora-main-container">
-        <main role="main" class="livora-main">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="livora-footer border-top" style="background-color: #0081a7; color: white;">
-        <div class="container py-4">
+                        @* Menu Livora Pro *@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-tools"></i> Administração
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="MaintenanceRequests" asp-action="Index">Manutenção</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Usuários</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="AuditLogs" asp-action="Index">Auditoria</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fas fa-lock"></i> Privacidade
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i> @User.Identity.Name
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Minha Conta</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout">Sair</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Entrar</a></li>
+                        <li><a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Register"><i class="fas fa-user-plus"></i> Registrar</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Header/Navigation -->
+
+    <!-- Start Main Content -->
+    <main role="main">
+        @RenderBody()
+    </main>
+    <!-- End Main Content -->
+
+    <!-- Start Footer -->
+    <footer class="livora-footer">
+        <div class="container">
             <div class="row">
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <h5 class="fw-bold">🌿 Livora</h5>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="~/images/Livora.png" alt="Livora Logo" style="height: 40px; width: auto;" />
+                        <h5 class="fw-bold mb-0">Livora</h5>
+                    </div>
                     <p class="small">Tudo sobre seu aluguel, em um só lugar.</p>
                 </div>
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <h6 class="fw-bold">Produtos</h6>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h6 class="fw-bold mb-3">Produtos</h6>
                     <ul class="list-unstyled small">
-                        <li><a href="#" class="text-white-50 text-decoration-none">Livora Home</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Livora Owner</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Livora Pro</a></li>
+                        <li><a href="#">Livora Home</a></li>
+                        <li><a href="#">Livora Owner</a></li>
+                        <li><a href="#">Livora Pro</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h6 class="fw-bold">Legal</h6>
+                    <h6 class="fw-bold mb-3">Suporte</h6>
                     <ul class="list-unstyled small">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-white-50 text-decoration-none">Privacy</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Termos de Uso</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                        <li><a href="https://www.livora.com.br">Site Oficial</a></li>
                     </ul>
                 </div>
             </div>
-            <hr class="mt-4 mb-3" style="border-color: rgba(255,255,255,0.2);">
-            <div class="text-center small text-white-50">
-                &copy; 2026 - Livora. Todos os direitos reservados.
+            <hr class="my-4">
+            <div class="text-center small">
+                <p>&copy; 2026 Livora. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- End Footer -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap Bundle JS -->
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/tiny-slider.js"></script>
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/site.js"></script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

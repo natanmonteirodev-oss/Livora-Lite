@@ -10,5 +10,6 @@ namespace Livora_Lite.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; } = true;
+        public string Role { get; set; } = "Home"; // Home, Owner, Pro, Admin
     }
 }

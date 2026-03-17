@@ -1,0 +1,270 @@
+@model Livora_Lite.Application.DTO.OwnerDashboardDTO
+@using Livora_Lite.Helpers
+@{
+    ViewData["Title"] = "Dashboard - Gerenciador de Imóveis";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData, 
+        new BreadcrumbHelper.BreadcrumbItem("Dashboard", null, true)
+    );
+}
+
+<div class="container-fluid mt-4">
+    <div class="livora-form-header">
+        <h1 class="livora-form-title mb-0">Gerenciador de Imóveis</h1>
+        <p class="livora-form-subtitle">Visão geral de suas propriedades, contratos e pagamentos</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Propriedades</h6>
+                <p class="livora-card-value">@Model.TotalProperties</p>
+                <p class="livora-card-subtitle">Imóveis cadastrados</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card secondary-accent">
+                <h6 class="livora-card-title">Contratos Ativos</h6>
+                <p class="livora-card-value">@Model.ActiveContracts</p>
+                <p class="livora-card-subtitle">Acordos em vigência</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card dark-accent">
+                <h6 class="livora-card-title">Pagamentos Pendentes</h6>
+                <p class="livora-card-value">@Model.PendingPayments</p>
+                <p class="livora-card-subtitle">Cobranças em atraso</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Manutenções</h6>
+                <p class="livora-card-value">@Model.MaintenanceRequests</p>
+                <p class="livora-card-subtitle">Solicitações pendentes</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue and Alert Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: var(--livora-primary-green);" class="mb-0">Receita Mensal Esperada</h5>
+                <h3 class="livora-card-value mt-3">R$ @Model.TotalMonthlyRevenue.ToString("N2")</h3>
+                <p class="livora-card-subtitle">@Model.ActiveContracts contratos ativos</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: #dc3545;" class="mb-0">Valores Pendentes</h5>
+                <h3 style="color: #dc3545; font-size: 1.8rem; font-weight: 700;" class="mt-3">R$ @Model.PendingPaymentsAmount.ToString("N2")</h3>
+                <p class="livora-card-subtitle">@Model.PendingPayments pagamentos em atraso</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert for Expiring Contracts -->
+    @if (Model.ExpiringContracts > 0)
+    {
+        <div class="alert-livora-warning" style="border: 1px solid #ffc107; border-radius: 6px; padding: 15px;">
+            <strong>Atenção!</strong> @Model.ExpiringContracts contrato(s) vencendo nos próximos 30 dias.
+        </div>
+    }
+
+    <!-- Tabs for more details -->
+    <div class="row">
+        <div class="col-12">
+            <div class="livora-form-container">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="properties-tab" data-bs-toggle="tab" href="#properties" role="tab">
+                            Meus Imóveis
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="contracts-tab" data-bs-toggle="tab" href="#contracts" role="tab">
+                            Contratos Ativos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="payments-tab" data-bs-toggle="tab" href="#payments" role="tab">
+                            Pagamentos Pendentes
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content pt-4">
+                    <!-- Properties Tab -->
+                    <div class="tab-pane fade show active" id="properties" role="tabpanel">
+                        @if (Model.Properties.Any())
+                        {
+                            <div class="row">
+                                @foreach (var property in Model.Properties)
+                                {
+                                    <div class="col-md-6 mb-3">
+                                        <div class="livora-form-card">
+                                            <h5 class="livora-form-title">@property.Name</h5>
+                                            <p class="text-muted mb-2">@property.Address</p>
+                                            <div class="row">
+                                                <div class="col-6 mb-2">
+                                                    <small class="text-muted">Tipo</small>
+                                                    <p class="mb-0">@property.PropertyType</p>
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <small class="text-muted">Área</small>
+                                                    <p class="mb-0">@property.Area m²</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Quartos</small>
+                                                    <p class="mb-0">@property.Bedrooms</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Banheiros</small>
+                                                    <p class="mb-0">@property.Bathrooms</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                                <span style="background-color: var(--livora-secondary-blue); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@property.Status</span>
+                                                <span style="color: var(--livora-primary-green); font-weight: 700;">R$ @property.SuggestedRentValue.ToString("N2")/mês</span>
+                                            </div>
+                                            <div class="mt-3 pt-3 border-top">
+                                                <small class="text-muted">Contratos ativos: <strong>@property.ActiveContracts</strong></small><br />
+                                                <small style="color: var(--livora-primary-green);">Receita: <strong>R$ @property.TotalMonthlyRevenue.ToString("N2")</strong></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Nenhuma propriedade cadastrada.</p>
+                            <a href="@Url.Action("Create", "Properties")" class="btn btn-primary">
+                                Cadastrar Propriedade
+                            </a>
+                        }
+                    </div>
+
+                    <!-- Contracts Tab -->
+                    <div class="tab-pane fade" id="contracts" role="tabpanel">
+                        @if (Model.ActiveContracts_Details.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="livora-table table table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Propriedade</th>
+                                            <th>Data Início</th>
+                                            <th>Data Fim</th>
+                                            <th>Aluguel</th>
+                                            <th>Vencimento</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var contract in Model.ActiveContracts_Details)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <strong>@contract.PropertyName</strong><br />
+                                                    <small class="text-muted">@contract.PropertyAddress</small>
+                                                </td>
+                                                <td>@contract.StartDate.ToString("dd/MM/yyyy")</td>
+                                                <td>
+                                                    @if (contract.EndDate.HasValue)
+                                                    {
+                                                        @contract.EndDate.Value.ToString("dd/MM/yyyy")
+                                                        if (contract.IsExpiringSoon)
+                                                        {
+                                                            <span style="background-color: #ffc107; padding: 0.35em 0.65em; border-radius: 0.25rem; color: #333; font-size: 0.875rem;">Expira em breve</span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span style="background-color: var(--livora-primary-green); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">Sem prazo</span>
+                                                    }
+                                                </td>
+                                                <td style="color: var(--livora-primary-green); font-weight: 700;">R$ @contract.RentValue.ToString("N2")</td>
+                                                <td>Dia @contract.DueDay</td>
+                                                <td>
+                                                    <span style="background-color: var(--livora-primary-green); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@contract.Status</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Nenhum contrato ativo no momento.</p>
+                        }
+                    </div>
+
+                    <!-- Payments Tab -->
+                    <div class="tab-pane fade" id="payments" role="tabpanel">
+                        @if (Model.PendingPayments_Details.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="livora-table table table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Propriedade</th>
+                                            <th>Inquilino</th>
+                                            <th>Valor</th>
+                                            <th>Vencimento</th>
+                                            <th>Dias em Atraso</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var payment in Model.PendingPayments_Details)
+                                        {
+                                            <tr style="background-color: #ffe6e6;">
+                                                <td><strong>@payment.PropertyName</strong></td>
+                                                <td>@payment.TenantName</td>
+                                                <td style="color: #dc3545; font-weight: 700;">R$ @payment.Amount.ToString("N2")</td>
+                                                <td>@payment.DueDate.ToString("dd/MM/yyyy")</td>
+                                                <td>
+                                                    <span style="background-color: #dc3545; padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@payment.DaysOverdue dias</span>
+                                                </td>
+                                                <td><span style="background-color: var(--livora-dark-blue); padding: 0.35em 0.65em; border-radius: 0.25rem; color: white; font-size: 0.875rem;">@payment.Status</span></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Nenhum pagamento pendente. Excelente!</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .nav-tabs .nav-link {
+        color: var(--livora-text-light);
+        border: none;
+        border-bottom: 2px solid transparent;
+    }
+
+    .nav-tabs .nav-link:hover {
+        border-bottom-color: var(--livora-secondary-blue);
+        color: var(--livora-secondary-blue);
+    }
+
+    .nav-tabs .nav-link.active {
+        border-bottom-color: var(--livora-primary-green);
+        color: var(--livora-primary-green);
+        background-color: transparent;
+    }
+</style>

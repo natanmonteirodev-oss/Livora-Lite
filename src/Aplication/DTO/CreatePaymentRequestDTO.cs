@@ -17,5 +17,7 @@ namespace Livora_Lite.Application.DTO
 
         [Required(ErrorMessage = "Método de pagamento é obrigatório")]
         public int PaymentMethodId { get; set; }
+            // Propriedade adicionada para corrigir erro de compilação
+            public decimal Amount { get; set; }
     }
 }
