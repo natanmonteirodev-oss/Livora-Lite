@@ -28,7 +28,8 @@
     <!-- Form Card -->
     <div class="row">
         <div class="col-lg-10 mx-auto">
-            <form asp-action="Create" method="post" class="form" novalidate="">
+            <form asp-action="Create" method="post" class="form" novalidate>
+                @Html.AntiForgeryToken()
                 <div class="card shadow-sm">
                     <!-- Header -->
                     <div class="card-header bg-gradient">

@@ -14,7 +14,7 @@
         <dd class="col-sm-10">@Model.Property?.Name</dd>
 
         <dt class="col-sm-2">Inquilino</dt>
-        <dd class="col-sm-10">@Model.Tenant?.Name</dd>
+        <dd class="col-sm-10">@(Model.Tenant != null ? $"{Model.Tenant.FirstName} {Model.Tenant.LastName}" : "N/A")</dd>
 
         <dt class="col-sm-2">Data de Início</dt>
         <dd class="col-sm-10">@Model.StartDate.ToString("dd/MM/yyyy")</dd>

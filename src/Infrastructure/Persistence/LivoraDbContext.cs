@@ -265,7 +265,11 @@ namespace Livora_Lite.Infrastructure.Persistence
                 entity.Property(e => e.Id)
                     .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(100);
 

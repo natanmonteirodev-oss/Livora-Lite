@@ -48,7 +48,14 @@
         <dd class="col-sm-10">
             @if (Model?.Contract != null)
             {
-                @($"Contrato #{Model.Contract!.Id} - {Model.Contract.Tenant?.Name}")
+                @if (Model.Contract.Tenant != null)
+                {
+                    <text>Contrato #@Model.Contract!.Id - @Model.Contract.Tenant.FirstName @Model.Contract.Tenant.LastName</text>
+                }
+                else
+                {
+                    <text>Contrato #@Model.Contract!.Id - N/A</text>
+                }
             }
             else
             {

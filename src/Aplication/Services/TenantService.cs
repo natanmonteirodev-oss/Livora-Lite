@@ -36,7 +36,8 @@ namespace Livora_Lite.Application.Services
         {
             var tenant = new Tenant
             {
-                Name = request.Name,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
                 Document = request.Document,
                 Phone = request.Phone,
                 Email = request.Email,
@@ -56,7 +57,8 @@ namespace Livora_Lite.Application.Services
             var existingTenant = await _tenantRepository.GetByIdAsync(request.Id);
             if (existingTenant == null) throw new KeyNotFoundException("Tenant not found");
 
-            existingTenant.Name = request.Name;
+            existingTenant.FirstName = request.FirstName;
+            existingTenant.LastName = request.LastName;
             existingTenant.Document = request.Document;
             existingTenant.Phone = request.Phone;
             existingTenant.Email = request.Email;
@@ -86,7 +88,8 @@ namespace Livora_Lite.Application.Services
             return new TenantDTO
             {
                 Id = tenant.Id,
-                Name = tenant.Name,
+                FirstName = tenant.FirstName,
+                LastName = tenant.LastName,
                 Document = tenant.Document,
                 Phone = tenant.Phone,
                 Email = tenant.Email,

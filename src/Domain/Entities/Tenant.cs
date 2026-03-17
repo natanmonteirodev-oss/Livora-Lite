@@ -5,7 +5,8 @@ namespace Livora_Lite.Domain.Entities
         public int Id { get; set; }
         public int UserId { get; set; }  // FK: Relacionamento com User
         public User? User { get; set; }  // Navigation property
-        public string Name { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public string Document { get; set; } = string.Empty; // CPF or CNPJ
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

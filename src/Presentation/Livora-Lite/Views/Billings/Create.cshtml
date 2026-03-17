@@ -6,7 +6,7 @@
 <div class="container mt-5 mb-5">
     <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li><li class="breadcrumb-item"><a asp-action="Index">Cobranças</a></li><li class="breadcrumb-item active">Nova</li></ol></nav>
     <h1 class="section-title mb-4">Nova Cobrança</h1>
-    <div class="row"><div class="col-lg-8"><form asp-action="Create" method="post" class="card shadow-sm"><div class="card-header bg-gradient"><h5 class="mb-0">Dados da Cobrança</h5></div><div class="card-body">
+    <div class="row"><div class="col-lg-8"><form asp-action="Create" method="post" class="card shadow-sm">@Html.AntiForgeryToken()<div class="card-header bg-gradient"><h5 class="mb-0">Dados da Cobrança</h5></div><div class="card-body">
         <div class="mb-3"><label asp-for="ContractId" class="form-label">Contrato</label><select asp-for="ContractId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.Contracts, "Id", "DisplayText"))"><option>Selecione...</option></select></div>
         <div class="mb-3"><label asp-for="Period" class="form-label">Período</label><input asp-for="Period" class="form-control form-control-lg" placeholder="Ex: Janeiro/2024" /></div>
         <div class="row"><div class="col-md-6"><div class="mb-3"><label asp-for="Amount" class="form-label">Valor</label><input asp-for="Amount" type="number" class="form-control form-control-lg" step="0.01" /></div></div><div class="col-md-6"><div class="mb-3"><label asp-for="DueDate" class="form-label">Vencimento</label><input asp-for="DueDate" type="date" class="form-control form-control-lg" /></div></div></div>

@@ -175,7 +175,8 @@ namespace Livora_Lite.Application.Services
                 Tenant = contract.Tenant != null ? new TenantDTO
                 {
                     Id = contract.Tenant.Id,
-                    Name = contract.Tenant.Name
+                    FirstName = contract.Tenant.FirstName,
+                    LastName = contract.Tenant.LastName
                 } : null,
                 ContractStatus = contract.ContractStatus != null ? new ContractStatusDTO
                 {

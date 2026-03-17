@@ -17,6 +17,6 @@ namespace Livora_Lite.Application.DTO
         public IEnumerable<PaymentDTO>? Payments { get; set; }
 
         // Computed property for display
-        public string DisplayText => $"{Contract?.Property?.Name ?? "Propriedade não encontrada"} - {Contract?.Tenant?.Name ?? "Inquilino não encontrado"} - {Period}";
+        public string DisplayText => $"{Contract?.Property?.Name ?? "Propriedade não encontrada"} - {(Contract?.Tenant != null ? $"{Contract.Tenant.FirstName} {Contract.Tenant.LastName}" : "Inquilino não encontrado")} - {Period}";
     }
 }

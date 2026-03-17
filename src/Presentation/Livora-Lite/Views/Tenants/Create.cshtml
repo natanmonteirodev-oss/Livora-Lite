@@ -28,7 +28,8 @@
     <!-- Form Card -->
     <div class="row">
         <div class="col-lg-10 mx-auto">
-            <form asp-action="Create" method="post" class="form" novalidate="">
+            <form asp-action="Create" method="post" class="form" novalidate>
+                @Html.AntiForgeryToken()
                 <div class="card shadow-sm">
                     <!-- Header -->
                     <div class="card-header bg-gradient">
@@ -42,13 +43,22 @@
                         <div class="row">
                             <!-- Left Column -->
                             <div class="col-md-6">
-                                <!-- Nome -->
+                                <!-- Primeiro Nome -->
                                 <div class="form-group mb-3">
-                                    <label asp-for="Name" class="form-label">
-                                        <i class="fas fa-user me-2"></i> Nome Completo
+                                    <label asp-for="FirstName" class="form-label">
+                                        <i class="fas fa-user me-2"></i> Primeiro Nome
                                     </label>
-                                    <input asp-for="Name" class="form-control form-control-lg" placeholder="Ex: João da Silva" />
-                                    <span asp-validation-for="Name" class="text-danger small d-block mt-1"></span>
+                                    <input asp-for="FirstName" class="form-control form-control-lg" placeholder="Ex: João" />
+                                    <span asp-validation-for="FirstName" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Sobrenome -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="LastName" class="form-label">
+                                        <i class="fas fa-user me-2"></i> Sobrenome
+                                    </label>
+                                    <input asp-for="LastName" class="form-control form-control-lg" placeholder="Ex: da Silva" />
+                                    <span asp-validation-for="LastName" class="text-danger small d-block mt-1"></span>
                                 </div>
 
                                 <!-- Documento -->

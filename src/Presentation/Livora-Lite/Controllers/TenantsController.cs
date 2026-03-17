@@ -54,10 +54,14 @@ public class TenantsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateTenantRequestDTO request)
     {
-        // Validação: TenantStatusId deve ser válido
-        if (request.TenantStatusId <= 0)
+        // Validação proativa: verificar se o TenantStatusId existe
+        if (request.TenantStatusId > 0)
         {
-            ModelState.AddModelError(nameof(request.TenantStatusId), "Selecione um status válido para o inquilino.");
+            var statusExists = await _tenantStatusRepository.GetByIdAsync(request.TenantStatusId);
+            if (statusExists == null)
+            {
+                ModelState.AddModelError(nameof(request.TenantStatusId), "O status selecionado é inválido. Por favor, selecione um status válido.");
+            }
         }
 
         if (ModelState.IsValid)
@@ -75,18 +79,19 @@ public class TenantsController : Controller
                     "Create",
                     "Tenant",
                     tenantId.ToString() ?? "Unknown",
-                    $"Criado inquilino: {request.Name}"
+                    $"Criado inquilino: {request.FirstName} {request.LastName}"
                 );
                 
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("FOREIGN KEY") == true)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "O status selecionado é inválido. Por favor, selecione um status válido.");
+                ModelState.AddModelError("", $"Erro ao criar inquilino: {ex.Message}");
                 ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
                 return View(request);
             }
         }
+        
         ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
         return View(request);
     }
@@ -104,7 +109,8 @@ public class TenantsController : Controller
         var updateRequest = new UpdateTenantRequestDTO
         {
             Id = tenant.Id,
-            Name = tenant.Name,
+            FirstName = tenant.FirstName,
+            LastName = tenant.LastName,
             Document = tenant.Document,
             Phone = tenant.Phone,
             Email = tenant.Email,
@@ -125,8 +131,16 @@ public class TenantsController : Controller
             return NotFound();
         }
 
-        // Validação: TenantStatusId deve ser válido
-        if (request.TenantStatusId <= 0)
+        // Validação proativa: verificar se o TenantStatusId existe
+        if (request.TenantStatusId > 0)
+        {
+            var statusExists = await _tenantStatusRepository.GetByIdAsync(request.TenantStatusId);
+            if (statusExists == null)
+            {
+                ModelState.AddModelError(nameof(request.TenantStatusId), "O status selecionado é inválido. Por favor, selecione um status válido.");
+            }
+        }
+        else
         {
             ModelState.AddModelError(nameof(request.TenantStatusId), "Selecione um status válido para o inquilino.");
         }
@@ -146,14 +160,14 @@ public class TenantsController : Controller
                     "Update",
                     "Tenant",
                     request.Id.ToString(),
-                    $"Atualizado inquilino: {request.Name}"
+                    $"Atualizado inquilino: {request.FirstName} {request.LastName}"
                 );
                 
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("FOREIGN KEY") == true)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "O status selecionado é inválido. Por favor, selecione um status válido.");
+                ModelState.AddModelError("", $"Erro ao atualizar inquilino: {ex.Message}");
                 ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
                 return View(request);
             }
@@ -179,7 +193,7 @@ public class TenantsController : Controller
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var tenant = await _tenantService.GetByIdAsync(id);
-        var tenantName = tenant?.Name ?? "Unknown";
+        var tenantName = tenant != null ? $"{tenant.FirstName} {tenant.LastName}" : "Unknown";
         
         await _tenantService.DeleteAsync(id);
         

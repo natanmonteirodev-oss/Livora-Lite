@@ -113,71 +113,133 @@ using (var scope = app.Services.CreateScope())
 
     // Seed property types
     var propertyTypeRepo = scope.ServiceProvider.GetRequiredService<IPropertyTypeRepository>();
-    var existingTypes = await propertyTypeRepo.GetAllAsync();
-    if (!existingTypes.Any())
+    var totalPropertyTypes = await dbContext.PropertyTypes.CountAsync();
+    if (totalPropertyTypes == 0)
     {
-        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Casa" });
-        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Apartamento" });
-        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Kitnet" });
-        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Salão Comercial" });
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Casa", IsActive = true });
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Apartamento", IsActive = true });
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Kitnet", IsActive = true });
+        await propertyTypeRepo.CreateAsync(new PropertyType { Name = "Salão Comercial", IsActive = true });
+    }
+    else
+    {
+        // Ensure all existing types are marked as active
+        var inactivePropertyTypes = dbContext.PropertyTypes.Where(ts => !ts.IsActive).ToList();
+        foreach (var type in inactivePropertyTypes)
+        {
+            type.IsActive = true;
+        }
+        await dbContext.SaveChangesAsync();
     }
 
-    // Seed property statuses
+    // Seed property statuses (with explicit IsActive = true)
     var propertyStatusRepo = scope.ServiceProvider.GetRequiredService<IPropertyStatusRepository>();
-    var existingStatuses = await propertyStatusRepo.GetAllAsync();
-    if (!existingStatuses.Any())
+    var totalPropertyStatuses = await dbContext.PropertyStatuses.CountAsync();
+    if (totalPropertyStatuses == 0)
     {
-        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Disponível" });
-        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Alugado" });
-        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Manutenção" });
-        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Reservado" });
-        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Inativo" });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Disponível", IsActive = true });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Alugado", IsActive = true });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Manutenção", IsActive = true });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Reservado", IsActive = true });
+        await propertyStatusRepo.CreateAsync(new PropertyStatus { Name = "Inativo", IsActive = true });
+    }
+    else
+    {
+        // Ensure all existing statuses are marked as active
+        var inactivePropertyStatuses = dbContext.PropertyStatuses.Where(ts => !ts.IsActive).ToList();
+        foreach (var status in inactivePropertyStatuses)
+        {
+            status.IsActive = true;
+        }
+        await dbContext.SaveChangesAsync();
     }
 
-    // Seed tenant statuses
+    // Seed tenant statuses (with explicit IsActive = true)
     var tenantStatusRepo = scope.ServiceProvider.GetRequiredService<ITenantStatusRepository>();
-    var existingTenantStatuses = await tenantStatusRepo.GetAllAsync();
-    if (!existingTenantStatuses.Any())
+    
+    // Check if ANY tenant statuses exist (active or inactive)
+    var totalTenantStatuses = await dbContext.TenantStatuses.CountAsync();
+    if (totalTenantStatuses == 0)
     {
-        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Ativo" });
-        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Inativo" });
-        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Em Processo de Mudança" });
-        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Desistente" });
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Ativo", IsActive = true });
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Inativo", IsActive = true });
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Em Processo de Mudança", IsActive = true });
+        await tenantStatusRepo.CreateAsync(new TenantStatus { Name = "Desistente", IsActive = true });
+    }
+    else
+    {
+        // Ensure all existing statuses are marked as active
+        var inactiveStatuses = dbContext.TenantStatuses.Where(ts => !ts.IsActive).ToList();
+        foreach (var status in inactiveStatuses)
+        {
+            status.IsActive = true;
+        }
+        await dbContext.SaveChangesAsync();
     }
 
-    // Seed contract statuses
+    // Seed contract statuses (with explicit IsActive = true)
     var contractStatusRepo = scope.ServiceProvider.GetRequiredService<IContractStatusRepository>();
-    var existingContractStatuses = await contractStatusRepo.GetAllAsync();
-    if (!existingContractStatuses.Any())
+    var totalContractStatuses = await dbContext.ContractStatuses.CountAsync();
+    if (totalContractStatuses == 0)
     {
-        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Ativo" });
-        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Encerrado" });
-        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Cancelado" });
-        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Em renovação" });
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Ativo", IsActive = true });
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Encerrado", IsActive = true });
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Cancelado", IsActive = true });
+        await contractStatusRepo.CreateAsync(new ContractStatus { Name = "Em renovação", IsActive = true });
+    }
+    else
+    {
+        // Ensure all existing statuses are marked as active
+        var inactiveContractStatuses = dbContext.ContractStatuses.Where(ts => !ts.IsActive).ToList();
+        foreach (var status in inactiveContractStatuses)
+        {
+            status.IsActive = true;
+        }
+        await dbContext.SaveChangesAsync();
     }
 
-    // Seed billing statuses
+    // Seed billing statuses (with explicit IsActive = true)
     var billingStatusRepo = scope.ServiceProvider.GetRequiredService<IBillingStatusRepository>();
-    var existingBillingStatuses = await billingStatusRepo.GetAllAsync();
-    if (!existingBillingStatuses.Any())
+    var totalBillingStatuses = await dbContext.BillingStatuses.CountAsync();
+    if (totalBillingStatuses == 0)
     {
-        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Pendente" });
-        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Pago" });
-        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Atrasado" });
-        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Cancelado" });
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Pendente", IsActive = true });
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Pago", IsActive = true });
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Atrasado", IsActive = true });
+        await billingStatusRepo.CreateAsync(new BillingStatus { Name = "Cancelado", IsActive = true });
+    }
+    else
+    {
+        // Ensure all existing statuses are marked as active
+        var inactiveBillingStatuses = dbContext.BillingStatuses.Where(ts => !ts.IsActive).ToList();
+        foreach (var status in inactiveBillingStatuses)
+        {
+            status.IsActive = true;
+        }
+        await dbContext.SaveChangesAsync();
     }
 
-    // Seed payment methods
+    // Seed payment methods (with explicit IsActive = true)
     var paymentMethodRepo = scope.ServiceProvider.GetRequiredService<IPaymentMethodRepository>();
-    var existingPaymentMethods = await paymentMethodRepo.GetAllAsync();
-    if (!existingPaymentMethods.Any())
+    var totalPaymentMethods = await dbContext.PaymentMethods.CountAsync();
+    if (totalPaymentMethods == 0)
     {
-        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Dinheiro" });
-        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "PIX" });
-        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Transferência Bancária" });
-        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cartão de Crédito" });
-        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cartão de Débito" });
-        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cheque" });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Dinheiro", IsActive = true });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "PIX", IsActive = true });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Transferência Bancária", IsActive = true });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cartão de Crédito", IsActive = true });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cartão de Débito", IsActive = true });
+        await paymentMethodRepo.CreateAsync(new PaymentMethod { Name = "Cheque", IsActive = true });
+    }
+    else
+    {
+        // Ensure all existing payment methods are marked as active
+        var inactivePaymentMethods = dbContext.PaymentMethods.Where(ts => !ts.IsActive).ToList();
+        foreach (var method in inactivePaymentMethods)
+        {
+            method.IsActive = true;
+        }
+        await dbContext.SaveChangesAsync();
     }
 }
 

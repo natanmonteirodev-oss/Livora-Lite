@@ -25,7 +25,8 @@
 
     <div class="row">
         <div class="col-lg-10 mx-auto">
-            <form asp-action="Create" method="post" class="form" novalidate="">
+            <form asp-action="Create" method="post" class="form" novalidate>
+                @Html.AntiForgeryToken()
                 <div class="card shadow-sm">
                     <div class="card-header bg-gradient">
                         <h5 class="mb-0"><i class="fas fa-file-contract me-2"></i> Dados do Contrato</h5>

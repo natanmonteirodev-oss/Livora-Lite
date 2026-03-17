@@ -148,7 +148,8 @@ namespace Livora_Lite.Application.Services
                     Tenant = billing.Contract.Tenant != null ? new TenantDTO
                     {
                         Id = billing.Contract.Tenant.Id,
-                        Name = billing.Contract.Tenant.Name
+                        FirstName = billing.Contract.Tenant.FirstName,
+                        LastName = billing.Contract.Tenant.LastName
                     } : null
                 } : null,
                 BillingStatus = billing.BillingStatus != null ? new BillingStatusDTO

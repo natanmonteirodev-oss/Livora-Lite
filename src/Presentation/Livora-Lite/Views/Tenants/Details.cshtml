@@ -21,7 +21,7 @@
 
     <!-- Header -->
     <div class="mb-4">
-        <h1 class="section-title">@Model.Name</h1>
+        <h1 class="section-title">@Model.FirstName @Model.LastName</h1>
         <p class="text-muted">Visualize os detalhes completos do inquilino</p>
     </div>
 
@@ -31,13 +31,14 @@
             <div class="card shadow-sm mb-3">
                 <div class="card-header bg-gradient">
                     <h5 class="mb-0">
-                        <i class="fas fa-user me-2"></i> Informações Pessoais
+                        <i class="fas fa-user me-2"></i> Informaï¿½ï¿½es Pessoais
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Nome:</strong> @Model.Name</p>
+                            <p><strong>Primeiro Nome:</strong> @Model.FirstName</p>
+                            <p><strong>Sobrenome:</strong> @Model.LastName</p>
                             <p><strong>CPF/CNPJ:</strong> @Model.Document</p>
                             <p><strong>Telefone:</strong> @Model.Phone</p>
                         </div>
@@ -47,7 +48,7 @@
                         </div>
                     </div>
                     <hr />
-                    <p><strong>Endereço Atual:</strong></p>
+                    <p><strong>Endereï¿½o Atual:</strong></p>
                     <p>@Model.CurrentAddress</p>
                 </div>
             </div>
@@ -62,7 +63,7 @@
                         <i class="fas fa-trash me-2"></i> Excluir
                     </a>
                     <a asp-action="Index" class="btn btn-secondary">
-                        <i class="fas fa-list me-2"></i> Voltar à Lista
+                        <i class="fas fa-list me-2"></i> Voltar ï¿½ Lista
                     </a>
                 </div>
             </div>
