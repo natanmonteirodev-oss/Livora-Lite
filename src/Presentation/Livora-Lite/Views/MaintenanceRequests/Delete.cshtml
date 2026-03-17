@@ -21,7 +21,14 @@
             Imóvel
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Property.Name)
+            @if (Model?.Property != null)
+            {
+                @Html.DisplayFor(model => model.Property!.Name)
+            }
+            else
+            {
+                <span>N/A</span>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)

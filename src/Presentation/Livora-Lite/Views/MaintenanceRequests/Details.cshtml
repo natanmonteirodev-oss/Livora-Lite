@@ -20,13 +20,20 @@
             Imóvel
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Property.Name)
+            @if (Model?.Property != null)
+            {
+                @Html.DisplayFor(model => model.Property!.Name)
+            }
+            else
+            {
+                <span>N/A</span>
+            }
         </dd>
         <dt class="col-sm-2">
             Endereço
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Property?.Address != null)
+            @if (Model?.Property?.Address != null)
             {
                 @($"{Model.Property.Address.Street}, {Model.Property.Address.Number} - {Model.Property.Address.City}")
             }
@@ -39,9 +46,9 @@
             Contrato
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Contract != null)
+            @if (Model?.Contract != null)
             {
-                @($"Contrato #{Model.Contract.Id} - {Model.Contract.Tenant?.Name}")
+                @($"Contrato #{Model.Contract!.Id} - {Model.Contract.Tenant?.Name}")
             }
             else
             {
@@ -81,6 +88,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a> |
+    <a asp-action="Edit" asp-route-id="@Model!.Id" class="btn btn-warning">Editar</a> |
     <a asp-action="Index" class="btn btn-secondary">Voltar para Lista</a>
 </div>

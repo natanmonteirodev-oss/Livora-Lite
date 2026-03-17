@@ -53,7 +53,7 @@
         }
         
         .custom-navbar .custom-navbar-nav li a {
-            color: rgba(255, 255, 255, 0.8) !important;
+            color: #ffffff !important;
             font-weight: 500;
             transition: color 0.3s ease;
         }
@@ -225,7 +225,7 @@
                                     <i class="fas fa-home"></i> Inquilinos
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Tenants" asp-action="Index">Listar Inquilinos</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Tenants" asp-action="Index"><i class="fas fa-list"></i> Listar Inquilinos</a></li>
                                 </ul>
                             </li>
                         }
@@ -238,9 +238,9 @@
                                     <i class="fas fa-building"></i> Imóveis
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Properties" asp-action="Index">Listar Imóveis</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Contracts" asp-action="Index">Contratos</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Billings" asp-action="Index">Cobranças</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Properties" asp-action="Index"><i class="fas fa-key"></i> Listar Imóveis</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Contracts" asp-action="Index"><i class="fas fa-file-contract"></i> Contratos</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Billings" asp-action="Index"><i class="fas fa-receipt"></i> Cobranças</a></li>
                                 </ul>
                             </li>
                         }
@@ -253,9 +253,9 @@
                                     <i class="fas fa-tools"></i> Administração
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="MaintenanceRequests" asp-action="Index">Manutenção</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Usuários</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="AuditLogs" asp-action="Index">Auditoria</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="MaintenanceRequests" asp-action="Index"><i class="fas fa-wrench"></i> Manutenção</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index"><i class="fas fa-users"></i> Usuários</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="AuditLogs" asp-action="Index"><i class="fas fa-history"></i> Auditoria</a></li>
                                 </ul>
                             </li>
                         }
@@ -276,8 +276,8 @@
                                 <i class="fas fa-user-circle"></i> @User.Identity.Name
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#">Minha Conta</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout">Sair</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-sliders-h"></i> Minha Conta</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                             </ul>
                         </li>
                     }

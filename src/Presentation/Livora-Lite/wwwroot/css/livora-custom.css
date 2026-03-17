@@ -12,10 +12,64 @@
 
 .dropdown-menu {
     background-color: var(--livora-primary) !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-menu .dropdown-item {
+    color: #ffffff !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu .dropdown-item i {
+    margin-right: 8px;
+    width: 18px;
+    text-align: center;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #ffffff !important;
+}
+
+.dropdown-menu .dropdown-item.active,
+.dropdown-menu .dropdown-item:active {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: #ffffff !important;
+}
+
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
+}
+
+.navbar .navbar-nav .nav-link.dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+.custom-navbar-nav li a {
+    color: #ffffff !important;
 }
 
 .custom-navbar-nav li a:hover {
-    background-color: var(--livora-primary) !important;
+    color: #ffffff !important;
+}
+
+.navbar .navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar .navbar-nav .nav-link i {
+    margin-right: 6px;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: #ffffff !important;
+}
+
+.navbar .navbar-nav .nav-link.active {
+    color: #ffffff !important;
 }
 
 /* Form Styles */
@@ -402,4 +456,159 @@ a.btn,
 .form-control,
 .form-select {
     transition: all 0.3s ease;
+}
+
+/* Dashboard Card Styles */
+.livora-dashboard-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-left: 5px solid #ccc;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.livora-dashboard-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-5px);
+}
+
+/* Dashboard Card Variants */
+.livora-dashboard-card.primary-accent {
+    border-left-color: var(--livora-primary);
+    background: linear-gradient(135deg, #f8fbfd 0%, #ffffff 100%);
+}
+
+.livora-dashboard-card.secondary-accent {
+    border-left-color: var(--livora-secondary);
+    background: linear-gradient(135deg, #f8fcfd 0%, #ffffff 100%);
+}
+
+.livora-dashboard-card.dark-accent {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+}
+
+.livora-card-title {
+    color: var(--livora-primary);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+.livora-card-value {
+    color: var(--livora-primary);
+    font-weight: 700;
+    font-size: 28px;
+    margin: 10px 0;
+}
+
+.livora-card-subtitle {
+    color: #999999;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Form Card Styles */
+.livora-form-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.livora-form-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+/* Form Header Styles */
+.livora-form-header {
+    margin-bottom: 30px;
+}
+
+.livora-form-title {
+    color: var(--livora-primary);
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.livora-form-subtitle {
+    color: #999999;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Form Container Styles */
+.livora-form-container {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    transition: all 0.3s ease;
+}
+
+/* Alert Styles for Dashboard */
+.alert-livora-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #856404;
+    border-left: 4px solid #ffc107;
+    border-radius: 6px;
+    padding: 15px 20px;
+}
+
+.alert-livora-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+    border-radius: 6px;
+    padding: 15px 20px;
+}
+
+/* Tab Styles */
+.nav-tabs {
+    border-bottom: 2px solid #f0f0f0;
+    gap: 5px;
+}
+
+.nav-tabs .nav-link {
+    color: #999999;
+    font-weight: 600;
+    border: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--livora-primary);
+    background-color: transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--livora-primary);
+    background-color: transparent;
+    border-bottom-color: var(--livora-primary);
+}
+
+/* Additional color variants for dashboard value text */
+.livora-dashboard-card.primary-accent .livora-card-value {
+    color: var(--livora-primary);
+}
+
+.livora-dashboard-card.secondary-accent .livora-card-value {
+    color: var(--livora-secondary);
+}
+
+.livora-dashboard-card.dark-accent .livora-card-value {
+    color: #dc3545;
 }
