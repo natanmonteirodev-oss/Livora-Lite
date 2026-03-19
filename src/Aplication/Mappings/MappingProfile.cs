@@ -66,6 +66,8 @@ namespace Livora_Lite.Application.Mappings
 
             // User Mappings
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<CreateUserRequestDTO, User>();
+            CreateMap<UpdateUserRequestDTO, User>();
         }
     }
 }

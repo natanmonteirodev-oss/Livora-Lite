@@ -161,8 +161,8 @@ namespace Livora_Lite.Presentation.Controllers
             return View(billing);
         }
 
-        // POST: Billings/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Billings/DeleteConfirmed/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

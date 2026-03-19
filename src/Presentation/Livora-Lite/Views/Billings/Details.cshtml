@@ -1,61 +1,116 @@
 @model Livora_Lite.Application.DTO.BillingDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Detalhes da Cobrança";
+    ViewData["Title"] = "Detalhes da Cobrança - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Cobranças", Url.Action("Index", "Billings")),
+        new BreadcrumbHelper.BreadcrumbItem("Detalhes", null, true)
+    );
 }
 
-<h1>Detalhes da Cobrança</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Cobranças</a></li>
+            <li class="breadcrumb-item active">Detalhes</li>
+        </ol>
+    </nav>
 
-<div>
-    <h4>Cobrança</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Contrato</dt>
-        <dd class="col-sm-10">@Model.Contract?.Property?.Name - @(Model.Contract?.Tenant != null ? $"{Model.Contract.Tenant.FirstName} {Model.Contract.Tenant.LastName}" : "N/A")</dd>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Cobrança - @Model.Period</h1>
+        <p class="text-muted">Visualize os detalhes completos da cobrança</p>
+    </div>
 
-        <dt class="col-sm-2">Período</dt>
-        <dd class="col-sm-10">@Model.Period</dd>
+    <!-- Details Cards -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Billing Information Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-invoice me-2"></i> Informações da Cobrança
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Contrato:</strong> @Model.Contract?.Property?.Name - @(Model.Contract?.Tenant != null ? $"{Model.Contract.Tenant.FirstName} {Model.Contract.Tenant.LastName}" : "N/A")</p>
+                            <p><strong>Período:</strong> @Model.Period</p>
+                            <p><strong>Data de Vencimento:</strong> @Model.DueDate.ToString("dd/MM/yyyy")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Valor:</strong> <span class="text-primary fw-bold">@Model.Amount.ToString("C")</span></p>
+                            <p><strong>Status:</strong> <span class="badge bg-info">@Model.BillingStatus?.Name</span></p>
+                            <p><strong>Data de Criação:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <dt class="col-sm-2">Valor</dt>
-        <dd class="col-sm-10">@Model.Amount.ToString("C")</dd>
+            <!-- Payments Card -->
+            @if (Model.Payments != null && Model.Payments.Any())
+            {
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-gradient">
+                        <h5 class="mb-0">
+                            <i class="fas fa-credit-card me-2"></i> Pagamentos Registrados
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th><i class="fas fa-calendar me-2"></i>Data do Pagamento</th>
+                                        <th><i class="fas fa-dollar-sign me-2"></i>Valor Pago</th>
+                                        <th><i class="fas fa-credit-card me-2"></i>Método de Pagamento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var payment in Model.Payments)
+                                    {
+                                        <tr>
+                                            <td>@payment.PaymentDate.ToString("dd/MM/yyyy")</td>
+                                            <td><strong>@payment.AmountPaid.ToString("C")</strong></td>
+                                            <td>@payment.PaymentMethod?.Name</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
 
-        <dt class="col-sm-2">Data de Vencimento</dt>
-        <dd class="col-sm-10">@Model.DueDate.ToString("dd/MM/yyyy")</dd>
+            <!-- Action Buttons -->
+            <div class="card card-footer bg-light">
+                <div class="d-flex gap-2">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i> Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i> Excluir
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-list me-2"></i> Voltar à Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <dt class="col-sm-2">Status</dt>
-        <dd class="col-sm-10">@Model.BillingStatus?.Name</dd>
-
-        <dt class="col-sm-2">Data de Criação</dt>
-        <dd class="col-sm-10">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
-    </dl>
-
-    @if (Model.Payments != null && Model.Payments.Any())
-    {
-        <h4>Pagamentos</h4>
-        <hr />
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Data do Pagamento</th>
-                    <th>Valor Pago</th>
-                    <th>Método de Pagamento</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var payment in Model.Payments)
-                {
-                    <tr>
-                        <td>@payment.PaymentDate.ToString("dd/MM/yyyy")</td>
-                        <td>@payment.AmountPaid.ToString("C")</td>
-                        <td>@payment.PaymentMethod?.Name</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
     }
-</div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-</div>
+    .card-header h5 {
+        color: #ffffff;
+    }
+</style>

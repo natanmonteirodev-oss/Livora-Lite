@@ -67,6 +67,38 @@
         </div>
     </div>
 
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-doughnut me-2"></i>Status dos Contratos</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="contractStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-pie me-2"></i>Distribuição de Propriedades</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="propertyDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Charts -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Resumo Financeiro</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="financialSummaryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Tabs for more details -->
     <div class="row">
         <div class="col-12">
@@ -246,3 +278,114 @@
         background-color: transparent;
     }
 </style>
+
+@section Scripts {
+<script>
+    // Contract Status Chart
+    const contractStatusCtx = document.getElementById('contractStatusChart').getContext('2d');
+    new Chart(contractStatusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ativos', 'Expirados'],
+            datasets: [{
+                data: [@Model.TotalContracts_Active, @Model.TotalContracts_Expired],
+                backgroundColor: [
+                    '#00afb9',
+                    '#f07167'
+                ],
+                borderColor: [
+                    '#00afb9',
+                    '#f07167'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Property Distribution Chart
+    const propertyDistCtx = document.getElementById('propertyDistributionChart').getContext('2d');
+    new Chart(propertyDistCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Com Contrato', 'Sem Contrato', 'Manutenção'],
+            datasets: [{
+                data: [
+                    @Model.TotalContracts_Active,
+                    @Model.TotalProperties - @Model.TotalContracts_Active - 5,
+                    5
+                ],
+                backgroundColor: [
+                    '#0081a7',
+                    '#fdfcdc',
+                    '#fed9b7'
+                ],
+                borderColor: [
+                    '#0081a7',
+                    '#fdfcdc',
+                    '#fed9b7'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Financial Summary Chart
+    const financialCtx = document.getElementById('financialSummaryChart').getContext('2d');
+    new Chart(financialCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Receita Esperada', 'Valores Pendentes'],
+            datasets: [{
+                label: 'R$',
+                data: [@Model.TotalRevenueExpected, @Model.PendingPaymentsAmount],
+                backgroundColor: [
+                    '#00afb9',
+                    '#f07167'
+                ],
+                borderColor: [
+                    '#00afb9',
+                    '#f07167'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+}

@@ -77,21 +77,43 @@ public class ContractsController : Controller
     {
         if (ModelState.IsValid)
         {
-            var contractId = await _contractService.CreateAsync(request);
-            
-            // Log audit
-            var userId = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
-            var userName = User.Identity?.Name ?? "Unknown";
-            await _auditService.LogActionAsync(
-                userId,
-                userName,
-                "Create",
-                "Contract",
-                contractId.ToString() ?? "Unknown",
-                $"Criado contrato para propriedade ID: {request.PropertyId}, inquilino ID: {request.TenantId}"
-            );
-            
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var contractId = await _contractService.CreateAsync(request);
+                
+                // Log audit
+                var userId = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
+                var userName = User.Identity?.Name ?? "Unknown";
+                await _auditService.LogActionAsync(
+                    userId,
+                    userName,
+                    "Create",
+                    "Contract",
+                    contractId.ToString() ?? "Unknown",
+                    $"Criado contrato para propriedade ID: {request.PropertyId}, inquilino ID: {request.TenantId}"
+                );
+                
+                TempData["Success"] = "Contrato criado com sucesso!";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["Error"] = ex.Message;
+                await LoadViewBagAsync();
+                return View(request);
+            }
+            catch (ArgumentException ex)
+            {
+                TempData["Error"] = ex.Message;
+                await LoadViewBagAsync();
+                return View(request);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Erro ao criar contrato. Por favor, tente novamente.";
+                await LoadViewBagAsync();
+                return View(request);
+            }
         }
         await LoadViewBagAsync();
         return View(request);
@@ -168,8 +190,8 @@ public class ContractsController : Controller
         return View(contract);
     }
 
-    // POST: Contracts/Delete/5
-    [HttpPost, ActionName("Delete")]
+    // POST: Contracts/DeleteConfirmed/5
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {

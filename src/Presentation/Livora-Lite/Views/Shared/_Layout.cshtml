@@ -256,7 +256,19 @@
                                     <li><a class="dropdown-item" asp-area="" asp-controller="MaintenanceRequests" asp-action="Index"><i class="fas fa-wrench"></i> Manutenção</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index"><i class="fas fa-users"></i> Usuários</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="AuditLogs" asp-action="Index"><i class="fas fa-history"></i> Auditoria</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Reports" asp-action="Index"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
                                 </ul>
+                            </li>
+                        }
+
+                        @* Menu Relatórios para Owner *@
+                        @if (User.IsInRole("Owner"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Reports" asp-action="Index">
+                                    <i class="fas fa-chart-bar"></i> Relatórios
+                                </a>
                             </li>
                         }
 
@@ -336,6 +348,36 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Chart.js - Gráficos (CDN with Fallback) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="~/js/chart-loader.js"></script>
+    <script>
+        // Wait for Chart.js to load from CDN
+        (function() {
+            // Try to use Chart from CDN if available
+            if (typeof Chart === 'undefined' && typeof window !== 'undefined') {
+                // If Chart is exported as a module or not globally available from CDN,
+                // load fallback from local file
+                var script = document.createElement('script');
+                script.src = '/js/chart.min.js';
+                script.onload = function() {
+                    // Fire custom event when Chart is ready
+                    if (typeof window.Chart !== 'undefined') {
+                        window.chartReady = true;
+                        var evt = new CustomEvent('chartjsReady');
+                        document.dispatchEvent(evt);
+                    }
+                };
+                document.head.appendChild(script);
+            } else if (typeof window !== 'undefined' && typeof Chart !== 'undefined') {
+                // CDN loaded successfully
+                window.chartReady = true;
+                var evt = new CustomEvent('chartjsReady');
+                document.dispatchEvent(evt);
+            }
+        })();
+    </script>
     
     <!-- Bootstrap Bundle JS -->
     <script src="~/js/bootstrap.bundle.min.js"></script>

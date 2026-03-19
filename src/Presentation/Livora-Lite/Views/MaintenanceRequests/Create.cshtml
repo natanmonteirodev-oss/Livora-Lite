@@ -1,18 +1,143 @@
 @model Livora_Lite.Application.DTO.CreateMaintenanceRequestDTO
+@using Livora_Lite.Helpers
+
 @{
-    ViewData["Title"] = "Nova Manutenção";
+    ViewData["Title"] = "Nova Manutenção - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Solicitações de Manutenção", Url.Action("Index", "MaintenanceRequests")),
+        new BreadcrumbHelper.BreadcrumbItem("Nova Solicitação", null, true)
+    );
 }
 
 <div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Solicitações de Manutenção</a></li>
+            <li class="breadcrumb-item active">Nova Solicitação</li>
+        </ol>
+    </nav>
+
+    <!-- Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Sucesso!</strong> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <strong>Erro!</strong> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <h1 class="section-title mb-4">Nova Solicitação de Manutenção</h1>
-    <div class="row"><div class="col-lg-6"><form asp-action="Create" method="post" class="card shadow-sm">@Html.AntiForgeryToken()<div class="card-header bg-gradient"><h5>Detalhes</h5></div><div class="card-body">
-        <div class="mb-3"><label asp-for="Title" class="form-label">Título</label><input asp-for="Title" class="form-control form-control-lg" placeholder="Descreva brevemente" /></div>
-        <div class="mb-3"><label asp-for="PropertyId" class="form-label">Propriedade</label><select asp-for="PropertyId" class="form-select form-select-lg" asp-items="@ViewBag.PropertyId"></select></div>
-        <div class="mb-3"><label asp-for="Description" class="form-label">Descrição</label><textarea asp-for="Description" class="form-control" rows="3"></textarea></div>
-        <div class="mb-3"><label asp-for="Priority" class="form-label">Prioridade</label><select asp-for="Priority" class="form-select form-select-lg" asp-items="@ViewBag.Priority"></select></div>
-        <div class="mb-3"><label asp-for="Status" class="form-label">Status</label><select asp-for="Status" class="form-select form-select-lg" asp-items="@ViewBag.Status"></select></div>
-    </div><div class="card-footer bg-light d-flex gap-2 justify-content-end"><a asp-action="Index" class="btn btn-secondary">Cancelar</a><button type="submit" class="btn btn-primary">Criar</button></div></form></div></div>
+    <div class="row">
+        <div class="col-lg-6">
+            <form asp-action="Create" method="post" class="card shadow-sm">
+                @Html.AntiForgeryToken()
+                <div class="card-header bg-gradient">
+                    <h5>Detalhes</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Title Field (Auto-generated, readonly) -->
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Título</label>
+                        <input asp-for="Title" class="form-control form-control-lg" id="titleInput" readonly />
+                        <small class="text-muted d-block mt-1">Preenchido automaticamente com o nome da propriedade e data</small>
+                    </div>
+
+                    <!-- Property Selection -->
+                    <div class="mb-3">
+                        <label asp-for="PropertyId" class="form-label">Propriedade</label>
+                        <select asp-for="PropertyId" class="form-select form-select-lg" id="propertySelect" asp-items="@(new SelectList(ViewBag.PropertyId ?? new List<object>(), "Value", "Text"))">
+                            <option value="">-- Selecione uma propriedade --</option>
+                        </select>
+                        <span asp-validation-for="PropertyId" class="text-danger small d-block mt-1"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Descrição</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Descreva o problema ou solicitação"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small d-block mt-1"></span>
+                    </div>
+
+                    <!-- Priority -->
+                    <div class="mb-3">
+                        <label asp-for="Priority" class="form-label">Prioridade</label>
+                        <select asp-for="Priority" class="form-select form-select-lg" asp-items="@ViewBag.Priority">
+                            <option value="">-- Selecione a prioridade --</option>
+                        </select>
+                        <span asp-validation-for="Priority" class="text-danger small d-block mt-1"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label asp-for="Status" class="form-label">Status</label>
+                        <select asp-for="Status" class="form-select form-select-lg" asp-items="@ViewBag.Status">
+                            <option value="">-- Selecione o status --</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger small d-block mt-1"></span>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light d-flex gap-2 justify-content-end">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i> Criar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('propertySelect').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var propertyName = selectedOption.text;
+            
+            var today = new Date();
+            var day = String(today.getDate()).padStart(2, '0');
+            var month = String(today.getMonth() + 1).padStart(2, '0');
+            var year = today.getFullYear();
+            var dateString = day + month + year;
+            
+            var titleInput = document.getElementById('titleInput');
+            if (propertyName && propertyName !== '-- Selecione uma propriedade --') {
+                titleInput.value = propertyName + ' - ' + dateString;
+            } else {
+                titleInput.value = '';
+            }
+        });
+
+        // Initialize title on page load if property is already selected
+        window.addEventListener('load', function() {
+            var propertySelect = document.getElementById('propertySelect');
+            if (propertySelect.value) {
+                propertySelect.dispatchEvent(new Event('change'));
+            } else {
+                // Set current date in ddMMyyyy format
+                var today = new Date();
+                var day = String(today.getDate()).padStart(2, '0');
+                var month = String(today.getMonth() + 1).padStart(2, '0');
+                var year = today.getFullYear();
+                var dateString = day + month + year;
+                document.getElementById('titleInput').value = dateString;
+            }
+        });
+    </script>
+}
 

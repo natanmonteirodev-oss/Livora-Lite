@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj": {}
+    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Aplication\\Application.csproj": {
+    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Aplication\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Aplication\\Application.csproj",
-        "packagesPath": "C:\\Users\\mnsnamon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Aplication\\obj\\",
+        "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
+        "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\mnsnamon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\natan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,15 +26,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://brdevops.flex.com/Projects/_packaging/M2P_Core/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj"
+              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj"
               }
             }
           }
@@ -49,7 +48,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net10.0": {
@@ -92,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -370,20 +369,20 @@
         }
       }
     },
-    "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj": {
+    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\mnsnamon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\mnsnamon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\natan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -392,8 +391,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://brdevops.flex.com/Projects/_packaging/M2P_Core/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
@@ -411,7 +409,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net10.0": {
@@ -432,7 +430,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -710,20 +708,20 @@
         }
       }
     },
-    "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj": {
+    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\mnsnamon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\mnsnamon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\natan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -732,15 +730,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://brdevops.flex.com/Projects/_packaging/M2P_Core/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj"
+              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj"
               }
             }
           }
@@ -755,7 +752,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net10.0": {
@@ -792,7 +789,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1070,20 +1067,20 @@
         }
       }
     },
-    "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj": {
+    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj",
+        "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj",
         "projectName": "Livora-Lite",
-        "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj",
-        "packagesPath": "C:\\Users\\mnsnamon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Presentation\\Livora-Lite\\obj\\",
+        "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite\\Livora-Lite.csproj",
+        "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\mnsnamon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\natan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -1092,21 +1089,20 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://brdevops.flex.com/Projects/_packaging/M2P_Core/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Aplication\\Application.csproj": {
-                "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Aplication\\Application.csproj"
+              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
+                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj"
               },
-              "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Domain\\Domain.csproj"
+              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\mnsnamon\\source\\repos-treinamentos\\Projeto\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj"
+              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }
@@ -1121,7 +1117,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net10.0": {
@@ -1161,7 +1157,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

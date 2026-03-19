@@ -1,100 +1,103 @@
 @model Livora_Lite.Application.DTO.MaintenanceRequestDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Detalhes da Solicitação de Manutenção";
+    ViewData["Title"] = "Detalhes da Solicitação de Manutenção - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Solicitações de Manutenção", Url.Action("Index", "MaintenanceRequests")),
+        new BreadcrumbHelper.BreadcrumbItem("Detalhes", null, true)
+    );
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Solicitações de Manutenção</a></li>
+            <li class="breadcrumb-item active">Detalhes</li>
+        </ol>
+    </nav>
 
-<div>
-    <h4>Solicitação de Manutenção</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            Imóvel
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model?.Property != null)
-            {
-                @Html.DisplayFor(model => model.Property!.Name)
-            }
-            else
-            {
-                <span>N/A</span>
-            }
-        </dd>
-        <dt class="col-sm-2">
-            Endereço
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model?.Property?.Address != null)
-            {
-                @($"{Model.Property.Address.Street}, {Model.Property.Address.Number} - {Model.Property.Address.City}")
-            }
-            else
-            {
-                <span class="text-muted">N/A</span>
-            }
-        </dd>
-        <dt class="col-sm-2">
-            Contrato
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model?.Contract != null)
-            {
-                @if (Model.Contract.Tenant != null)
-                {
-                    <text>Contrato #@Model.Contract!.Id - @Model.Contract.Tenant.FirstName @Model.Contract.Tenant.LastName</text>
-                }
-                else
-                {
-                    <text>Contrato #@Model.Contract!.Id - N/A</text>
-                }
-            }
-            else
-            {
-                <span class="text-muted">N/A</span>
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RequestDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Priority)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-    </dl>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">@Model.Title</h1>
+        <p class="text-muted">Visualize os detalhes completos da solicitação de manutenção</p>
+    </div>
+
+    <!-- Details Cards -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Maintenance Request Information Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0">
+                        <i class="fas fa-wrench me-2"></i> Informações da Solicitação
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Imóvel:</strong> @(Model?.Property?.Name ?? "N/A")</p>
+                            <p><strong>Endereço:</strong> 
+                                @if (Model?.Property?.Address != null)
+                                {
+                                    <text>@Model.Property.Address.Street, @Model.Property.Address.Number - @Model.Property.Address.City</text>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">N/A</span>
+                                }
+                            </p>
+                            <p><strong>Contrato:</strong> 
+                                @if (Model?.Contract != null)
+                                {
+                                    <text>Contrato #@Model.Contract.Id - @(Model.Contract.Tenant != null ? $"{Model.Contract.Tenant.FirstName} {Model.Contract.Tenant.LastName}" : "N/A")</text>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">N/A</span>
+                                }
+                            </p>
+                            <p><strong>Data da Solicitação:</strong> @Model.RequestDate.ToString("dd/MM/yyyy")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Prioridade:</strong> <span class="badge bg-warning">@Model.Priority</span></p>
+                            <p><strong>Status:</strong> <span class="badge bg-info">@Model.Status</span></p>
+                            <p><strong>Data de Criação:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                    <hr />
+                    <h6><i class="fas fa-pencil-alt me-2"></i>Descrição</h6>
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="card card-footer bg-light">
+                <div class="d-flex gap-2">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i> Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i> Excluir
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-list me-2"></i> Voltar à Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model!.Id" class="btn btn-warning">Editar</a> |
-    <a asp-action="Index" class="btn btn-secondary">Voltar para Lista</a>
-</div>
+
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+</style>

@@ -1,0 +1,351 @@
+@model Livora_Lite.Application.DTO.MaintenanceReportDTO
+@using Livora_Lite.Helpers
+@{
+    ViewData["Title"] = "Relatório de Manutenção";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Relatórios", "Index"),
+        new BreadcrumbHelper.BreadcrumbItem("Manutenção", null, true)
+    );
+}
+
+<div class="container-fluid mt-4">
+    <div class="livora-form-header mb-4">
+        <h1 class="livora-form-title mb-0"><i class="fas fa-tools me-2"></i>Relatório de Manutenção</h1>
+        <p class="livora-form-subtitle">Análise de solicitações, custos e histórico de manutenção</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Total de Solicitações</h6>
+                <p class="livora-card-value">@Model.TotalRequests</p>
+                <p class="livora-card-subtitle">Desde o início</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card secondary-accent">
+                <h6 class="livora-card-title">Pendentes</h6>
+                <p class="livora-card-value" style="color: #ffc107;">@Model.PendingRequests</p>
+                <p class="livora-card-subtitle">Aguardando atendimento</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card dark-accent">
+                <h6 class="livora-card-title">Em Progresso</h6>
+                <p class="livora-card-value" style="color: #00afb9;">@Model.InProgressRequests</p>
+                <p class="livora-card-subtitle">Sendo atendidas</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Concluídas</h6>
+                <p class="livora-card-value" style="color: var(--livora-primary-green);">@Model.CompletedRequests</p>
+                <p class="livora-card-subtitle">Finalizadas</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Financial Summary -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: var(--livora-secondary-blue);" class="mb-0">Custo Total</h5>
+                <h3 class="livora-card-value mt-3" style="color: #f07167;">R$ @Model.TotalCost.ToString("N2")</h3>
+                <p class="livora-card-subtitle">Investimento total em manutenção</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: var(--livora-secondary-blue);" class="mb-0">Custo Médio por Solicitação</h5>
+                <h3 class="livora-card-value mt-3" style="color: #0081a7;">R$ @Model.AverageCostPerRequest.ToString("N2")</h3>
+                <p class="livora-card-subtitle">Custo médio</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-pie me-2"></i>Por Prioridade</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-doughnut me-2"></i>Por Status</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cost by Property Chart -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Custo e Quantidade por Propriedade</h5>
+                <div style="position: relative; height: 350px;">
+                    <canvas id="propertyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Priority Distribution Table -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4">Distribuição por Prioridade</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Prioridade</th>
+                                <th class="text-center">Quantidade</th>
+                                <th class="text-center">Percentual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var priority in Model.ByPriority)
+                            {
+                                <tr>
+                                    <td><strong>@priority.Priority</strong></td>
+                                    <td class="text-center">@priority.Count</td>
+                                    <td class="text-center">
+                                        <span class="badge" style="background-color: #0081a7; padding: 0.5em 1em;">
+                                            @priority.Percentage.ToString("F1")%
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cost by Property Table -->
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4">Custo por Propriedade</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Propriedade</th>
+                                <th class="text-center">Solicitações</th>
+                                <th class="text-end">Custo Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var property in Model.ByProperty)
+                            {
+                                <tr>
+                                    <td><strong>@property.PropertyName</strong></td>
+                                    <td class="text-center">@property.RequestCount</td>
+                                    <td class="text-end" style="color: #f07167; font-weight: 700;">R$ @property.TotalCost.ToString("N2")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Requests Table -->
+    @if (Model.RecentRequests.Any())
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="livora-form-card">
+                    <h5 class="mb-4"><i class="fas fa-history me-2"></i>Solicitações Recentes</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Solicitação</th>
+                                    <th>Propriedade</th>
+                                    <th>Data</th>
+                                    <th class="text-center">Prioridade</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var request in Model.RecentRequests.OrderByDescending(r => r.RequestedDate).Take(10))
+                                {
+                                    <tr>
+                                        <td><strong>@request.Title</strong></td>
+                                        <td>@request.PropertyName</td>
+                                        <td>@request.RequestedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="text-center">
+                                            @{
+                                                var priorityBg = request.Priority == "Alta" ? "#dc3545" 
+                                                    : request.Priority == "Média" ? "#ffc107" 
+                                                    : "#17a2b8";
+                                            }
+                                            <span style="background-color: @priorityBg; padding: 0.35em 0.65em; border-radius: 0.25rem; color: @(request.Priority == "Média" ? "#333" : "white"); font-size: 0.875rem;">
+                                                @request.Priority
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            @{
+                                                var statusBg = request.Status == "Pending" ? "#ffc107" 
+                                                    : request.Status == "In Progress" ? "#00afb9" 
+                                                    : "#00cc00";
+                                                var statusText = request.Status == "Pending" ? "Pendente"
+                                                    : request.Status == "In Progress" ? "Em Progresso"
+                                                    : "Concluído";
+                                            }
+                                            <span style="background-color: @statusBg; padding: 0.35em 0.65em; border-radius: 0.25rem; color: @(request.Status == "Pending" ? "#333" : "white"); font-size: 0.875rem;">
+                                                @statusText
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    // Priority Chart
+    const priorityCtx = document.getElementById('priorityChart').getContext('2d');
+    const priorityLabels = [@string.Join(", ", Model.ByPriority.Select(p => "'" + p.Priority.Replace("'", "\\'") + "'"))];
+    const priorityCounts = [@string.Join(", ", Model.ByPriority.Select(p => p.Count))];
+    
+    new Chart(priorityCtx, {
+        type: 'pie',
+        data: {
+            labels: priorityLabels.length > 0 ? priorityLabels : ['Sem dados'],
+            datasets: [{
+                data: priorityCounts.length > 0 ? priorityCounts : [0],
+                backgroundColor: [
+                    '#dc3545',
+                    '#ffc107',
+                    '#17a2b8'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Status Chart
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Pendentes', 'Em Progresso', 'Concluídas'],
+            datasets: [{
+                data: [@Model.PendingRequests, @Model.InProgressRequests, @Model.CompletedRequests],
+                backgroundColor: [
+                    '#ffc107',
+                    '#00afb9',
+                    '#00cc00'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Property Chart
+    const propertyCtx = document.getElementById('propertyChart').getContext('2d');
+    const propertyLabels = [@string.Join(", ", Model.ByProperty.Select(p => "'" + p.PropertyName.Replace("'", "\\'") + "'"))];
+    const requestCounts = [@string.Join(", ", Model.ByProperty.Select(p => p.RequestCount))];
+    const totalCosts = [@string.Join(", ", Model.ByProperty.Select(p => p.TotalCost))];
+    
+    new Chart(propertyCtx, {
+        type: 'bar',
+        data: {
+            labels: propertyLabels.length > 0 ? propertyLabels : ['Sem dados'],
+            datasets: [
+                {
+                    label: 'Quantidade de Solicitações',
+                    data: requestCounts.length > 0 ? requestCounts : [0],
+                    backgroundColor: '#00afb9',
+                    borderColor: '#00afb9',
+                    borderWidth: 2,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Custo Total (R$)',
+                    data: totalCosts.length > 0 ? totalCosts : [0],
+                    backgroundColor: '#f07167',
+                    borderColor: '#f07167',
+                    borderWidth: 2,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Quantidade'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Custo (R$)'
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 0 });
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+}
+}

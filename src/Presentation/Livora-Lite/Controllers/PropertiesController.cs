@@ -177,8 +177,8 @@ public class PropertiesController : Controller
         return View(property);
     }
 
-    // POST: Properties/Delete/5
-    [HttpPost, ActionName("Delete")]
+    // POST: Properties/DeleteConfirmed/5
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {

@@ -1,0 +1,195 @@
+@model List<Livora_Lite.Application.DTO.PropertyPerformanceReportDTO>
+@using Livora_Lite.Helpers
+@{
+    ViewData["Title"] = "Desempenho de Propriedades";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Relatórios", "Index"),
+        new BreadcrumbHelper.BreadcrumbItem("Desempenho de Propriedades", null, true)
+    );
+}
+
+<div class="container-fluid mt-4">
+    <div class="livora-form-header mb-4">
+        <h1 class="livora-form-title mb-0"><i class="fas fa-building me-2"></i>Desempenho de Propriedades</h1>
+        <p class="livora-form-subtitle">Análise de ocupação, rentabilidade e manutenção de suas propriedades</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Nenhuma propriedade cadastrada no sistema.
+        </div>
+    }
+    else
+    {
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="livora-form-card">
+                    <h5 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Receita por Propriedade</h5>
+                    <div style="position: relative; height: 350px;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Properties Table -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="livora-form-card">
+                    <h5 class="mb-4">Detalhes das Propriedades</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Propriedade</th>
+                                    <th>Endereço</th>
+                                    <th class="text-center">Ocupação</th>
+                                    <th class="text-center">Inquilinos</th>
+                                    <th class="text-end">Receita Mensal</th>
+                                    <th class="text-end">Custtos</th>
+                                    <th class="text-end">Lucro Líquido</th>
+                                    <th class="text-center">Desempenho</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var property in Model)
+                                {
+                                    <tr>
+                                        <td><strong>@property.PropertyName</strong></td>
+                                        <td>@property.Address</td>
+                                        <td class="text-center">
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar" role="progressbar" 
+                                                     style="width: @(property.OccupancyRate)%; background-color: #00afb9;" 
+                                                     aria-valuenow="@(property.OccupancyRate)" aria-valuemin="0" aria-valuemax="100">
+                                                    @(property.OccupancyRate.ToString("F0"))%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">@property.ActiveTenants</td>
+                                        <td class="text-end" style="color: #00afb9; font-weight: 700;">R$ @property.MonthlyRevenue.ToString("N2")</td>
+                                        <td class="text-end">R$ @property.MaintenanceCost.ToString("N2")</td>
+                                        <td class="text-end" style="color: var(--livora-primary-green); font-weight: 700;">R$ @property.NetProfit.ToString("N2")</td>
+                                        <td class="text-center">
+                                            @{
+                                                var badgeColor = property.PerformanceRating == "Excelente" ? "success" 
+                                                    : property.PerformanceRating == "Bom" ? "primary" 
+                                                    : property.PerformanceRating == "Regular" ? "warning" 
+                                                    : "danger";
+                                            }
+                                            <span class="badge bg-@badgeColor">@property.PerformanceRating</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Breakdown -->
+        <div class="row">
+            @foreach (var property in Model.Take(2))
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="livora-form-card">
+                        <h5 class="mb-4">@property.PropertyName</h5>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small class="text-muted">Taxa de Ocupação</small>
+                                <h6 class="mb-0" style="color: #00afb9;">@property.OccupancyRate.ToString("F1")%</h6>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Inquilinos Ativos</small>
+                                <h6 class="mb-0">@property.ActiveTenants</h6>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small class="text-muted">Solicitações Manutenção</small>
+                                <h6 class="mb-0">@property.MaintenanceRequests</h6>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Custo Manutenção</small>
+                                <h6 class="mb-0">R$ @property.MaintenanceCost.ToString("N2")</h6>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Receita Mensal</small>
+                                <h6 class="mb-0" style="color: #00afb9;">R$ @property.MonthlyRevenue.ToString("N2")</h6>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Lucro Líquido</small>
+                                <h6 class="mb-0" style="color: var(--livora-primary-green);">R$ @property.NetProfit.ToString("N2")</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@if (Model.Any())
+{
+    <script>
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const propertyLabels = [@string.Join(", ", Model.Select(p => "'" + p.PropertyName.Replace("'", "\\'") + "'"))];
+        const monthlyRevenues = [@string.Join(", ", Model.Select(p => p.MonthlyRevenue))];
+        const maintenanceCosts = [@string.Join(", ", Model.Select(p => p.MaintenanceCost))];
+        const netProfits = [@string.Join(", ", Model.Select(p => p.NetProfit))];
+        
+        new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: propertyLabels.length > 0 ? propertyLabels : ['Sem dados'],
+                datasets: [
+                    {
+                        label: 'Receita Mensal',
+                        data: monthlyRevenues.length > 0 ? monthlyRevenues : [0],
+                        backgroundColor: '#00afb9',
+                        borderColor: '#00afb9',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Cuato de Manutenção',
+                        data: maintenanceCosts.length > 0 ? maintenanceCosts : [0],
+                        backgroundColor: '#f07167',
+                        borderColor: '#f07167',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Lucro Líquido',
+                        data: netProfits.length > 0 ? netProfits : [0],
+                        backgroundColor: '#00cc00',
+                        borderColor: '#00cc00',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 0 });
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
+}
+}

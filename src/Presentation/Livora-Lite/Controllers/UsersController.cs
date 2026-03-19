@@ -49,6 +49,16 @@ namespace Livora_Lite.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+                return NotFound();
+
+            return View(user);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -79,11 +89,13 @@ namespace Livora_Lite.Controllers
             try
             {
                 await _userService.UpdateUserAsync(request);
+                TempData["Success"] = "Usuário atualizado com sucesso!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Erro ao atualizar usuário: " + ex.Message);
+                TempData["Error"] = ex.Message;
                 return View(request);
             }
         }

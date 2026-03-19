@@ -54,8 +54,12 @@ namespace Livora_Lite.Controllers
         // GET: MaintenanceRequests/Create
         public async Task<IActionResult> Create()
         {
+            var model = new CreateMaintenanceRequestDTO
+            {
+                RequestDate = DateTime.Now
+            };
             await PopulateDropdowns();
-            return View();
+            return View(model);
         }
 
         // POST: MaintenanceRequests/Create
@@ -65,6 +69,17 @@ namespace Livora_Lite.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Auto-generate Title with format: PropertyName + ddmmyyyy
+                var property = await _propertyService.GetByIdAsync(maintenanceRequest.PropertyId);
+                if (property != null)
+                {
+                    maintenanceRequest.Title = $"{property.Name} - {DateTime.Now.ToString("ddMMyyyy")}";
+                }
+                else
+                {
+                    maintenanceRequest.Title = DateTime.Now.ToString("ddMMyyyy");
+                }
+
                 var requestId = await _maintenanceRequestService.CreateMaintenanceRequestAsync(maintenanceRequest);
                 
                 // Log audit
@@ -79,6 +94,7 @@ namespace Livora_Lite.Controllers
                     $"Criada solicitação de manutenção: {maintenanceRequest.Title} para propriedade ID: {maintenanceRequest.PropertyId}"
                 );
                 
+                TempData["Success"] = "Solicita\u00e7\u00e3o de manutenção criada com sucesso!";
                 return RedirectToAction(nameof(Index));
             }
             await PopulateDropdowns();
@@ -104,6 +120,7 @@ namespace Livora_Lite.Controllers
                 Id = maintenanceRequest.Id,
                 PropertyId = maintenanceRequest.PropertyId,
                 ContractId = maintenanceRequest.ContractId,
+                Title = maintenanceRequest.Title,
                 Description = maintenanceRequest.Description,
                 RequestDate = maintenanceRequest.RequestDate,
                 Priority = maintenanceRequest.Priority,
@@ -169,8 +186,8 @@ namespace Livora_Lite.Controllers
             return View(maintenanceRequest);
         }
 
-        // POST: MaintenanceRequests/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: MaintenanceRequests/DeleteConfirmed/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

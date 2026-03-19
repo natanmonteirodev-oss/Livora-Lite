@@ -5,6 +5,8 @@ namespace Livora_Lite.Application.DTO
 {
     public class CreateMaintenanceRequestDTO
     {
+        public string Title { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Imóvel é obrigatório")]
         public int PropertyId { get; set; }
 
@@ -22,8 +24,6 @@ namespace Livora_Lite.Application.DTO
 
         [Required(ErrorMessage = "Status é obrigatório")]
         public MaintenanceStatus Status { get; set; }
-            // Propriedade adicionada para corrigir erro de compilação
-            public string Title { get; set; } = string.Empty;
     }
 
     public class UpdateMaintenanceRequestDTO
@@ -34,6 +34,8 @@ namespace Livora_Lite.Application.DTO
         public int PropertyId { get; set; }
 
         public int? ContractId { get; set; }
+
+        public string Title { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Descrição é obrigatória")]
         [StringLength(500, ErrorMessage = "Descrição deve ter no máximo 500 caracteres")]

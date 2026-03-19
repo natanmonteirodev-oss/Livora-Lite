@@ -1,0 +1,259 @@
+@model Livora_Lite.Application.DTO.FinancialReportDTO
+@using Livora_Lite.Helpers
+@{
+    ViewData["Title"] = "Relatório Financeiro";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Relatórios", "Index"),
+        new BreadcrumbHelper.BreadcrumbItem("Financeiro", null, true)
+    );
+}
+
+<div class="container-fluid mt-4">
+    <div class="livora-form-header mb-4">
+        <h1 class="livora-form-title mb-0"><i class="fas fa-chart-line me-2"></i>Relatório Financeiro</h1>
+        <p class="livora-form-subtitle">Gerado em @Model.GeneratedDate.ToString("dd/MM/yyyy HH:mm")</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Receita Total</h6>
+                <p class="livora-card-value" style="color: #00afb9;">R$ @Model.TotalRevenue.ToString("N2")</p>
+                <p class="livora-card-subtitle">Todas as receitas</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card secondary-accent">
+                <h6 class="livora-card-title">Despesas</h6>
+                <p class="livora-card-value" style="color: #f07167;">R$ @Model.TotalExpenses.ToString("N2")</p>
+                <p class="livora-card-subtitle">Total de gastos</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card dark-accent">
+                <h6 class="livora-card-title">Lucro Líquido</h6>
+                <p class="livora-card-value" style="color: var(--livora-primary-green); font-weight: 700;">R$ @Model.NetProfit.ToString("N2")</p>
+                <p class="livora-card-subtitle">Resultado final</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Taxa de Cobrança</h6>
+                <p class="livora-card-value">@Model.CollectionRate.ToString("F1")%</p>
+                <p class="livora-card-subtitle">Eficiência de cobrança</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert for Pending Payments -->
+    @if (Model.PendingPayments > 0)
+    {
+        <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Atenção!</strong> Existem R$ @Model.PendingPayments.ToString("N2") em pagamentos pendentes.
+        </div>
+    }
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Receita vs Despesa</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="revenueExpenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-pie me-2"></i>Métodos de Pagamento</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="paymentMethodChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Revenue Chart -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-line me-2"></i>Receita Mensal</h5>
+                <div style="position: relative; height: 350px;">
+                    <canvas id="monthlyRevenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Methods Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="livora-form-card">
+                <h5 class="mb-4">Detalhamento de Métodos de Pagamento</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Método de Pagamento</th>
+                                <th class="text-end">Quantidade</th>
+                                <th class="text-end">Valor Total</th>
+                                <th class="text-end">Percentual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var method in Model.PaymentMethods)
+                            {
+                                <tr>
+                                    <td><strong>@method.PaymentMethod</strong></td>
+                                    <td class="text-end">@method.Count</td>
+                                    <td class="text-end" style="color: #00afb9; font-weight: 700;">R$ @method.TotalAmount.ToString("N2")</td>
+                                    <td class="text-end">@method.Percentage.ToString("F1")%</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Revenue vs Expense Chart
+    const revenueExpenseCtx = document.getElementById('revenueExpenseChart').getContext('2d');
+    new Chart(revenueExpenseCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Receita', 'Despesa', 'Lucro Líquido'],
+            datasets: [{
+                label: 'R$',
+                data: [@Model.TotalRevenue, @Model.TotalExpenses, @Model.NetProfit],
+                backgroundColor: [
+                    '#00afb9',
+                    '#f07167',
+                    '#00cc00'
+                ],
+                borderColor: [
+                    '#00afb9',
+                    '#f07167',
+                    '#00cc00'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 0 });
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Payment Method Chart
+    const paymentMethodCtx = document.getElementById('paymentMethodChart').getContext('2d');
+    const methodLabels = [@string.Join(", ", Model.PaymentMethods.Select(m => "'" + m.PaymentMethod.Replace("'", "\\'") + "'"))];
+    const methodAmounts = [@string.Join(", ", Model.PaymentMethods.Select(m => m.TotalAmount))];
+    
+    new Chart(paymentMethodCtx, {
+        type: 'doughnut',
+        data: {
+            labels: methodLabels.length > 0 ? methodLabels : ['Sem dados'],
+            datasets: [{
+                data: methodAmounts.length > 0 ? methodAmounts : [0],
+                backgroundColor: [
+                    '#0081a7',
+                    '#00afb9',
+                    '#f07167',
+                    '#ffc107',
+                    '#fed9b7'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Monthly Revenue Chart
+    const monthlyRevenueCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
+    const monthLabels = [@string.Join(", ", Model.MonthlyRevenue.Select(m => "'" + m.Month.Replace("'", "\\'") + "'"))];
+    const expectedRevenues = [@string.Join(", ", Model.MonthlyRevenue.Select(m => m.ExpectedRevenue))];
+    const receivedRevenues = [@string.Join(", ", Model.MonthlyRevenue.Select(m => m.ReceivedRevenue))];
+    
+    new Chart(monthlyRevenueCtx, {
+        type: 'line',
+        data: {
+            labels: monthLabels.length > 0 ? monthLabels : ['Sem dados'],
+            datasets: [
+                {
+                    label: 'Receita Esperada',
+                    data: expectedRevenues.length > 0 ? expectedRevenues : [0],
+                    borderColor: '#0081a7',
+                    backgroundColor: 'rgba(0, 129, 167, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#0081a7',
+                    pointBorderColor: '#0081a7',
+                    pointRadius: 5
+                },
+                {
+                    label: 'Receita Recebida',
+                    data: receivedRevenues.length > 0 ? receivedRevenues : [0],
+                    borderColor: '#00afb9',
+                    backgroundColor: 'rgba(0, 175, 185, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#00afb9',
+                    pointBorderColor: '#00afb9',
+                    pointRadius: 5
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 0 });
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+}

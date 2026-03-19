@@ -1,0 +1,95 @@
+@model Livora_Lite.Application.DTO.UserDTO
+@using Livora_Lite.Helpers
+
+@{
+    ViewData["Title"] = "Detalhes do Usuário - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Usuários", Url.Action("Index", "Users")),
+        new BreadcrumbHelper.BreadcrumbItem("Detalhes", null, true)
+    );
+}
+
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Usuários</a></li>
+            <li class="breadcrumb-item active">Detalhes</li>
+        </ol>
+    </nav>
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">@Model.FirstName @Model.LastName</h1>
+        <p class="text-muted">Visualize os detalhes completos do usuário</p>
+    </div>
+
+    <!-- Details Cards -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- User Information Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i> Informações do Usuário
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Primeiro Nome:</strong> @Model.FirstName</p>
+                            <p><strong>Sobrenome:</strong> @Model.LastName</p>
+                            <p><strong>Nome Completo:</strong> @Model.FullName</p>
+                            <p><strong>Email:</strong> @Model.Email</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Função:</strong> <span class="badge bg-primary">@Model.Role</span></p>
+                            <p><strong>Status:</strong> 
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Ativo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inativo</span>
+                                }
+                            </p>
+                            <p><strong>Data de Criação:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            @if (Model.UpdatedAt.HasValue)
+                            {
+                                <p><strong>Última Atualização:</strong> @Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="card card-footer bg-light">
+                <div class="d-flex gap-2">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i> Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i> Excluir
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-list me-2"></i> Voltar à Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+</style>

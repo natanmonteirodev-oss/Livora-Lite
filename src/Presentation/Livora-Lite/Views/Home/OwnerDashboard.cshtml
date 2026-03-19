@@ -67,6 +67,38 @@
         </div>
     </div>
 
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-line me-2"></i>Status dos Contratos</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="contractStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-pie me-2"></i>Receita por Propriedade</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Status Chart -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Status de Pagamentos</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="paymentStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Alert for Expiring Contracts -->
     @if (Model.ExpiringContracts > 0)
     {
@@ -268,3 +300,119 @@
         background-color: transparent;
     }
 </style>
+
+@section Scripts {
+<script>
+    // Contract Status Chart (Active vs Expiring)
+    const contractStatusCtx = document.getElementById('contractStatusChart').getContext('2d');
+    new Chart(contractStatusCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Ativos', 'Expirando em Breve'],
+            datasets: [{
+                label: 'Contratos',
+                data: [@Model.ActiveContracts, @Model.ExpiringContracts],
+                backgroundColor: [
+                    '#00afb9',
+                    '#ffc107'
+                ],
+                borderColor: [
+                    '#00afb9',
+                    '#ffc107'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    const propertyNames = [@string.Join(", ", Model.Properties.Select(p => "'" + p.Name.Replace("'", "\\'") + "'"))];
+    const propertyRevenues = [@string.Join(", ", Model.Properties.Select(p => p.TotalMonthlyRevenue))];
+    
+    new Chart(revenueCtx, {
+        type: 'doughnut',
+        data: {
+            labels: propertyNames.length > 0 ? propertyNames : ['Sem dados'],
+            datasets: [{
+                data: propertyRevenues.length > 0 ? propertyRevenues : [0],
+                backgroundColor: [
+                    '#0081a7',
+                    '#00afb9',
+                    '#f07167',
+                    '#ffc107',
+                    '#fed9b7'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Payment Status Chart
+    const paymentCtx = document.getElementById('paymentStatusChart').getContext('2d');
+    new Chart(paymentCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Receita Mensal', 'Pagamentos Pendentes'],
+            datasets: [{
+                label: 'R$',
+                data: [@Model.TotalMonthlyRevenue, @Model.PendingPaymentsAmount],
+                backgroundColor: [
+                    '#00afb9',
+                    '#f07167'
+                ],
+                borderColor: [
+                    '#00afb9',
+                    '#f07167'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+}

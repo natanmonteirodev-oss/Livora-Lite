@@ -1,0 +1,111 @@
+@using Livora_Lite.Helpers
+@{
+    ViewData["Title"] = "Relatórios";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Relatórios", null, true)
+    );
+}
+
+<div class="container-fluid mt-4">
+    <div class="livora-form-header">
+        <h1 class="livora-form-title mb-0">Relatórios e Análises</h1>
+        <p class="livora-form-subtitle">Acesse relatórios detalhados sobre suas propriedades, contratos e finanças</p>
+    </div>
+
+    <!-- Reports Grid -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="livora-form-card report-card" style="cursor: pointer; transition: all 0.3s ease;" 
+                 onclick="window.location.href='@Url.Action("Financial", "Reports")'">
+                <div class="text-center mb-3">
+                    <i class="fas fa-chart-line" style="font-size: 3rem; color: #00afb9;"></i>
+                </div>
+                <h4 class="livora-form-title text-center mb-2">Relatório Financeiro</h4>
+                <p class="text-muted text-center mb-3">
+                    Análise de receitas, despesas, taxas de cobrança e tendências financeiras mensais.
+                </p>
+                <div class="text-center">
+                    <span class="badge" style="background-color: #00afb9; padding: 0.5em 1em;">
+                        <i class="fas fa-arrow-right me-2"></i>Acessar
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="livora-form-card report-card" style="cursor: pointer; transition: all 0.3s ease;" 
+                 onclick="window.location.href='@Url.Action("PropertyPerformance", "Reports")'">
+                <div class="text-center mb-3">
+                    <i class="fas fa-building" style="font-size: 3rem; color: #0081a7;"></i>
+                </div>
+                <h4 class="livora-form-title text-center mb-2">Desempenho de Propriedades</h4>
+                <p class="text-muted text-center mb-3">
+                    Análise de ocupação, rentabilidade, manutenção e desempenho individual de cada propriedade.
+                </p>
+                <div class="text-center">
+                    <span class="badge" style="background-color: #0081a7; padding: 0.5em 1em;">
+                        <i class="fas fa-arrow-right me-2"></i>Acessar
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="livora-form-card report-card" style="cursor: pointer; transition: all 0.3s ease;" 
+                 onclick="window.location.href='@Url.Action("ContractAnalysis", "Reports")'">
+                <div class="text-center mb-3">
+                    <i class="fas fa-file-contract" style="font-size: 3rem; color: #f07167;"></i>
+                </div>
+                <h4 class="livora-form-title text-center mb-2">Análise de Contratos</h4>
+                <p class="text-muted text-center mb-3">
+                    Distribuição de contratos, identificação de contratos prestes a vencer e análise de receita.
+                </p>
+                <div class="text-center">
+                    <span class="badge" style="background-color: #f07167; padding: 0.5em 1em;">
+                        <i class="fas fa-arrow-right me-2"></i>Acessar
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="livora-form-card report-card" style="cursor: pointer; transition: all 0.3s ease;" 
+                 onclick="window.location.href='@Url.Action("Maintenance", "Reports")'">
+                <div class="text-center mb-3">
+                    <i class="fas fa-tools" style="font-size: 3rem; color: #ffc107;"></i>
+                </div>
+                <h4 class="livora-form-title text-center mb-2">Relatório de Manutenção</h4>
+                <p class="text-muted text-center mb-3">
+                    Solicitações de manutenção, custos, prioridades e histórico por propriedade.
+                </p>
+                <div class="text-center">
+                    <span class="badge" style="background-color: #ffc107; padding: 0.5em 1em; color: #333;">
+                        <i class="fas fa-arrow-right me-2"></i>Acessar
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .report-card {
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        padding: 30px 25px;
+    }
+
+    .report-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .report-card i {
+        transition: all 0.3s ease;
+    }
+
+    .report-card:hover i {
+        transform: scale(1.1);
+    }
+</style>

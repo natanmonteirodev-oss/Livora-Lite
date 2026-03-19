@@ -1,16 +1,86 @@
 @model Livora_Lite.Application.DTO.UpdateMaintenanceRequestDTO
+@using Livora_Lite.Helpers
+
 @{
-    ViewData["Title"] = "Editar Manutenção";
+    ViewData["Title"] = "Editar Manutenção - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Solicitações de Manutenção", Url.Action("Index", "MaintenanceRequests")),
+        new BreadcrumbHelper.BreadcrumbItem("Editar Solicitação", null, true)
+    );
 }
 
 <div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Solicitações de Manutenção</a></li>
+            <li class="breadcrumb-item active">Editar Solicitação</li>
+        </ol>
+    </nav>
+
     <h1 class="section-title mb-4">Editar Solicitação</h1>
-    <div class="row"><div class="col-lg-6"><form asp-action="Edit" method="post" class="card shadow-sm"><input asp-for="Id" type="hidden" /><div class="card-header bg-gradient"><h5>Detalhes</h5></div><div class="card-body">
-        <div class="mb-3"><label asp-for="PropertyId" class="form-label">Propriedade</label><select asp-for="PropertyId" class="form-select form-select-lg" asp-items="@ViewBag.PropertyId"></select></div>
-        <div class="mb-3"><label asp-for="Description" class="form-label">Descrição</label><textarea asp-for="Description" class="form-control" rows="3"></textarea></div>
-        <div class="mb-3"><label asp-for="Priority" class="form-label">Prioridade</label><select asp-for="Priority" class="form-select form-select-lg" asp-items="@ViewBag.Priority"></select></div>
-        <div class="mb-3"><label asp-for="Status" class="form-label">Status</label><select asp-for="Status" class="form-select form-select-lg" asp-items="@ViewBag.Status"></select></div>
-    </div><div class="card-footer bg-light d-flex gap-2 justify-content-end"><a asp-action="Index" class="btn btn-secondary">Cancelar</a><button type="submit" class="btn btn-primary">Atualizar</button></div></form></div></div>
+    <div class="row">
+        <div class="col-lg-6">
+            <form asp-action="Edit" method="post" class="card shadow-sm">
+                @Html.AntiForgeryToken()
+                <input asp-for="Id" type="hidden" />
+                <div class="card-header bg-gradient">
+                    <h5>Detalhes</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Title Field (Read-only) -->
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Título</label>
+                        <input asp-for="Title" class="form-control form-control-lg" readonly />
+                    </div>
+
+                    <!-- Property Selection -->
+                    <div class="mb-3">
+                        <label asp-for="PropertyId" class="form-label">Propriedade</label>
+                        <select asp-for="PropertyId" class="form-select form-select-lg" asp-items="@ViewBag.PropertyId">
+                            <option value="">-- Selecione uma propriedade --</option>
+                        </select>
+                        <span asp-validation-for="PropertyId" class="text-danger small d-block mt-1"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Descrição</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Descreva o problema ou solicitação"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small d-block mt-1"></span>
+                    </div>
+
+                    <!-- Priority -->
+                    <div class="mb-3">
+                        <label asp-for="Priority" class="form-label">Prioridade</label>
+                        <select asp-for="Priority" class="form-select form-select-lg" asp-items="@ViewBag.Priority">
+                            <option value="">-- Selecione a prioridade --</option>
+                        </select>
+                        <span asp-validation-for="Priority" class="text-danger small d-block mt-1"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label asp-for="Status" class="form-label">Status</label>
+                        <select asp-for="Status" class="form-select form-select-lg" asp-items="@ViewBag.Status">
+                            <option value="">-- Selecione o status --</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger small d-block mt-1"></span>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light d-flex gap-2 justify-content-end">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i> Atualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

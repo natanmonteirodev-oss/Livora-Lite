@@ -1,0 +1,251 @@
+@model Livora_Lite.Application.DTO.ContractAnalysisReportDTO
+@using Livora_Lite.Helpers
+@{
+    ViewData["Title"] = "Análise de Contratos";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Relatórios", "Index"),
+        new BreadcrumbHelper.BreadcrumbItem("Análise de Contratos", null, true)
+    );
+}
+
+<div class="container-fluid mt-4">
+    <div class="livora-form-header mb-4">
+        <h1 class="livora-form-title mb-0"><i class="fas fa-file-contract me-2"></i>Análise de Contratos</h1>
+        <p class="livora-form-subtitle">Distribuição, status e identificação de contratos prestes a vencer</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Total de Contratos</h6>
+                <p class="livora-card-value">@Model.TotalContracts</p>
+                <p class="livora-card-subtitle">Todos os contratos</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card secondary-accent">
+                <h6 class="livora-card-title">Contratos Ativos</h6>
+                <p class="livora-card-value" style="color: var(--livora-primary-green);">@Model.ActiveContracts</p>
+                <p class="livora-card-subtitle">Em vigência</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card dark-accent">
+                <h6 class="livora-card-title">Expirando em Breve</h6>
+                <p class="livora-card-value" style="color: #ffc107;">@Model.ExpiringContracts</p>
+                <p class="livora-card-subtitle">Próximos 30 dias</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="livora-dashboard-card primary-accent">
+                <h6 class="livora-card-title">Expirados</h6>
+                <p class="livora-card-value" style="color: #f07167;">@Model.ExpiredContracts</p>
+                <p class="livora-card-subtitle">Sem vigência</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Financial Summary -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: var(--livora-secondary-blue);" class="mb-0">Receita Mensal Total</h5>
+                <h3 class="livora-card-value mt-3" style="color: #00afb9;">R$ @Model.TotalMonthlyRevenue.ToString("N2")</h3>
+                <p class="livora-card-subtitle">@Model.ActiveContracts contratos ativos</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 style="color: var(--livora-secondary-blue);" class="mb-0">Aluguel Médio</h5>
+                <h3 class="livora-card-value mt-3" style="color: #0081a7;">R$ @Model.AverageRentValue.ToString("N2")</h3>
+                <p class="livora-card-subtitle">Por contrato</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-pie me-2"></i>Distribuição por Status</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="contractDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-doughnut me-2"></i>Contratos por Status</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="contractStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expiring Contracts Alert -->
+    @if (Model.ExpiringContracts > 0)
+    {
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Atenção!</strong> Existem @Model.ExpiringContracts contrato(s) vencendo nos próximos 30 dias.
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Expiring Contracts Table -->
+    @if (Model.ExpiringContractsList.Any())
+    {
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="livora-form-card">
+                    <h5 class="mb-4"><i class="fas fa-calendar-times me-2"></i>Contratos Prestes a Vencer</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Propriedade</th>
+                                    <th>Inquilino</th>
+                                    <th>Data de Término</th>
+                                    <th class="text-center">Dias Restantes</th>
+                                    <th class="text-end">Aluguel Mensal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var contract in Model.ExpiringContractsList.OrderBy(c => c.EndDate))
+                                {
+                                    <tr style="background-color: #fffacd;">
+                                        <td><strong>@contract.PropertyName</strong></td>
+                                        <td>@contract.TenantName</td>
+                                        <td>@contract.EndDate.ToString("dd/MM/yyyy")</td>
+                                        <td class="text-center">
+                                            <span class="badge" style="background-color: #ffc107; color: #333;">
+                                                @contract.DaysUntilExpiration dias
+                                            </span>
+                                        </td>
+                                        <td class="text-end" style="color: #00afb9; font-weight: 700;">R$ @contract.RentValue.ToString("N2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Distribution Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="livora-form-card">
+                <h5 class="mb-4">Distribuição de Contratos por Status</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th class="text-center">Quantidade</th>
+                                <th class="text-center">Percentual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var distribution in Model.DistributionByStatus)
+                            {
+                                <tr>
+                                    <td><strong>@distribution.Status</strong></td>
+                                    <td class="text-center">@distribution.Count</td>
+                                    <td class="text-center">
+                                        <span class="badge" style="background-color: #0081a7; padding: 0.5em 1em;">
+                                            @distribution.Percentage.ToString("F1")%
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Contract Distribution Chart
+    const distributionCtx = document.getElementById('contractDistributionChart').getContext('2d');
+    const statusLabels = [@string.Join(", ", Model.DistributionByStatus.Select(d => "'" + d.Status.Replace("'", "\\'") + "'"))];
+    const statusCounts = [@string.Join(", ", Model.DistributionByStatus.Select(d => d.Count))];
+    
+    new Chart(distributionCtx, {
+        type: 'bar',
+        data: {
+            labels: statusLabels.length > 0 ? statusLabels : ['Sem dados'],
+            datasets: [{
+                label: 'Número de Contratos',
+                data: statusCounts.length > 0 ? statusCounts : [0],
+                backgroundColor: [
+                    '#00afb9',
+                    '#0081a7',
+                    '#f07167',
+                    '#ffc107'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+
+    // Contract Status Chart
+    const statusCtx = document.getElementById('contractStatusChart').getContext('2d');
+    new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ativos', 'Expirando em Breve', 'Expirados'],
+            datasets: [{
+                data: [@Model.ActiveContracts, @Model.ExpiringContracts, @Model.ExpiredContracts],
+                backgroundColor: [
+                    '#00afb9',
+                    '#ffc107',
+                    '#f07167'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+}
+}

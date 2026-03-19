@@ -1,35 +1,120 @@
 @model Livora_Lite.Application.DTO.BillingDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Excluir Cobrança";
+    ViewData["Title"] = "Excluir Cobrança - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Cobranças", Url.Action("Index", "Billings")),
+        new BreadcrumbHelper.BreadcrumbItem("Excluir Cobrança", null, true)
+    );
 }
 
-<h1>Excluir Cobrança</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Cobranças</a></li>
+            <li class="breadcrumb-item active">Excluir Cobrança</li>
+        </ol>
+    </nav>
 
-<h3>Tem certeza que deseja excluir esta cobrança?</h3>
-<div>
-    <h4>Cobrança</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Contrato</dt>
-        <dd class="col-sm-10">@Model.Contract?.Property?.Name - @(Model.Contract?.Tenant != null ? $"{Model.Contract.Tenant.FirstName} {Model.Contract.Tenant.LastName}" : "N/A")</dd>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Excluir Cobrança</h1>
+        <p class="text-muted">Esta ação não pode ser desfeita. Tem certeza que deseja excluir esta cobrança?</p>
+    </div>
 
-        <dt class="col-sm-2">Período</dt>
-        <dd class="col-sm-10">@Model.Period</dd>
+    <!-- Form Card -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <form asp-action="DeleteConfirmed" method="post" class="form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <div class="card shadow-sm border-danger">
+                    <!-- Header -->
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i> Dados da Cobrança
+                        </h5>
+                    </div>
 
-        <dt class="col-sm-2">Valor</dt>
-        <dd class="col-sm-10">@Model.Amount.ToString("C")</dd>
+                    <!-- Body -->
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <!-- Contrato -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-file-contract me-2"></i> Contrato
+                                    </label>
+                                    <p class="form-control-plaintext">
+                                        @Model.Contract?.Property?.Name - @(Model.Contract?.Tenant != null ? $"{Model.Contract.Tenant.FirstName} {Model.Contract.Tenant.LastName}" : "N/A")
+                                    </p>
+                                </div>
 
-        <dt class="col-sm-2">Data de Vencimento</dt>
-        <dd class="col-sm-10">@Model.DueDate.ToString("dd/MM/yyyy")</dd>
+                                <!-- Período -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-calendar me-2"></i> Período
+                                    </label>
+                                    <p class="form-control-plaintext">@Model.Period</p>
+                                </div>
 
-        <dt class="col-sm-2">Status</dt>
-        <dd class="col-sm-10">@Model.BillingStatus?.Name</dd>
-    </dl>
+                                <!-- Valor -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-money-bill-wave me-2"></i> Valor
+                                    </label>
+                                    <p class="form-control-plaintext">@Model.Amount.ToString("C")</p>
+                                </div>
+                            </div>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Excluir" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </form>
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <!-- Data de Vencimento -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-clock me-2"></i> Data de Vencimento
+                                    </label>
+                                    <p class="form-control-plaintext">@Model.DueDate.ToString("dd/MM/yyyy")</p>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        <i class="fas fa-circle me-2"></i> Status
+                                    </label>
+                                    <p class="form-control-plaintext">@Model.BillingStatus?.Name</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="card-footer bg-light">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-trash me-2"></i> Excluir Cobrança
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<style>
+    .form-control-plaintext {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0;
+        color: var(--bs-body-color);
+        font-weight: 500;
+    }
+</style>

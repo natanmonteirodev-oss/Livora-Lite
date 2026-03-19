@@ -96,7 +96,7 @@ namespace Livora_Lite.Application.Services
                         }).ToList()
                 };
             }
-            catch (Exception ex)
+            catch
             {
                 // Log error
                 return new AdminDashboardDTO();
@@ -173,7 +173,7 @@ namespace Livora_Lite.Application.Services
                     }).ToList()
                 };
             }
-            catch (Exception ex)
+            catch
             {
                 // Log error
                 return new OwnerDashboardDTO();
@@ -259,7 +259,7 @@ namespace Livora_Lite.Application.Services
                         }).ToList()
                 };
             }
-            catch (Exception ex)
+            catch
             {
                 // Log error
                 return new TenantDashboardDTO();

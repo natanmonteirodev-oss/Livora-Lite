@@ -1,57 +1,98 @@
 @model Livora_Lite.Application.DTO.ContractDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Detalhes do Contrato";
+    ViewData["Title"] = "Detalhes do Contrato - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Contratos", Url.Action("Index", "Contracts")),
+        new BreadcrumbHelper.BreadcrumbItem("Detalhes", null, true)
+    );
 }
 
-<h1>Detalhes do Contrato</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Contratos</a></li>
+            <li class="breadcrumb-item active">Detalhes</li>
+        </ol>
+    </nav>
 
-<div>
-    <h4>Contrato</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Imóvel</dt>
-        <dd class="col-sm-10">@Model.Property?.Name</dd>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Contrato #@Model.Id</h1>
+        <p class="text-muted">Visualize os detalhes completos do contrato</p>
+    </div>
 
-        <dt class="col-sm-2">Inquilino</dt>
-        <dd class="col-sm-10">@(Model.Tenant != null ? $"{Model.Tenant.FirstName} {Model.Tenant.LastName}" : "N/A")</dd>
+    <!-- Details Cards -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Contract Information Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-contract me-2"></i> Informações do Contrato
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Imóvel:</strong> @Model.Property?.Name</p>
+                            <p><strong>Inquilino:</strong> @(Model.Tenant != null ? $"{Model.Tenant.FirstName} {Model.Tenant.LastName}" : "N/A")</p>
+                            <p><strong>Data de Início:</strong> @Model.StartDate.ToString("dd/MM/yyyy")</p>
+                            <p><strong>Data de Fim:</strong> @(Model.EndDate?.ToString("dd/MM/yyyy") ?? "Indeterminado")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Valor do Aluguel:</strong> <span class="text-primary fw-bold">@Model.RentValue.ToString("C")</span></p>
+                            <p><strong>Dia de Vencimento:</strong> @Model.DueDay</p>
+                            <p><strong>Status:</strong> <span class="badge bg-info">@Model.ContractStatus?.Name</span></p>
+                            <p><strong>Data de Criação:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                    <hr />
+                    <h6><i class="fas fa-money-bill me-2"></i>Informações Financeiras</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Multa por Atraso:</strong> @Model.LateFee.ToString("C")</p>
+                            <p><strong>Depósito Caução:</strong> @Model.SecurityDeposit.ToString("C")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Juros:</strong> @Model.InterestRate.ToString("P")</p>
+                            @if (Model.UpdatedAt.HasValue)
+                            {
+                                <p><strong>Última Atualização:</strong> @Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <dt class="col-sm-2">Data de Início</dt>
-        <dd class="col-sm-10">@Model.StartDate.ToString("dd/MM/yyyy")</dd>
-
-        <dt class="col-sm-2">Data de Fim</dt>
-        <dd class="col-sm-10">@(Model.EndDate?.ToString("dd/MM/yyyy") ?? "Indeterminado")</dd>
-
-        <dt class="col-sm-2">Valor do Aluguel</dt>
-        <dd class="col-sm-10">@Model.RentValue.ToString("C")</dd>
-
-        <dt class="col-sm-2">Dia de Vencimento</dt>
-        <dd class="col-sm-10">@Model.DueDay</dd>
-
-        <dt class="col-sm-2">Multa por Atraso</dt>
-        <dd class="col-sm-10">@Model.LateFee.ToString("C")</dd>
-
-        <dt class="col-sm-2">Juros</dt>
-        <dd class="col-sm-10">@Model.InterestRate.ToString("P")</dd>
-
-        <dt class="col-sm-2">Depósito Caução</dt>
-        <dd class="col-sm-10">@Model.SecurityDeposit.ToString("C")</dd>
-
-        <dt class="col-sm-2">Status</dt>
-        <dd class="col-sm-10">@Model.ContractStatus?.Name</dd>
-
-        <dt class="col-sm-2">Data de Criação</dt>
-        <dd class="col-sm-10">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
-
-        @if (Model.UpdatedAt.HasValue)
-        {
-            <dt class="col-sm-2">Última Atualização</dt>
-            <dd class="col-sm-10">@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</dd>
-        }
-    </dl>
+            <!-- Action Buttons -->
+            <div class="card card-footer bg-light">
+                <div class="d-flex gap-2">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i> Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i> Excluir
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-list me-2"></i> Voltar à Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-</div>
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+</style>

@@ -1,71 +1,122 @@
 @model Livora_Lite.Application.DTO.AuditLogDTO
+@using Livora_Lite.Helpers
 
 @{
-    ViewData["Title"] = "Detalhes do Log de Auditoria";
+    ViewData["Title"] = "Detalhes do Log de Auditoria - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Logs de Auditoria", Url.Action("Index", "AuditLogs")),
+        new BreadcrumbHelper.BreadcrumbItem("Detalhes", null, true)
+    );
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mt-5 mb-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Logs de Auditoria</a></li>
+            <li class="breadcrumb-item active">Detalhes</li>
+        </ol>
+    </nav>
 
-<div>
-    <h4>Log de Auditoria</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            Usuário
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserName) (ID: @Html.DisplayFor(model => model.UserId))
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Action)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Action)
-        </dd>
-        <dt class="col-sm-2">
-            Entidade
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Entity) (ID: @Html.DisplayFor(model => model.EntityId))
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class="col-sm-2">
-            Alterações
-        </dt>
-        <dd class="col-sm-10">
-            <pre>@Html.DisplayFor(model => model.Changes)</pre>
-        </dd>
-        @if (!string.IsNullOrEmpty(Model.OldValues))
-        {
-            <dt class="col-sm-2">
-                Valores Antigos
-            </dt>
-            <dd class="col-sm-10">
-                <pre>@Html.DisplayFor(model => model.OldValues)</pre>
-            </dd>
-        }
-        @if (!string.IsNullOrEmpty(Model.NewValues))
-        {
-            <dt class="col-sm-2">
-                Novos Valores
-            </dt>
-            <dd class="col-sm-10">
-                <pre>@Html.DisplayFor(model => model.NewValues)</pre>
-            </dd>
-        }
-    </dl>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Log de Auditoria #@Model.Id</h1>
+        <p class="text-muted">Visualize os detalhes completos do log de auditoria</p>
+    </div>
+
+    <!-- Details Cards -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Audit Log Information Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history me-2"></i> Informações do Log
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Usuário:</strong> @Model.UserName <span class="text-muted small">(ID: @Model.UserId)</span></p>
+                            <p><strong>Ação:</strong> <span class="badge bg-info">@Model.Action</span></p>
+                            <p><strong>Entidade:</strong> @Model.Entity <span class="text-muted small">(ID: @Model.EntityId)</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Data/Hora:</strong> @Model.Date.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Changes Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-gradient">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exchange-alt me-2"></i> Alterações
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <pre class="p-3 bg-light rounded border">@Model.Changes</pre>
+                </div>
+            </div>
+
+            <!-- Old Values Card -->
+            @if (!string.IsNullOrEmpty(Model.OldValues))
+            {
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-gradient">
+                        <h5 class="mb-0">
+                            <i class="fas fa-trash-alt me-2"></i> Valores Antigos
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <pre class="p-3 bg-light rounded border">@Model.OldValues</pre>
+                    </div>
+                </div>
+            }
+
+            <!-- New Values Card -->
+            @if (!string.IsNullOrEmpty(Model.NewValues))
+            {
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-gradient">
+                        <h5 class="mb-0">
+                            <i class="fas fa-plus-circle me-2"></i> Novos Valores
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <pre class="p-3 bg-light rounded border">@Model.NewValues</pre>
+                    </div>
+                </div>
+            }
+
+            <!-- Action Buttons -->
+            <div class="card card-footer bg-light">
+                <div class="d-flex gap-2">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-list me-2"></i> Voltar à Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Voltar para Lista</a>
-</div>
+
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+
+    pre {
+        margin: 0;
+        font-size: 0.875rem;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+</style>

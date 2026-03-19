@@ -87,6 +87,26 @@
         </div>
     </div>
 
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-line me-2"></i>Histórico de Pagamentos</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="paymentHistoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="livora-form-card">
+                <h5 class="mb-4"><i class="fas fa-chart-doughnut me-2"></i>Status de Contratos</h5>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="contractStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Tabs for more details -->
     <div class="row">
         <div class="col-12">
@@ -290,3 +310,81 @@
         }
     }
 </style>
+
+@section Scripts {
+<script>
+    // Payment History Chart
+    const paymentHistoryCtx = document.getElementById('paymentHistoryChart').getContext('2d');
+    const recentPayments = @Html.Raw(Json.Serialize(Model?.RecentPayments?.OrderBy(p => p.PaymentDate).ToList()));
+    const paymentDates = recentPayments.map(p => new Date(p.paymentDate).toLocaleDateString('pt-BR'));
+    const paymentAmounts = recentPayments.map(p => p.amount);
+
+    new Chart(paymentHistoryCtx, {
+        type: 'line',
+        data: {
+            labels: paymentDates.length > 0 ? paymentDates : ['Sem dados'],
+            datasets: [{
+                label: 'Valores Pagos',
+                data: paymentAmounts.length > 0 ? paymentAmounts : [0],
+                borderColor: '#00afb9',
+                backgroundColor: 'rgba(0, 175, 185, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#00afb9',
+                pointBorderColor: '#00afb9',
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Contract Status Chart
+    const contractStatusCtx = document.getElementById('contractStatusChart').getContext('2d');
+    new Chart(contractStatusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ativos', 'Expirando em Breve'],
+            datasets: [{
+                data: [@Model.ActiveContracts, @Model.ExpiringContracts],
+                backgroundColor: [
+                    '#00afb9',
+                    '#ffc107'
+                ],
+                borderColor: [
+                    '#00afb9',
+                    '#ffc107'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+}

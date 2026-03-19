@@ -7,6 +7,7 @@ namespace Livora_Lite.Domain.Entities
         public int Id { get; set; }
         public int PropertyId { get; set; }
         public int? ContractId { get; set; }
+        public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTime RequestDate { get; set; }
         public MaintenancePriority Priority { get; set; }

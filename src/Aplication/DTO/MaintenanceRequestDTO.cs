@@ -7,13 +7,12 @@ namespace Livora_Lite.Application.DTO
         public int Id { get; set; }
         public int PropertyId { get; set; }
         public int? ContractId { get; set; }
+        public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTime RequestDate { get; set; }
         public MaintenancePriority Priority { get; set; }
         public MaintenanceStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
-            // Propriedade adicionada para corrigir erro de compilação
-            public string Title { get; set; } = string.Empty;
 
         // Navigation properties
         public PropertyDTO? Property { get; set; }
