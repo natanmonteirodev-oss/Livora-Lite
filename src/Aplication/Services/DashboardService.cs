@@ -1,3 +1,4 @@
+using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Domain.Interfaces;
@@ -15,6 +16,7 @@ namespace Livora_Lite.Application.Services
         private readonly IMaintenanceRequestRepository _maintenanceRequestRepository;
         private readonly IAuditLogRepository _auditLogRepository;
         private readonly IBillingRepository _billingRepository;
+        private readonly IMapper _mapper;
 
         public DashboardService(
             IUserRepository userRepository,
@@ -24,7 +26,8 @@ namespace Livora_Lite.Application.Services
             IPaymentRepository paymentRepository,
             IMaintenanceRequestRepository maintenanceRequestRepository,
             IAuditLogRepository auditLogRepository,
-            IBillingRepository billingRepository)
+            IBillingRepository billingRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
             _propertyRepository = propertyRepository;
@@ -34,6 +37,7 @@ namespace Livora_Lite.Application.Services
             _maintenanceRequestRepository = maintenanceRequestRepository;
             _auditLogRepository = auditLogRepository;
             _billingRepository = billingRepository;
+            _mapper = mapper;
         }
 
         public async Task<AdminDashboardDTO> GetAdminDashboardAsync()

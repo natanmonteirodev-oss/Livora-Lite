@@ -63,10 +63,18 @@ namespace Livora_Lite.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateBillingRequestDTO request)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _billingService.CreateBillingAsync(request);
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    await _billingService.CreateBillingAsync(request);
+                    TempData["Success"] = "Cobrança criada com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Erro ao criar cobrança: {ex.Message}");
             }
 
             var contracts = await _contractService.GetAllContractsAsync();

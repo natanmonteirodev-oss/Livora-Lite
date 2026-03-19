@@ -2,6 +2,9 @@ namespace Livora_Lite.Application.DTO
 {
     public class CreateTenantRequestDTO
     {
+        // UserId será atribuído automaticamente pelo controlador
+        public int UserId { get; set; }
+
         [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Primeiro nome é obrigatório")]
         [System.ComponentModel.DataAnnotations.StringLength(50, ErrorMessage = "Primeiro nome não pode ter mais de 50 caracteres")]
         public string FirstName { get; set; } = string.Empty;

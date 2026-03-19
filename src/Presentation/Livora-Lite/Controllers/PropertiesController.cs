@@ -57,6 +57,19 @@ public class PropertiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreatePropertyRequestDTO request)
     {
+        // Obter OwnerId do usuário autenticado
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int ownerId))
+        {
+            ModelState.AddModelError("", "Erro ao obter informações do usuário autenticado.");
+            ViewBag.PropertyTypes = await _propertyTypeRepository.GetAllAsync();
+            ViewBag.PropertyStatuses = await _propertyStatusRepository.GetAllAsync();
+            return View(request);
+        }
+
+        // Atribuir OwnerId ao DTO
+        request.OwnerId = ownerId;
+
         if (ModelState.IsValid)
         {
             var property = await _propertyService.CreateAsync(request);

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Domain.Entities;
@@ -9,13 +10,16 @@ namespace Livora_Lite.Application.Services
     {
         private readonly ITenantRepository _tenantRepository;
         private readonly ITenantStatusRepository _tenantStatusRepository;
+        private readonly IMapper _mapper;
 
         public TenantService(
             ITenantRepository tenantRepository,
-            ITenantStatusRepository tenantStatusRepository)
+            ITenantStatusRepository tenantStatusRepository,
+            IMapper mapper)
         {
             _tenantRepository = tenantRepository;
             _tenantStatusRepository = tenantStatusRepository;
+            _mapper = mapper;
         }
 
         public async Task<TenantDTO?> GetByIdAsync(int id)
@@ -23,33 +27,24 @@ namespace Livora_Lite.Application.Services
             var tenant = await _tenantRepository.GetByIdAsync(id);
             if (tenant == null) return null;
 
-            return MapToDTO(tenant);
+            return _mapper.Map<TenantDTO>(tenant);
         }
 
         public async Task<IEnumerable<TenantDTO>> GetAllAsync()
         {
             var tenants = await _tenantRepository.GetAllAsync();
-            return tenants.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<TenantDTO>>(tenants);
         }
 
         public async Task<TenantDTO> CreateAsync(CreateTenantRequestDTO request)
         {
-            var tenant = new Tenant
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Document = request.Document,
-                Phone = request.Phone,
-                Email = request.Email,
-                CurrentAddress = request.CurrentAddress,
-                TenantStatusId = request.TenantStatusId
-            };
+            var tenant = _mapper.Map<Tenant>(request);
             var createdTenant = await _tenantRepository.CreateAsync(tenant);
 
             // Load related data
             createdTenant.TenantStatus = await _tenantStatusRepository.GetByIdAsync(request.TenantStatusId);
 
-            return MapToDTO(createdTenant);
+            return _mapper.Map<TenantDTO>(createdTenant);
         }
 
         public async Task<TenantDTO> UpdateAsync(UpdateTenantRequestDTO request)
@@ -57,13 +52,7 @@ namespace Livora_Lite.Application.Services
             var existingTenant = await _tenantRepository.GetByIdAsync(request.Id);
             if (existingTenant == null) throw new KeyNotFoundException("Tenant not found");
 
-            existingTenant.FirstName = request.FirstName;
-            existingTenant.LastName = request.LastName;
-            existingTenant.Document = request.Document;
-            existingTenant.Phone = request.Phone;
-            existingTenant.Email = request.Email;
-            existingTenant.CurrentAddress = request.CurrentAddress;
-            existingTenant.TenantStatusId = request.TenantStatusId;
+            _mapper.Map(request, existingTenant);
             existingTenant.UpdatedAt = DateTime.UtcNow;
 
             var updatedTenant = await _tenantRepository.UpdateAsync(existingTenant);
@@ -71,7 +60,7 @@ namespace Livora_Lite.Application.Services
             // Load related data
             updatedTenant.TenantStatus = await _tenantStatusRepository.GetByIdAsync(request.TenantStatusId);
 
-            return MapToDTO(updatedTenant);
+            return _mapper.Map<TenantDTO>(updatedTenant);
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -81,25 +70,6 @@ namespace Livora_Lite.Application.Services
 
             await _tenantRepository.DeleteAsync(id);
             return true;
-        }
-
-        private TenantDTO MapToDTO(Tenant tenant)
-        {
-            return new TenantDTO
-            {
-                Id = tenant.Id,
-                FirstName = tenant.FirstName,
-                LastName = tenant.LastName,
-                Document = tenant.Document,
-                Phone = tenant.Phone,
-                Email = tenant.Email,
-                CurrentAddress = tenant.CurrentAddress,
-                TenantStatus = tenant.TenantStatus != null ? new TenantStatusDTO
-                {
-                    Id = tenant.TenantStatus.Id,
-                    Name = tenant.TenantStatus.Name
-                } : null
-            };
         }
     }
 }

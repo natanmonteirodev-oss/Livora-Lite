@@ -10,23 +10,39 @@ namespace Livora_Lite.Controllers;
 public class ContractsController : Controller
 {
     private readonly IContractService _contractService;
-    private readonly IPropertyRepository _propertyRepository;
-    private readonly ITenantRepository _tenantRepository;
+    private readonly IPropertyService _propertyService;
+    private readonly ITenantService _tenantService;
     private readonly IContractStatusRepository _contractStatusRepository;
     private readonly IAuditService _auditService;
 
     public ContractsController(
         IContractService contractService,
-        IPropertyRepository propertyRepository,
-        ITenantRepository tenantRepository,
+        IPropertyService propertyService,
+        ITenantService tenantService,
         IContractStatusRepository contractStatusRepository,
         IAuditService auditService)
     {
         _contractService = contractService;
-        _propertyRepository = propertyRepository;
-        _tenantRepository = tenantRepository;
+        _propertyService = propertyService;
+        _tenantService = tenantService;
         _contractStatusRepository = contractStatusRepository;
         _auditService = auditService;
+    }
+
+    private async Task LoadViewBagAsync()
+    {
+        var properties = await _propertyService.GetAllAsync();
+        var tenants = await _tenantService.GetAllAsync();
+        var contractStatuses = await _contractStatusRepository.GetAllAsync();
+
+        ViewBag.Properties = properties.ToList();
+        ViewBag.Tenants = tenants.ToList();
+        ViewBag.ContractStatuses = contractStatuses.Select(cs => new ContractStatusDTO
+        {
+            Id = cs.Id,
+            Name = cs.Name,
+            CreatedAt = cs.CreatedAt
+        }).ToList();
     }
 
     // GET: Contracts
@@ -50,9 +66,7 @@ public class ContractsController : Controller
     // GET: Contracts/Create
     public async Task<IActionResult> Create()
     {
-        ViewBag.Properties = await _propertyRepository.GetAllAsync();
-        ViewBag.Tenants = await _tenantRepository.GetAllAsync();
-        ViewBag.ContractStatuses = await _contractStatusRepository.GetAllAsync();
+        await LoadViewBagAsync();
         return View();
     }
 
@@ -79,9 +93,7 @@ public class ContractsController : Controller
             
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.Properties = await _propertyRepository.GetAllAsync();
-        ViewBag.Tenants = await _tenantRepository.GetAllAsync();
-        ViewBag.ContractStatuses = await _contractStatusRepository.GetAllAsync();
+        await LoadViewBagAsync();
         return View(request);
     }
 
@@ -93,9 +105,6 @@ public class ContractsController : Controller
         {
             return NotFound();
         }
-        ViewBag.Properties = await _propertyRepository.GetAllAsync();
-        ViewBag.Tenants = await _tenantRepository.GetAllAsync();
-        ViewBag.ContractStatuses = await _contractStatusRepository.GetAllAsync();
 
         var updateRequest = new UpdateContractRequestDTO
         {
@@ -112,6 +121,7 @@ public class ContractsController : Controller
             ContractStatusId = contract.ContractStatusId
         };
 
+        await LoadViewBagAsync();
         return View(updateRequest);
     }
 
@@ -143,9 +153,7 @@ public class ContractsController : Controller
             
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.Properties = await _propertyRepository.GetAllAsync();
-        ViewBag.Tenants = await _tenantRepository.GetAllAsync();
-        ViewBag.ContractStatuses = await _contractStatusRepository.GetAllAsync();
+        await LoadViewBagAsync();
         return View(request);
     }
 

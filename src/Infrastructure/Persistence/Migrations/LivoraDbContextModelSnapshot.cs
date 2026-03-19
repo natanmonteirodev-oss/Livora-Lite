@@ -844,7 +844,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Livora_Lite.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TenantStatus");

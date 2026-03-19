@@ -1,3 +1,4 @@
+using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Domain.Entities;
@@ -10,27 +11,30 @@ namespace Livora_Lite.Application.Services
         private readonly IMaintenanceRequestRepository _maintenanceRequestRepository;
         private readonly IPropertyRepository _propertyRepository;
         private readonly IContractRepository _contractRepository;
+        private readonly IMapper _mapper;
 
         public MaintenanceRequestService(
             IMaintenanceRequestRepository maintenanceRequestRepository,
             IPropertyRepository propertyRepository,
-            IContractRepository contractRepository)
+            IContractRepository contractRepository,
+            IMapper mapper)
         {
             _maintenanceRequestRepository = maintenanceRequestRepository;
             _propertyRepository = propertyRepository;
             _contractRepository = contractRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<MaintenanceRequestDTO>> GetAllMaintenanceRequestsAsync()
         {
             var maintenanceRequests = await _maintenanceRequestRepository.GetAllAsync();
-            return maintenanceRequests.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<MaintenanceRequestDTO>>(maintenanceRequests);
         }
 
         public async Task<MaintenanceRequestDTO?> GetMaintenanceRequestByIdAsync(int id)
         {
             var maintenanceRequest = await _maintenanceRequestRepository.GetByIdAsync(id);
-            return maintenanceRequest != null ? MapToDTO(maintenanceRequest) : null;
+            return maintenanceRequest != null ? _mapper.Map<MaintenanceRequestDTO>(maintenanceRequest) : null;
         }
 
         public async Task<MaintenanceRequestDTO> CreateMaintenanceRequestAsync(CreateMaintenanceRequestDTO request)
@@ -48,18 +52,9 @@ namespace Livora_Lite.Application.Services
                     throw new ArgumentException("Contrato não encontrado");
             }
 
-            var maintenanceRequest = new MaintenanceRequest
-            {
-                PropertyId = request.PropertyId,
-                ContractId = request.ContractId,
-                Description = request.Description,
-                RequestDate = request.RequestDate,
-                Priority = request.Priority,
-                Status = request.Status
-            };
-
+            var maintenanceRequest = _mapper.Map<MaintenanceRequest>(request);
             var createdMaintenanceRequest = await _maintenanceRequestRepository.CreateAsync(maintenanceRequest);
-            return MapToDTO(createdMaintenanceRequest);
+            return _mapper.Map<MaintenanceRequestDTO>(createdMaintenanceRequest);
         }
 
         public async Task UpdateMaintenanceRequestAsync(UpdateMaintenanceRequestDTO request)
@@ -81,13 +76,7 @@ namespace Livora_Lite.Application.Services
                     throw new ArgumentException("Contrato não encontrado");
             }
 
-            existingMaintenanceRequest.PropertyId = request.PropertyId;
-            existingMaintenanceRequest.ContractId = request.ContractId;
-            existingMaintenanceRequest.Description = request.Description;
-            existingMaintenanceRequest.RequestDate = request.RequestDate;
-            existingMaintenanceRequest.Priority = request.Priority;
-            existingMaintenanceRequest.Status = request.Status;
-
+            _mapper.Map(request, existingMaintenanceRequest);
             await _maintenanceRequestRepository.UpdateAsync(existingMaintenanceRequest);
         }
 
@@ -103,55 +92,25 @@ namespace Livora_Lite.Application.Services
         public async Task<IEnumerable<MaintenanceRequestDTO>> GetMaintenanceRequestsByPropertyAsync(int propertyId)
         {
             var maintenanceRequests = await _maintenanceRequestRepository.GetByPropertyAsync(propertyId);
-            return maintenanceRequests.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<MaintenanceRequestDTO>>(maintenanceRequests);
         }
 
         public async Task<IEnumerable<MaintenanceRequestDTO>> GetMaintenanceRequestsByContractAsync(int contractId)
         {
             var maintenanceRequests = await _maintenanceRequestRepository.GetByContractAsync(contractId);
-            return maintenanceRequests.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<MaintenanceRequestDTO>>(maintenanceRequests);
         }
 
         public async Task<IEnumerable<MaintenanceRequestDTO>> GetMaintenanceRequestsByStatusAsync(MaintenanceStatus status)
         {
             var maintenanceRequests = await _maintenanceRequestRepository.GetByStatusAsync(status);
-            return maintenanceRequests.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<MaintenanceRequestDTO>>(maintenanceRequests);
         }
 
         public async Task<IEnumerable<MaintenanceRequestDTO>> GetMaintenanceRequestsByPriorityAsync(MaintenancePriority priority)
         {
             var maintenanceRequests = await _maintenanceRequestRepository.GetByPriorityAsync(priority);
-            return maintenanceRequests.Select(MapToDTO);
-        }
-
-        private MaintenanceRequestDTO MapToDTO(MaintenanceRequest maintenanceRequest)
-        {
-            return new MaintenanceRequestDTO
-            {
-                Id = maintenanceRequest.Id,
-                PropertyId = maintenanceRequest.PropertyId,
-                ContractId = maintenanceRequest.ContractId,
-                Description = maintenanceRequest.Description,
-                RequestDate = maintenanceRequest.RequestDate,
-                Priority = maintenanceRequest.Priority,
-                Status = maintenanceRequest.Status,
-                CreatedAt = maintenanceRequest.CreatedAt,
-                Property = maintenanceRequest.Property != null ? new PropertyDTO
-                {
-                    Id = maintenanceRequest.Property.Id,
-                    Name = maintenanceRequest.Property.Name
-                } : null,
-                Contract = maintenanceRequest.Contract != null ? new ContractDTO
-                {
-                    Id = maintenanceRequest.Contract.Id,
-                    Tenant = maintenanceRequest.Contract.Tenant != null ? new TenantDTO
-                    {
-                        Id = maintenanceRequest.Contract.Tenant.Id,
-                        FirstName = maintenanceRequest.Contract.Tenant.FirstName,
-                        LastName = maintenanceRequest.Contract.Tenant.LastName
-                    } : null
-                } : null
-            };
+            return _mapper.Map<IEnumerable<MaintenanceRequestDTO>>(maintenanceRequests);
         }
     }
 }

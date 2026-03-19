@@ -20,5 +20,7 @@ namespace Livora_Lite.Application.DTO
         public PropertyDTO? Property { get; set; }
         public TenantDTO? Tenant { get; set; }
         public ContractStatusDTO? ContractStatus { get; set; }
+
+        public string DisplayText => $"Contrato #{Id} - {Tenant?.Name} - R$ {RentValue:F2}";
     }
 }

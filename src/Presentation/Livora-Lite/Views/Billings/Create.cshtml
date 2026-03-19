@@ -1,18 +1,142 @@
 @model Livora_Lite.Application.DTO.CreateBillingRequestDTO
+@using Livora_Lite.Helpers
+
 @{
-    ViewData["Title"] = "Nova Cobrança";
+    ViewData["Title"] = "Nova Cobrança - Livora";
+    BreadcrumbHelper.SetBreadcrumbs(ViewData,
+        new BreadcrumbHelper.BreadcrumbItem("Cobranças", Url.Action("Index", "Billings")),
+        new BreadcrumbHelper.BreadcrumbItem("Nova Cobrança", null, true)
+    );
 }
 
 <div class="container mt-5 mb-5">
-    <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li><li class="breadcrumb-item"><a asp-action="Index">Cobranças</a></li><li class="breadcrumb-item active">Nova</li></ol></nav>
-    <h1 class="section-title mb-4">Nova Cobrança</h1>
-    <div class="row"><div class="col-lg-8"><form asp-action="Create" method="post" class="card shadow-sm">@Html.AntiForgeryToken()<div class="card-header bg-gradient"><h5 class="mb-0">Dados da Cobrança</h5></div><div class="card-body">
-        <div class="mb-3"><label asp-for="ContractId" class="form-label">Contrato</label><select asp-for="ContractId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.Contracts, "Id", "DisplayText"))"><option>Selecione...</option></select></div>
-        <div class="mb-3"><label asp-for="Period" class="form-label">Período</label><input asp-for="Period" class="form-control form-control-lg" placeholder="Ex: Janeiro/2024" /></div>
-        <div class="row"><div class="col-md-6"><div class="mb-3"><label asp-for="Amount" class="form-label">Valor</label><input asp-for="Amount" type="number" class="form-control form-control-lg" step="0.01" /></div></div><div class="col-md-6"><div class="mb-3"><label asp-for="DueDate" class="form-label">Vencimento</label><input asp-for="DueDate" type="date" class="form-control form-control-lg" /></div></div></div>
-        <div class="mb-3"><label asp-for="BillingStatusId" class="form-label">Status</label><select asp-for="BillingStatusId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.BillingStatuses, "Id", "Name"))"><option>Selecione...</option></select></div>
-    </div><div class="card-footer bg-light d-flex gap-2 justify-content-end"><a asp-action="Index" class="btn btn-secondary"><i class="fas fa-times me-2"></i>Cancelar</a><button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Salvar</button></div></form></div></div>
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Cobranças</a></li>
+            <li class="breadcrumb-item active">Nova Cobrança</li>
+        </ol>
+    </nav>
+
+    <!-- Messages -->
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <strong>Erro!</strong> @ViewBag.Error
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="section-title">Registrar Nova Cobrança</h1>
+        <p class="text-muted">Preencha os dados da cobrança para registrá-la no sistema</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <form asp-action="Create" method="post" class="form" novalidate>
+                @Html.AntiForgeryToken()
+                <div class="card shadow-sm">
+                    <!-- Header -->
+                    <div class="card-header bg-gradient">
+                        <h5 class="mb-0">
+                            <i class="fas fa-receipt me-2"></i> Dados da Cobrança
+                        </h5>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <!-- Contrato -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="ContractId" class="form-label">
+                                        <i class="fas fa-file-contract me-2"></i> Contrato
+                                    </label>
+                                    <select asp-for="ContractId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.Contracts, "Id", "DisplayText"))">
+                                        <option value="">-- Selecione um contrato --</option>
+                                    </select>
+                                    <span asp-validation-for="ContractId" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Período -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Period" class="form-label">
+                                        <i class="fas fa-calendar me-2"></i> Período (MM/YYYY)
+                                    </label>
+                                    <input asp-for="Period" class="form-control form-control-lg" placeholder="Ex: 01/2024" />
+                                    <span asp-validation-for="Period" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Valor -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="Amount" class="form-label">
+                                        <i class="fas fa-money-bill-wave me-2"></i> Valor
+                                    </label>
+                                    <input asp-for="Amount" type="number" class="form-control form-control-lg" step="0.01" min="0" placeholder="0.00" />
+                                    <span asp-validation-for="Amount" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <!-- Data de Vencimento -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="DueDate" class="form-label">
+                                        <i class="fas fa-clock me-2"></i> Data de Vencimento
+                                    </label>
+                                    <input asp-for="DueDate" type="date" class="form-control form-control-lg" />
+                                    <span asp-validation-for="DueDate" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="form-group mb-3">
+                                    <label asp-for="BillingStatusId" class="form-label">
+                                        <i class="fas fa-circle me-2"></i> Status
+                                    </label>
+                                    <select asp-for="BillingStatusId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.BillingStatuses, "Id", "Name"))">
+                                        <option value="">-- Selecione um status --</option>
+                                    </select>
+                                    <span asp-validation-for="BillingStatusId" class="text-danger small d-block mt-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="card-footer bg-light">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i> Salvar Cobrança
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    .card-header {
+        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+        color: #ffffff;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+    }
+</style>
 

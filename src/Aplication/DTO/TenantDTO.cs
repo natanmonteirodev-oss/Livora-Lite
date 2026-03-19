@@ -12,5 +12,8 @@ namespace Livora_Lite.Application.DTO
         public TenantStatusDTO? TenantStatus { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        
+        // Propriedade calculada para exibição
+        public string Name => $"{FirstName} {LastName}".Trim();
     }
 }

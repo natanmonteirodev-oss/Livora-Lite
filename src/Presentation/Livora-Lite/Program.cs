@@ -1,5 +1,6 @@
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Application.Services;
+using Livora_Lite.Application.Mappings;
 using Livora_Lite.Domain.Interfaces;
 using Livora_Lite.Domain.Entities;
 using Livora_Lite.Infrastructure.Persistence;
@@ -13,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Add DbContext
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

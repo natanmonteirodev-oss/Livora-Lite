@@ -1,3 +1,4 @@
+using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Domain.Entities;
@@ -16,12 +17,14 @@ namespace Livora_Lite.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly IAppSettingsRepository _appSettingsRepository;
+        private readonly IMapper _mapper;
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration, IAppSettingsRepository appSettingsRepository)
+        public AuthService(IUserRepository userRepository, IConfiguration configuration, IAppSettingsRepository appSettingsRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _appSettingsRepository = appSettingsRepository;
+            _mapper = mapper;
         }
 
         public async Task<AuthResponseDTO> LoginAsync(LoginRequestDTO request)
@@ -58,17 +61,7 @@ namespace Livora_Lite.Application.Services
 
                 var token = await GenerateJwtToken(user);
 
-                var userDTO = new UserDTO
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Role = user.Role,
-                    IsActive = user.IsActive,
-                    CreatedAt = user.CreatedAt,
-                    UpdatedAt = user.UpdatedAt
-                };
+                var userDTO = _mapper.Map<UserDTO>(user);
 
                 return new AuthResponseDTO
                 {
@@ -154,17 +147,7 @@ namespace Livora_Lite.Application.Services
 
                 var token = await GenerateJwtToken(createdUser);
 
-                var userDTO = new UserDTO
-                {
-                    Id = createdUser.Id,
-                    FirstName = createdUser.FirstName,
-                    LastName = createdUser.LastName,
-                    Email = createdUser.Email,
-                    Role = createdUser.Role,
-                    IsActive = createdUser.IsActive,
-                    CreatedAt = createdUser.CreatedAt,
-                    UpdatedAt = createdUser.UpdatedAt
-                };
+                var userDTO = _mapper.Map<UserDTO>(createdUser);
 
                 return new AuthResponseDTO
                 {
@@ -187,16 +170,7 @@ namespace Livora_Lite.Application.Services
         public async Task<UserDTO?> GetUserByEmailAsync(string email)
         {
             var user = await _userRepository.GetByEmailAsync(email);
-            if (user == null)
-                return null;
-
-            return new UserDTO
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email
-            };
+            return user == null ? null : _mapper.Map<UserDTO>(user);
         }
 
         public async Task<bool> ValidatePasswordAsync(string password, string hash)

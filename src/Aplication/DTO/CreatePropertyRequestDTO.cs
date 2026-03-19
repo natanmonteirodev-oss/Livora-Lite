@@ -2,6 +2,9 @@ namespace Livora_Lite.Application.DTO
 {
     public class CreatePropertyRequestDTO
     {
+        // OwnerId será atribuído automaticamente pelo controlador
+        public int OwnerId { get; set; }
+
         public string Name { get; set; } = string.Empty;
         public CreateAddressRequestDTO Address { get; set; } = new();
         public int PropertyTypeId { get; set; }

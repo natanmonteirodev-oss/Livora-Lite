@@ -54,6 +54,18 @@ public class TenantsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateTenantRequestDTO request)
     {
+        // Obter UserId do usuário autenticado
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+        {
+            ModelState.AddModelError("", "Erro ao obter informações do usuário autenticado.");
+            ViewBag.TenantStatuses = await _tenantStatusRepository.GetAllAsync();
+            return View(request);
+        }
+
+        // Atribuir UserId ao DTO
+        request.UserId = userId;
+
         // Validação proativa: verificar se o TenantStatusId existe
         if (request.TenantStatusId > 0)
         {
@@ -71,10 +83,10 @@ public class TenantsController : Controller
                 var tenantId = await _tenantService.CreateAsync(request);
                 
                 // Log audit
-                var userId = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
+                var userIdForAudit = User.FindFirst("sub")?.Value ?? User.Identity?.Name ?? "Unknown";
                 var userName = User.Identity?.Name ?? "Unknown";
                 await _auditService.LogActionAsync(
-                    userId,
+                    userIdForAudit,
                     userName,
                     "Create",
                     "Tenant",

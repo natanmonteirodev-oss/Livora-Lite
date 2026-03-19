@@ -1,3 +1,4 @@
+using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Domain.Entities;
@@ -10,27 +11,30 @@ namespace Livora_Lite.Application.Services
         private readonly IBillingRepository _billingRepository;
         private readonly IContractRepository _contractRepository;
         private readonly IBillingStatusRepository _billingStatusRepository;
+        private readonly IMapper _mapper;
 
         public BillingService(
             IBillingRepository billingRepository,
             IContractRepository contractRepository,
-            IBillingStatusRepository billingStatusRepository)
+            IBillingStatusRepository billingStatusRepository,
+            IMapper mapper)
         {
             _billingRepository = billingRepository;
             _contractRepository = contractRepository;
             _billingStatusRepository = billingStatusRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<BillingDTO>> GetAllBillingsAsync()
         {
             var billings = await _billingRepository.GetAllAsync();
-            return billings.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<BillingDTO>>(billings);
         }
 
         public async Task<BillingDTO?> GetBillingByIdAsync(int id)
         {
             var billing = await _billingRepository.GetByIdAsync(id);
-            return billing != null ? MapToDTO(billing) : null;
+            return billing != null ? _mapper.Map<BillingDTO>(billing) : null;
         }
 
         public async Task<BillingDTO> CreateBillingAsync(CreateBillingRequestDTO request)
@@ -49,17 +53,9 @@ namespace Livora_Lite.Application.Services
             if (await _billingRepository.HasBillingForContractAndPeriodAsync(request.ContractId, request.Period))
                 throw new InvalidOperationException("Já existe uma cobrança para este contrato neste período");
 
-            var billing = new Billing
-            {
-                ContractId = request.ContractId,
-                Period = request.Period,
-                Amount = request.Amount,
-                DueDate = request.DueDate,
-                BillingStatusId = request.BillingStatusId
-            };
-
+            var billing = _mapper.Map<Billing>(request);
             var createdBilling = await _billingRepository.CreateAsync(billing);
-            return MapToDTO(createdBilling);
+            return _mapper.Map<BillingDTO>(createdBilling);
         }
 
         public async Task UpdateBillingAsync(UpdateBillingRequestDTO request)
@@ -85,13 +81,8 @@ namespace Livora_Lite.Application.Services
                     throw new InvalidOperationException("Já existe uma cobrança para este contrato neste período");
             }
 
-            existingBilling.ContractId = request.ContractId;
-            existingBilling.Period = request.Period;
-            existingBilling.Amount = request.Amount;
-            existingBilling.DueDate = request.DueDate;
-            existingBilling.BillingStatusId = request.BillingStatusId;
+            _mapper.Map(request, existingBilling);
             existingBilling.UpdatedAt = DateTime.UtcNow;
-
             await _billingRepository.UpdateAsync(existingBilling);
         }
 
@@ -107,13 +98,13 @@ namespace Livora_Lite.Application.Services
         public async Task<IEnumerable<BillingDTO>> GetBillingsByContractAsync(int contractId)
         {
             var billings = await _billingRepository.GetBillingsByContractAsync(contractId);
-            return billings.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<BillingDTO>>(billings);
         }
 
         public async Task<IEnumerable<BillingDTO>> GetBillingsByPeriodAsync(string period)
         {
             var billings = await _billingRepository.GetBillingsByPeriodAsync(period);
-            return billings.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<BillingDTO>>(billings);
         }
 
         public async Task<bool> HasBillingForContractAndPeriodAsync(int contractId, string period)
@@ -121,52 +112,5 @@ namespace Livora_Lite.Application.Services
             return await _billingRepository.HasBillingForContractAndPeriodAsync(contractId, period);
         }
 
-        private BillingDTO MapToDTO(Billing billing)
-        {
-            return new BillingDTO
-            {
-                Id = billing.Id,
-                ContractId = billing.ContractId,
-                Period = billing.Period,
-                Amount = billing.Amount,
-                DueDate = billing.DueDate,
-                BillingStatusId = billing.BillingStatusId,
-                CreatedAt = billing.CreatedAt,
-                UpdatedAt = billing.UpdatedAt,
-                Contract = billing.Contract != null ? new ContractDTO
-                {
-                    Id = billing.Contract.Id,
-                    PropertyId = billing.Contract.PropertyId,
-                    TenantId = billing.Contract.TenantId,
-                    StartDate = billing.Contract.StartDate,
-                    RentValue = billing.Contract.RentValue,
-                    Property = billing.Contract.Property != null ? new PropertyDTO
-                    {
-                        Id = billing.Contract.Property.Id,
-                        Name = billing.Contract.Property.Name
-                    } : null,
-                    Tenant = billing.Contract.Tenant != null ? new TenantDTO
-                    {
-                        Id = billing.Contract.Tenant.Id,
-                        FirstName = billing.Contract.Tenant.FirstName,
-                        LastName = billing.Contract.Tenant.LastName
-                    } : null
-                } : null,
-                BillingStatus = billing.BillingStatus != null ? new BillingStatusDTO
-                {
-                    Id = billing.BillingStatus.Id,
-                    Name = billing.BillingStatus.Name,
-                    CreatedAt = billing.BillingStatus.CreatedAt
-                } : null,
-                Payments = billing.Payments?.Select(p => new PaymentDTO
-                {
-                    Id = p.Id,
-                    BillingId = p.BillingId,
-                    PaymentDate = p.PaymentDate,
-                    AmountPaid = p.AmountPaid,
-                    PaymentMethodId = p.PaymentMethodId
-                })
-            };
-        }
     }
 }

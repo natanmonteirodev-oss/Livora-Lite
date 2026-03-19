@@ -1,3 +1,4 @@
+using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Domain.Entities;
@@ -13,42 +14,38 @@ namespace Livora_Lite.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserDTO?> GetUserByIdAsync(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
-            return user == null ? null : MapToDTO(user);
+            return user == null ? null : _mapper.Map<UserDTO>(user);
         }
 
         public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            return users.Select(MapToDTO).ToList();
+            return _mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
         public async Task<UserDTO> CreateUserAsync(CreateUserRequestDTO request)
         {
             var passwordHash = HashPassword(request.Password);
             
-            var user = new User
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                PasswordHash = passwordHash,
-                Role = request.Role,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
-            };
+            var user = _mapper.Map<User>(request);
+            user.PasswordHash = passwordHash;
+            user.IsActive = true;
+            user.CreatedAt = DateTime.UtcNow;
 
             await _userRepository.CreateAsync(user);
 
-            return MapToDTO(user);
+            return _mapper.Map<UserDTO>(user);
         }
 
         public async Task<UserDTO> UpdateUserAsync(UpdateUserRequestDTO request)
@@ -57,16 +54,12 @@ namespace Livora_Lite.Application.Services
             if (user == null)
                 throw new Exception("Usuário não encontrado");
 
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
-            user.Email = request.Email;
-            user.Role = request.Role;
-            user.IsActive = request.IsActive;
+            _mapper.Map(request, user);
             user.UpdatedAt = DateTime.UtcNow;
 
             await _userRepository.UpdateAsync(user);
 
-            return MapToDTO(user);
+            return _mapper.Map<UserDTO>(user);
         }
 
         public async Task<bool> DeleteUserAsync(int id)
@@ -94,19 +87,5 @@ namespace Livora_Lite.Application.Services
             }
         }
 
-        private UserDTO MapToDTO(User user)
-        {
-            return new UserDTO
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Role = user.Role,
-                IsActive = user.IsActive,
-                CreatedAt = user.CreatedAt,
-                UpdatedAt = user.UpdatedAt
-            };
-        }
     }
 }

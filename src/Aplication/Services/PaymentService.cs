@@ -1,3 +1,4 @@
+using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;
 using Livora_Lite.Domain.Entities;
@@ -10,27 +11,30 @@ namespace Livora_Lite.Application.Services
         private readonly IPaymentRepository _paymentRepository;
         private readonly IBillingRepository _billingRepository;
         private readonly IPaymentMethodRepository _paymentMethodRepository;
+        private readonly IMapper _mapper;
 
         public PaymentService(
             IPaymentRepository paymentRepository,
             IBillingRepository billingRepository,
-            IPaymentMethodRepository paymentMethodRepository)
+            IPaymentMethodRepository paymentMethodRepository,
+            IMapper mapper)
         {
             _paymentRepository = paymentRepository;
             _billingRepository = billingRepository;
             _paymentMethodRepository = paymentMethodRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<PaymentDTO>> GetAllPaymentsAsync()
         {
             var payments = await _paymentRepository.GetAllAsync();
-            return payments.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<PaymentDTO>>(payments);
         }
 
         public async Task<PaymentDTO?> GetPaymentByIdAsync(int id)
         {
             var payment = await _paymentRepository.GetByIdAsync(id);
-            return payment != null ? MapToDTO(payment) : null;
+            return payment != null ? _mapper.Map<PaymentDTO>(payment) : null;
         }
 
         public async Task<PaymentDTO> CreatePaymentAsync(CreatePaymentRequestDTO request)
@@ -45,16 +49,9 @@ namespace Livora_Lite.Application.Services
             if (paymentMethod == null)
                 throw new ArgumentException("Método de pagamento não encontrado");
 
-            var payment = new Payment
-            {
-                BillingId = request.BillingId,
-                PaymentDate = request.PaymentDate,
-                AmountPaid = request.AmountPaid,
-                PaymentMethodId = request.PaymentMethodId
-            };
-
+            var payment = _mapper.Map<Payment>(request);
             var createdPayment = await _paymentRepository.CreateAsync(payment);
-            return MapToDTO(createdPayment);
+            return _mapper.Map<PaymentDTO>(createdPayment);
         }
 
         public async Task UpdatePaymentAsync(UpdatePaymentRequestDTO request)
@@ -73,12 +70,8 @@ namespace Livora_Lite.Application.Services
             if (paymentMethod == null)
                 throw new ArgumentException("Método de pagamento não encontrado");
 
-            existingPayment.BillingId = request.BillingId;
-            existingPayment.PaymentDate = request.PaymentDate;
-            existingPayment.AmountPaid = request.AmountPaid;
-            existingPayment.PaymentMethodId = request.PaymentMethodId;
+            _mapper.Map(request, existingPayment);
             existingPayment.UpdatedAt = DateTime.UtcNow;
-
             await _paymentRepository.UpdateAsync(existingPayment);
         }
 
@@ -94,7 +87,7 @@ namespace Livora_Lite.Application.Services
         public async Task<IEnumerable<PaymentDTO>> GetPaymentsByBillingAsync(int billingId)
         {
             var payments = await _paymentRepository.GetPaymentsByBillingAsync(billingId);
-            return payments.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<PaymentDTO>>(payments);
         }
 
         public async Task<decimal> GetTotalPaidForBillingAsync(int billingId)
@@ -102,32 +95,5 @@ namespace Livora_Lite.Application.Services
             return await _paymentRepository.GetTotalPaidForBillingAsync(billingId);
         }
 
-        private PaymentDTO MapToDTO(Payment payment)
-        {
-            return new PaymentDTO
-            {
-                Id = payment.Id,
-                BillingId = payment.BillingId,
-                PaymentDate = payment.PaymentDate,
-                AmountPaid = payment.AmountPaid,
-                PaymentMethodId = payment.PaymentMethodId,
-                CreatedAt = payment.CreatedAt,
-                UpdatedAt = payment.UpdatedAt,
-                Billing = payment.Billing != null ? new BillingDTO
-                {
-                    Id = payment.Billing.Id,
-                    ContractId = payment.Billing.ContractId,
-                    Period = payment.Billing.Period,
-                    Amount = payment.Billing.Amount,
-                    DueDate = payment.Billing.DueDate
-                } : null,
-                PaymentMethod = payment.PaymentMethod != null ? new PaymentMethodDTO
-                {
-                    Id = payment.PaymentMethod.Id,
-                    Name = payment.PaymentMethod.Name,
-                    CreatedAt = payment.PaymentMethod.CreatedAt
-                } : null
-            };
-        }
     }
 }

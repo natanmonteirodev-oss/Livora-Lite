@@ -292,7 +292,13 @@ namespace Livora_Lite.Infrastructure.Persistence
                 entity.Property(e => e.IsActive)
                     .HasDefaultValue(true);
 
-                // Foreign key
+                // Foreign key to User
+                entity.HasOne(t => t.User)
+                    .WithMany()
+                    .HasForeignKey(t => t.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Foreign key to TenantStatus
                 entity.HasOne(t => t.TenantStatus)
                     .WithMany()
                     .HasForeignKey(t => t.TenantStatusId)
