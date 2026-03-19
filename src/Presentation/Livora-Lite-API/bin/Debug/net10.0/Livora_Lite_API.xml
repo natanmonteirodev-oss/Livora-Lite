@@ -1,0 +1,604 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Livora-Lite-API</name>
+    </assembly>
+    <members>
+        <member name="T:Livora_Lite_API.Controllers.AuditLogsController">
+            <summary>
+            Controlador de Logs de Auditoria - Gerencia consulta, filtro e exportação de registros de auditoria
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.AuditLogsController.GetAll(System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Lista todos os logs de auditoria com filtros opcionais
+            </summary>
+            <param name="entity">Filtro por tipo de entidade (opcional)</param>
+            <param name="userName">Filtro por nome de usuário (opcional)</param>
+            <param name="startDate">Filtro por data inicial (opcional)</param>
+            <param name="endDate">Filtro por data final (opcional)</param>
+            <returns>Lista de logs de auditoria</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.AuditLogsController.GetById(System.Int32)">
+            <summary>
+            Obtém um log de auditoria específico pelo ID
+            </summary>
+            <param name="id">ID do log de auditoria</param>
+            <returns>Detalhes do log de auditoria</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.AuditLogsController.GetByEntity(System.String,System.String)">
+            <summary>
+            Obtém logs de auditoria por tipo e ID de entidade
+            </summary>
+            <param name="entity">Tipo de entidade (obrigatório)</param>
+            <param name="entityId">ID da entidade (obrigatório)</param>
+            <returns>Lista de logs relacionados à entidade</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.AuditLogsController.GetByUser(System.String)">
+            <summary>
+            Obtém logs de auditoria por usuário
+            </summary>
+            <param name="userId">ID do usuário (obrigatório)</param>
+            <returns>Lista de logs do usuário</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.AuditLogsController.Export(System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Exporta logs de auditoria em formato CSV
+            </summary>
+            <param name="entity">Filtro por tipo de entidade (opcional)</param>
+            <param name="userName">Filtro por nome de usuário (opcional)</param>
+            <param name="startDate">Filtro por data inicial (opcional)</param>
+            <param name="endDate">Filtro por data final (opcional)</param>
+            <returns>Arquivo CSV com os logs de auditoria</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.AuthController">
+            <summary>
+            Controlador de Autenticação
+            Responsável por login e registro de usuários
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.AuthController.Login(Livora_Lite.Application.DTO.LoginRequestDTO)">
+            <summary>
+            Realiza o login do usuário
+            </summary>
+            <param name="request">Credenciais do usuário (email e senha)</param>
+            <returns>Token JWT e informações do usuário</returns>
+            <response code="200">Login realizado com sucesso</response>
+            <response code="401">Credenciais inválidas</response>
+            <response code="400">Dados inválidos</response>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.AuthController.Register(Livora_Lite.Application.DTO.RegisterRequestDTO)">
+            <summary>
+            Registra um novo usuário
+            </summary>
+            <param name="request">Dados do novo usuário</param>
+            <returns>Token JWT e informações do usuário criado</returns>
+            <response code="200">Usuário registrado com sucesso</response>
+            <response code="400">Dados inválidos ou usuário já existe</response>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.BillingsController">
+            <summary>
+            Controlador de Cobranças - Gerencia consulta, criação, atualização e exclusão de cobranças
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.BillingsController.GetAll">
+            <summary>
+            Lista todas as cobranças
+            </summary>
+            <returns>Lista de cobranças</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.BillingsController.GetById(System.Int32)">
+            <summary>
+            Obtém uma cobrança específica pelo ID
+            </summary>
+            <param name="id">ID da cobrança</param>
+            <returns>Detalhes da cobrança</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.BillingsController.Create(Livora_Lite.Application.DTO.CreateBillingRequestDTO)">
+            <summary>
+            Cria uma nova cobrança
+            </summary>
+            <param name="request">Dados da cobrança a ser criada</param>
+            <returns>Mensagem de confirmação da cobrança criada</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.BillingsController.Update(System.Int32,Livora_Lite.Application.DTO.UpdateBillingRequestDTO)">
+            <summary>
+            Atualiza uma cobrança existente
+            </summary>
+            <param name="id">ID da cobrança a ser atualizada</param>
+            <param name="request">Novos dados da cobrança</param>
+            <returns>Mensagem de confirmação da atualização</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.BillingsController.Delete(System.Int32)">
+            <summary>
+            Deleta uma cobrança
+            </summary>
+            <param name="id">ID da cobrança a ser deletada</param>
+            <returns>Confirmação da deleção</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.BillingStatusesController">
+            <summary>
+            Controlador de Status de Cobrança - Fornece acesso aos status de cobranças disponíveis
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.BillingStatusesController.GetAll">
+            <summary>
+            Lista todos os status de cobranças
+            </summary>
+            <returns>Lista de status de cobranças</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.BillingStatusesController.GetById(System.Int32)">
+            <summary>
+            Obtém um status de cobrança específico pelo ID
+            </summary>
+            <param name="id">ID do status de cobrança</param>
+            <returns>Detalhes do status de cobrança</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.ContractsController">
+            <summary>
+            Controlador de Contratos - Gerencia consulta, criação, atualização e exclusão de contratos de aluguel
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ContractsController.GetAll">
+            <summary>
+            Lista todos os contratos
+            </summary>
+            <returns>Lista de contratos</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ContractsController.GetById(System.Int32)">
+            <summary>
+            Obtém um contrato específico pelo ID
+            </summary>
+            <param name="id">ID do contrato</param>
+            <returns>Detalhes do contrato</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ContractsController.Create(Livora_Lite.Application.DTO.CreateContractRequestDTO)">
+            <summary>
+            Cria um novo contrato
+            </summary>
+            <param name="request">Dados do contrato a ser criado</param>
+            <returns>ID e mensagem de confirmação do contrato criado</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ContractsController.Update(System.Int32,Livora_Lite.Application.DTO.UpdateContractRequestDTO)">
+            <summary>
+            Atualiza um contrato existente
+            </summary>
+            <param name="id">ID do contrato a ser atualizado</param>
+            <param name="request">Novos dados do contrato</param>
+            <returns>Mensagem de confirmação da atualização</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ContractsController.Delete(System.Int32)">
+            <summary>
+            Deleta um contrato
+            </summary>
+            <param name="id">ID do contrato a ser deletado</param>
+            <returns>Confirmação da deleção</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.ContractStatusesController">
+            <summary>
+            Controlador de Status de Contrato - Fornece acesso aos status de contratos disponíveis
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ContractStatusesController.GetAll">
+            <summary>
+            Lista todos os status de contratos
+            </summary>
+            <returns>Lista de status de contratos</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ContractStatusesController.GetById(System.Int32)">
+            <summary>
+            Obtém um status de contrato específico pelo ID
+            </summary>
+            <param name="id">ID do status de contrato</param>
+            <returns>Detalhes do status de contrato</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.DashboardController">
+            <summary>
+            Controlador de Dashboard - Fornece dados de dashboard personalizados por função do usuário
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.DashboardController.GetAdminDashboard">
+            <summary>
+            Obtém dashboard para administrador com visão geral do sistema
+            </summary>
+            <returns>Dados do dashboard admin</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.DashboardController.GetOwnerDashboard">
+            <summary>
+            Obtém dashboard para proprietário com visão de suas propriedades e receitas
+            </summary>
+            <returns>Dados do dashboard do proprietário</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.DashboardController.GetTenantDashboard">
+            <summary>
+            Obtém dashboard para inquilino com informações de contrato e pagamentos
+            </summary>
+            <returns>Dados do dashboard do inquilino</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.DashboardController.GetCurrentUserDashboard">
+            <summary>
+            Obtém dashboard personalizado do usuário atual baseado em sua função
+            </summary>
+            <returns>Dados do dashboard do usuário atual</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.MaintenanceRequestsController">
+            <summary>
+            Controlador de Solicitações de Manutenção - Gerencia consulta, criação e exclusão de solicitações de manutenção
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.MaintenanceRequestsController.GetAll">
+            <summary>
+            Lista todas as solicitações de manutenção
+            </summary>
+            <returns>Lista de solicitações de manutenção</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.MaintenanceRequestsController.GetById(System.Int32)">
+            <summary>
+            Obtém uma solicitação de manutenção específica pelo ID
+            </summary>
+            <param name="id">ID da solicitação de manutenção</param>
+            <returns>Detalhes da solicitação de manutenção</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.MaintenanceRequestsController.Create(Livora_Lite.Application.DTO.CreateMaintenanceRequestDTO)">
+            <summary>
+            Cria uma nova solicitação de manutenção
+            </summary>
+            <param name="request">Dados da solicitação de manutenção a ser criada</param>
+            <returns>ID e mensagem de confirmação da solicitação criada</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.MaintenanceRequestsController.Delete(System.Int32)">
+            <summary>
+            Deleta uma solicitação de manutenção
+            </summary>
+            <param name="id">ID da solicitação de manutenção a ser deletada</param>
+            <returns>Confirmação da deleção</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.PaymentMethodsController">
+            <summary>
+            Controlador de Métodos de Pagamento - Fornece acesso aos métodos de pagamento disponíveis
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PaymentMethodsController.GetAll">
+            <summary>
+            Lista todos os métodos de pagamento
+            </summary>
+            <returns>Lista de métodos de pagamento</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PaymentMethodsController.GetById(System.Int32)">
+            <summary>
+            Obtém um método de pagamento específico pelo ID
+            </summary>
+            <param name="id">ID do método de pagamento</param>
+            <returns>Detalhes do método de pagamento</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.PaymentsController">
+            <summary>
+            Controlador de Pagamentos - Gerencia consulta, criação, atualização e exclusão de pagamentos
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PaymentsController.GetAll">
+            <summary>
+            Lista todos os pagamentos
+            </summary>
+            <returns>Lista de pagamentos</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PaymentsController.GetById(System.Int32)">
+            <summary>
+            Obtém um pagamento específico pelo ID
+            </summary>
+            <param name="id">ID do pagamento</param>
+            <returns>Detalhes do pagamento</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PaymentsController.Create(Livora_Lite.Application.DTO.CreatePaymentRequestDTO)">
+            <summary>
+            Cria um novo pagamento
+            </summary>
+            <param name="request">Dados do pagamento a ser criado</param>
+            <returns>ID e mensagem de confirmação do pagamento criado</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PaymentsController.Update(System.Int32,Livora_Lite.Application.DTO.UpdatePaymentRequestDTO)">
+            <summary>
+            Atualiza um pagamento existente
+            </summary>
+            <param name="id">ID do pagamento a ser atualizado</param>
+            <param name="request">Novos dados do pagamento</param>
+            <returns>Mensagem de confirmação da atualização</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PaymentsController.Delete(System.Int32)">
+            <summary>
+            Deleta um pagamento
+            </summary>
+            <param name="id">ID do pagamento a ser deletado</param>
+            <returns>Confirmação da deleção</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.PropertiesController">
+            <summary>
+            Controlador de Propriedades - Gerencia consulta, criação, atualização e exclusão de propriedades imobiliárias
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertiesController.GetAll">
+            <summary>
+            Lista todas as propriedades
+            </summary>
+            <returns>Lista de propriedades</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertiesController.GetById(System.Int32)">
+            <summary>
+            Obtém uma propriedade específica pelo ID
+            </summary>
+            <param name="id">ID da propriedade</param>
+            <returns>Detalhes da propriedade</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertiesController.Create(Livora_Lite.Application.DTO.CreatePropertyRequestDTO)">
+            <summary>
+            Cria uma nova propriedade
+            </summary>
+            <param name="request">Dados da propriedade a ser criada</param>
+            <returns>ID e mensagem de confirmação da propriedade criada</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertiesController.Update(System.Int32,Livora_Lite.Application.DTO.UpdatePropertyRequestDTO)">
+            <summary>
+            Atualiza uma propriedade existente
+            </summary>
+            <param name="id">ID da propriedade a ser atualizada</param>
+            <param name="request">Novos dados da propriedade</param>
+            <returns>Mensagem de confirmação da atualização</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertiesController.Delete(System.Int32)">
+            <summary>
+            Deleta uma propriedade
+            </summary>
+            <param name="id">ID da propriedade a ser deletada</param>
+            <returns>Confirmação da deleção</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.PropertyStatusesController">
+            <summary>
+            Controlador de Status de Propriedade - Fornece acesso aos status de propriedades disponíveis
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertyStatusesController.GetAll">
+            <summary>
+            Lista todos os status de propriedades
+            </summary>
+            <returns>Lista de status de propriedades</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertyStatusesController.GetById(System.Int32)">
+            <summary>
+            Obtém um status de propriedade específico pelo ID
+            </summary>
+            <param name="id">ID do status de propriedade</param>
+            <returns>Detalhes do status de propriedade</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.PropertyTypesController">
+            <summary>
+            Controlador de Tipos de Propriedade - Fornece acesso aos tipos de propriedades disponíveis
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertyTypesController.GetAll">
+            <summary>
+            Lista todos os tipos de propriedades
+            </summary>
+            <returns>Lista de tipos de propriedades</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.PropertyTypesController.GetById(System.Int32)">
+            <summary>
+            Obtém um tipo de propriedade específico pelo ID
+            </summary>
+            <param name="id">ID do tipo de propriedade</param>
+            <returns>Detalhes do tipo de propriedade</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.ReportsController">
+            <summary>
+            Controlador de Relatórios - Gerencia geração de relatórios financeiros e operacionais
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ReportsController.GetFinancialReport">
+            <summary>
+            Gera relatório financeiro com resumo de receitas e despesas
+            </summary>
+            <returns>Dados do relatório financeiro</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ReportsController.GetPropertyPerformanceReport">
+            <summary>
+            Gera relatório de performance das propriedades
+            </summary>
+            <returns>Dados do relatório de performance</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ReportsController.GetContractAnalysisReport">
+            <summary>
+            Gera análise de contratos ativos e vencidos
+            </summary>
+            <returns>Dados da análise de contratos</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.ReportsController.GetMaintenanceReport">
+            <summary>
+            Gera relatório de solicitações de manutenção
+            </summary>
+            <returns>Dados do relatório de manutenção</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.SettingsController">
+            <summary>
+            Controlador de Configurações - Gerencia parâmetros e configurações do sistema
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.SettingsController.GetSetting(System.String)">
+            <summary>
+            Obtém uma configuração específica pela chave
+            </summary>
+            <param name="key">Chave da configuração</param>
+            <returns>Dados da configuração</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.SettingsController.UpdateTimeout(System.Int32)">
+            <summary>
+            Atualiza o tempo limite de sessão do sistema
+            </summary>
+            <param name="sessionTimeoutMinutes">Tempo em minutos (1-1440)</param>
+            <returns>Confirmação da atualização</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.SettingsController.GetIndex">
+            <summary>
+            Obtém todas as configurações do sistema
+            </summary>
+            <returns>Lista de todas as configurações</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.TenantsController">
+            <summary>
+            Controlador de Inquilinos - Gerencia consulta, criação, atualização e exclusão de inquilinos
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.TenantsController.GetAll">
+            <summary>
+            Lista todos os inquilinos
+            </summary>
+            <returns>Lista de inquilinos</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.TenantsController.GetById(System.Int32)">
+            <summary>
+            Obtém um inquilino específico pelo ID
+            </summary>
+            <param name="id">ID do inquilino</param>
+            <returns>Detalhes do inquilino</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.TenantsController.Create(Livora_Lite.Application.DTO.CreateTenantRequestDTO)">
+            <summary>
+            Cria um novo inquilino
+            </summary>
+            <param name="request">Dados do inquilino a ser criado</param>
+            <returns>ID e mensagem de confirmação do inquilino criado</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.TenantsController.Update(System.Int32,Livora_Lite.Application.DTO.UpdateTenantRequestDTO)">
+            <summary>
+            Atualiza um inquilino existente
+            </summary>
+            <param name="id">ID do inquilino a ser atualizado</param>
+            <param name="request">Novos dados do inquilino</param>
+            <returns>Mensagem de confirmação da atualização</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.TenantsController.Delete(System.Int32)">
+            <summary>
+            Deleta um inquilino
+            </summary>
+            <param name="id">ID do inquilino a ser deletado</param>
+            <returns>Confirmação da deleção</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.TenantStatusesController">
+            <summary>
+            Controlador de Status de Inquilino - Fornece acesso aos status de inquilinos disponíveis
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.TenantStatusesController.GetAll">
+            <summary>
+            Lista todos os status de inquilinos
+            </summary>
+            <returns>Lista de status de inquilinos</returns>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.TenantStatusesController.GetById(System.Int32)">
+            <summary>
+            Obtém um status de inquilino específico pelo ID
+            </summary>
+            <param name="id">ID do status de inquilino</param>
+            <returns>Detalhes do status de inquilino</returns>
+        </member>
+        <member name="T:Livora_Lite_API.Controllers.UsersController">
+            <summary>
+            Controlador de Usuários
+            Gerencia consulta, criação, atualização e exclusão de usuários
+            </summary>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.UsersController.GetAll">
+            <summary>
+            Obtém todos os usuários
+            </summary>
+            <returns>Lista de todos os usuários</returns>
+            <response code="200">Listagem de usuários retornada com sucesso</response>
+            <response code="401">Não autorizado</response>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.UsersController.GetById(System.Int32)">
+            <summary>
+            Obtém um usuário específico por ID
+            </summary>
+            <param name="id">ID do usuário</param>
+            <returns>Dados do usuário solicitado</returns>
+            <response code="200">Usuário encontrado</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="401">Não autorizado</response>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.UsersController.Create(Livora_Lite.Application.DTO.CreateUserRequestDTO)">
+            <summary>
+            Cria um novo usuário
+            </summary>
+            <param name="request">Dados do novo usuário</param>
+            <returns>Confirmação da criação</returns>
+            <response code="200">Usuário criado com sucesso</response>
+            <response code="400">Dados inválidos</response>
+            <response code="401">Não autorizado</response>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.UsersController.Update(System.Int32,Livora_Lite.Application.DTO.UpdateUserRequestDTO)">
+            <summary>
+            Atualiza um usuário existente
+            </summary>
+            <param name="id">ID do usuário a atualizar</param>
+            <param name="request">Novos dados do usuário</param>
+            <returns>Confirmação da atualização</returns>
+            <response code="200">Usuário atualizado com sucesso</response>
+            <response code="400">Dados inválidos</response>
+            <response code="401">Não autorizado</response>
+        </member>
+        <member name="M:Livora_Lite_API.Controllers.UsersController.Delete(System.Int32)">
+            <summary>
+            Deleta um usuário
+            </summary>
+            <param name="id">ID do usuário a ser deletado</param>
+            <returns>Confirmação da deleção</returns>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
+        </member>
+    </members>
+</doc>
