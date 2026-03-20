@@ -1,0 +1,169 @@
+@page "/dashboard"
+@using Livora_Lite_Blazor.Services
+@using Livora_Lite.Application.DTO
+@inject IAuthService AuthService
+@inject IDashboardService DashboardService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Dashboard - Livora Lite</PageTitle>
+
+@if (!Initialized)
+{
+    <div class="container mt-5">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-3">Carregando seu dashboard...</p>
+        </div>
+    </div>
+}
+else if (!AuthService.IsAuthenticated())
+{
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            <h4>❌ Não Autenticado</h4>
+            <p>Você precisa estar autenticado para acessar o dashboard.</p>
+            <a href="/login" class="btn btn-primary">Ir ao Login</a>
+        </div>
+        
+        <div class="alert alert-warning mt-3">
+            <strong>Debug Info:</strong>
+            <p>IsAuthenticated: false</p>
+            <p>GetCurrentUser: null</p>
+            <p>Token: {(!string.IsNullOrEmpty(AuthService.GetToken()) ? "Presente" : "Ausente")}</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-fluid mt-4">
+        <!-- Debug Section -->
+        <div class="alert alert-info mb-4">
+            <strong>🔍 Status da Sessão:</strong>
+            <ul style="margin-bottom: 0; margin-top: 10px;">
+                <li><strong>Usuário:</strong> {AuthService.GetCurrentUser()?.FirstName} {AuthService.GetCurrentUser()?.LastName}</li>
+                <li><strong>Email:</strong> {AuthService.GetCurrentUser()?.Email}</li>
+                <li><strong>Role:</strong> {AuthService.GetCurrentUser()?.Role}</li>
+                <li><strong>Token:</strong> {(!string.IsNullOrEmpty(AuthService.GetToken()) ? "✓ Presente" : "✗ Ausente")}</li>
+                <li><strong>Status:</strong> {DebugMessage}</li>
+            </ul>
+        </div>
+
+        <!-- Header -->
+        <div style="margin-bottom: 30px;">
+            <h1 style="font-size: 2rem; color: #1e5128; font-weight: 700; margin-bottom: 5px;">
+                Bem-vindo, @(AuthService.GetCurrentUser()?.FirstName ?? "Usuário")!
+            </h1>
+            <p style="color: #666; margin: 0;">
+                @GetDashboardTitle()
+            </p>
+        </div>
+
+        @if (AuthService.GetCurrentUser()?.Role == "Admin")
+        {
+            <AdminDashboardComponent Dashboard="AdminDashboard" />
+        }
+        else if (AuthService.GetCurrentUser()?.Role == "Owner")
+        {
+            <OwnerDashboardComponent Dashboard="OwnerDashboard" />
+        }
+        else
+        {
+            <TenantDashboardComponent Dashboard="TenantDashboard" />
+        }
+    </div>
+}
+
+@code {
+    private AdminDashboardDTO? AdminDashboard;
+    private OwnerDashboardDTO? OwnerDashboard;
+    private TenantDashboardDTO? TenantDashboard;
+    private bool Initialized = false;
+    private string? DebugMessage = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine($"[Dashboard] === INICIALIZANDO DASHBOARD ===");
+        
+        var isAuthenticated = AuthService.IsAuthenticated();
+        Console.WriteLine($"[Dashboard] IsAuthenticated: {isAuthenticated}");
+        
+        if (!isAuthenticated)
+        {
+            Console.WriteLine($"[Dashboard] ✗ Usuário não autenticado - redirecionando para login");
+            DebugMessage = "❌ Você não está autenticado!";
+            Initialized = true;
+            StateHasChanged();
+            await Task.Delay(1000);
+            NavigationManager.NavigateTo("/login");
+            return;
+        }
+
+        var user = AuthService.GetCurrentUser();
+        Console.WriteLine($"[Dashboard] Usuário atual: {(user != null ? $"{user.FirstName} {user.LastName} (Role: {user.Role})" : "null")}");
+        Console.WriteLine($"[Dashboard] Token disponível: {(!string.IsNullOrEmpty(AuthService.GetToken()) ? "SIM" : "NÃO")}");
+        
+        if (user == null)
+        {
+            Console.WriteLine($"[Dashboard] ✗ Usuário é null - redirecionando para login");
+            DebugMessage = "❌ Usuário não encontrado!";
+            Initialized = true;
+            StateHasChanged();
+            await Task.Delay(1000);
+            NavigationManager.NavigateTo("/login");
+            return;
+        }
+
+        try
+        {
+            Console.WriteLine($"[Dashboard] → Carregando dados para role: {user.Role}");
+            DebugMessage = $"⏳ Carregando dados para {user.Role}...";
+            StateHasChanged();
+            
+            if (user.Role == "Admin")
+            {
+                Console.WriteLine($"[Dashboard] → Requisitando GetAdminDashboardAsync()");
+                AdminDashboard = await DashboardService.GetAdminDashboardAsync();
+                Console.WriteLine($"[Dashboard] ✓ Admin Dashboard carregado: {(AdminDashboard != null ? "dados recebidos" : "null")}");
+            }
+            else if (user.Role == "Owner")
+            {
+                Console.WriteLine($"[Dashboard] → Requisitando GetOwnerDashboardAsync({user.Id})");
+                OwnerDashboard = await DashboardService.GetOwnerDashboardAsync(user.Id);
+                Console.WriteLine($"[Dashboard] ✓ Owner Dashboard carregado: {(OwnerDashboard != null ? "dados recebidos" : "null")}");
+            }
+            else if (user.Role == "Tenant")
+            {
+                Console.WriteLine($"[Dashboard] → Requisitando GetTenantDashboardAsync({user.Id})");
+                TenantDashboard = await DashboardService.GetTenantDashboardAsync(user.Id);
+                Console.WriteLine($"[Dashboard] ✓ Tenant Dashboard carregado: {(TenantDashboard != null ? "dados recebidos" : "null")}");
+            }
+            DebugMessage = $"✓ Dashboard carregado com sucesso!";
+            Console.WriteLine($"[Dashboard] ✓ Dashboard carregado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Dashboard] ✗ Erro ao carregar dashboard: {ex.GetType().Name}");
+            Console.WriteLine($"[Dashboard] Mensagem: {ex.Message}");
+            Console.WriteLine($"[Dashboard] StackTrace: {ex.StackTrace}");
+            DebugMessage = $"❌ Erro: {ex.Message}";
+        }
+        finally
+        {
+            Initialized = true;
+            StateHasChanged();
+        }
+    }
+
+    private string GetDashboardTitle()
+    {
+        var role = AuthService.GetCurrentUser()?.Role;
+        return role switch
+        {
+            "Admin" => "Visão geral de todas as propriedades, contratos e pagamentos",
+            "Owner" => "Gerenciador de seus imóveis",
+            _ => "Acompanhe seus contratos, pagamentos e manutenção"
+        };
+    }
+}

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj": {}
+    "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj": {}
   },
   "projects": {
-    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
+    "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
+        "projectUniqueName": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
+        "projectPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
         "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\obj\\",
+        "outputPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,13 +32,16 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj"
+              "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
+                "projectPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj"
               }
             }
           }
         },
         "warningProperties": {
+          "noWarn": [
+            "NU1903"
+          ],
           "warnAsError": [
             "NU1605"
           ]
@@ -56,7 +59,11 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[13.0.1, )"
+              "version": "[12.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -369,14 +376,14 @@
         }
       }
     },
-    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
+    "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj",
+        "projectUniqueName": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj",
+        "projectPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\obj\\",
+        "outputPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -708,14 +715,14 @@
         }
       }
     },
-    "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj": {
+    "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
+        "projectUniqueName": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
         "projectName": "Livora-Lite-Blazor",
-        "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
+        "projectPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
         "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\obj\\",
+        "outputPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -736,11 +743,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
-                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj"
-              },
-              "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Domain\\Domain.csproj"
+              "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
+                "projectPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj"
               }
             }
           }
@@ -766,19 +770,6 @@
               "target": "Package",
               "version": "[10.0.4, )",
               "autoReferenced": true
-            },
-            "Microsoft.AspNetCore.Components.WebAssembly": {
-              "target": "Package",
-              "version": "[10.0.4, )"
-            },
-            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[10.0.4, )"
-            },
-            "System.Net.Http.Json": {
-              "target": "Package",
-              "version": "[10.0.0, )"
             }
           },
           "imports": [

@@ -1,3 +1,5 @@
+#nullable disable
+
 using Livora_Lite.Domain.Entities;
 using Livora_Lite.Domain.Interfaces;
 using Livora_Lite.Infrastructure.Persistence;

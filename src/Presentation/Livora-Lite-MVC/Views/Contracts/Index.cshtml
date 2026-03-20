@@ -67,9 +67,9 @@
                         {
                             <tr>
                                 <td>
-                                    <strong>@contract.Property?.Name</strong>
+                                    <strong>@(contract.Property?.Name!)</strong>
                                 </td>
-                                <td>@(contract.Tenant != null ? $"{contract.Tenant.FirstName} {contract.Tenant.LastName}" : "N/A")</td>
+                                <td>@(contract.Tenant != null ? $"{(contract.Tenant.FirstName ?? "")!} {(contract.Tenant.LastName ?? "")!}" : "N/A")</td>
                                 <td>@contract.StartDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     @if (contract.EndDate.HasValue)

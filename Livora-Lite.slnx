@@ -14,4 +14,7 @@
   <Folder Name="/src/Infrastructure/">
     <Project Path="src/Infrastructure/Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/Presentation/Livora-Lite-Blazor/">
+    <Project Path="src/Presentation/Livora-Lite-Blazor/Livora-Lite-Blazor/Livora-Lite-Blazor.csproj" />
+  </Folder>
 </Solution>

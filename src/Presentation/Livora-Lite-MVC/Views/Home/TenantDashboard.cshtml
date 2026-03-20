@@ -364,7 +364,7 @@
         data: {
             labels: ['Ativos', 'Expirando em Breve'],
             datasets: [{
-                data: [@Model.ActiveContracts, @Model.ExpiringContracts],
+                data: [@(Model?.ActiveContracts ?? 0), @(Model?.ExpiringContracts ?? 0)],
                 backgroundColor: [
                     '#00afb9',
                     '#ffc107'

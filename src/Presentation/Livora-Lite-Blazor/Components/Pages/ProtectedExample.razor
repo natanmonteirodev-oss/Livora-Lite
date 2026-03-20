@@ -1,0 +1,78 @@
+@page "/protected-example"
+@inherits ProtectedComponent
+
+<PageTitle>Página Protegida - Livora Lite</PageTitle>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            @if (IsLoading)
+            {
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+            }
+            else if (!IsAuthenticated)
+            {
+                <div class="alert alert-warning">
+                    Você precisa estar autenticado para acessar esta página.
+                    <a href="/login" class="alert-link">Ir para login</a>
+                </div>
+            }
+            else
+            {
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">Página Protegida</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5>Informações do Usuário Autenticado</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Campo</th>
+                                    <th>Valor</th>
+                                </tr>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>@AuthService.GetCurrentUser()?.Id</td>
+                                </tr>
+                                <tr>
+                                    <td>Nome Completo</td>
+                                    <td>@AuthService.GetCurrentUser()?.FirstName @AuthService.GetCurrentUser()?.LastName</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>@AuthService.GetCurrentUser()?.Email</td>
+                                </tr>
+                                <tr>
+                                    <td>Data de Criação</td>
+                                    <td>@(AuthService.GetCurrentUser()?.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A")</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5>Token JWT</h5>
+                            <div class="alert alert-warning">
+                                <small>Token: @(AuthService.GetToken() != null ? AuthService.GetToken()?.Substring(0, Math.Min(50, AuthService.GetToken()!.Length)) + "..." : "Não carregado")</small>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" @onclick="LogoutAsync">
+                            Sair da Conta
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private async Task LogoutAsync()
+    {
+        await AuthService.LogoutAsync();
+        NavigationManager.NavigateTo("/login");
+    }
+}

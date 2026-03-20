@@ -1,0 +1,145 @@
+@page "/register"
+@using Livora_Lite_Blazor.Services
+@using Livora_Lite.Application.DTO
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Registro - Livora Lite</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Criar Conta</h4>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(ErrorMessage))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @ErrorMessage
+                            <button type="button" class="btn-close" @onclick="() => ErrorMessage = string.Empty"></button>
+                        </div>
+                    }
+
+                    <form @onsubmit="HandleRegister">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Primeiro Nome</label>
+                            <input type="text" class="form-control" id="firstName" 
+                                   placeholder="Seu primeiro nome" 
+                                   @bind="FirstName" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="lastName" 
+                                   placeholder="Seu sobrenome" 
+                                   @bind="LastName" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" 
+                                   placeholder="seu.email@exemplo.com" 
+                                   @bind="Email" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" 
+                                   placeholder="Digite uma senha forte" 
+                                   @bind="Password" required />
+                            <small class="text-muted d-block mt-1">
+                                A senha deve conter pelo menos 6 caracteres.
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirmar Senha</label>
+                            <input type="password" class="form-control" id="confirmPassword" 
+                                   placeholder="Confirme sua senha" 
+                                   @bind="ConfirmPassword" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100" disabled="@IsLoading">
+                            @if (IsLoading)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                                <span>Criando conta...</span>
+                            }
+                            else
+                            {
+                                <span>Criar Conta</span>
+                            }
+                        </button>
+                    </form>
+
+                    <hr />
+
+                    <p class="text-center">
+                        Já tem conta? 
+                        <a href="/login" class="text-decoration-none">Faça login aqui</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string FirstName = string.Empty;
+    private string LastName = string.Empty;
+    private string Email = string.Empty;
+    private string Password = string.Empty;
+    private string ConfirmPassword = string.Empty;
+    private string ErrorMessage = string.Empty;
+    private bool IsLoading = false;
+
+    private async Task HandleRegister()
+    {
+        if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName) || 
+            string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) || 
+            string.IsNullOrWhiteSpace(ConfirmPassword))
+        {
+            ErrorMessage = "Todos os campos são obrigatórios.";
+            return;
+        }
+
+        if (Password.Length < 6)
+        {
+            ErrorMessage = "A senha deve conter pelo menos 6 caracteres.";
+            return;
+        }
+
+        if (Password != ConfirmPassword)
+        {
+            ErrorMessage = "As senhas não correspondem.";
+            return;
+        }
+
+        IsLoading = true;
+        ErrorMessage = string.Empty;
+
+        try
+        {
+            var response = await AuthService.RegisterAsync(FirstName, LastName, Email, Password, ConfirmPassword);
+
+            if (response.Success)
+            {
+                NavigationManager.NavigateTo("/", forceLoad: true);
+            }
+            else
+            {
+                ErrorMessage = response.Message ?? "Falha ao criar a conta. Verifique os dados fornecidos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Erro ao criar conta: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+}

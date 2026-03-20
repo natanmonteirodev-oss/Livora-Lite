@@ -1,13 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Eg4vuIU5TlA=",
+  "dgSpecHash": "dbJLEd4IbyQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
+  "projectFilePath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\natan\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\natan\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\natan\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.4\\microsoft.aspnetcore.app.internal.assets.10.0.4.nupkg.sha512",
-    "C:\\Users\\natan\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly\\10.0.4\\microsoft.aspnetcore.components.webassembly.10.0.4.nupkg.sha512",
-    "C:\\Users\\natan\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly.devserver\\10.0.4\\microsoft.aspnetcore.components.webassembly.devserver.10.0.4.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.5\\microsoft.entityframeworkcore.10.0.5.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.5\\microsoft.entityframeworkcore.abstractions.10.0.5.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\10.0.5\\microsoft.entityframeworkcore.analyzers.10.0.5.nupkg.sha512",
@@ -15,34 +14,7 @@
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.3.0\\microsoft.identitymodel.jsonwebtokens.7.3.0.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.identitymodel.logging\\7.3.0\\microsoft.identitymodel.logging.7.3.0.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.3.0\\microsoft.identitymodel.tokens.7.3.0.nupkg.sha512",
-    "C:\\Users\\natan\\.nuget\\packages\\microsoft.jsinterop.webassembly\\10.0.4\\microsoft.jsinterop.webassembly.10.0.4.nupkg.sha512",
-    "C:\\Users\\natan\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.3.0\\system.identitymodel.tokens.jwt.7.3.0.nupkg.sha512",
-    "C:\\Users\\natan\\.nuget\\packages\\system.net.http.json\\10.0.0\\system.net.http.json.10.0.0.nupkg.sha512"
+    "C:\\Users\\natan\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.3.0\\system.identitymodel.tokens.jwt.7.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1510",
-      "level": "Warning",
-      "message": "PackageReference System.Net.Http.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
-      "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
-      "libraryId": "System.Net.Http.Json",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "Package 'AutoMapper' 13.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
-      "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
-      "libraryId": "AutoMapper",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

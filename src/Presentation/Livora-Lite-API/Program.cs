@@ -5,6 +5,7 @@ using Livora_Lite.Domain.Interfaces;
 using Livora_Lite.Domain.Entities;
 using Livora_Lite.Infrastructure.Persistence;
 using Livora_Lite.Infrastructure;
+using Livora_Lite_API.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -14,10 +15,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 
-// Add NSwag/Swagger UI
-builder.Services.AddOpenApiDocument();
+// Add NSwag/Swagger UI (melhor suporte .NET 10 que Swashbuckle)
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.Title = "Livora Lite API";
+    config.Description = "API para gerenciamento de propriedades e aluguéis";
+    config.Version = "1.0";
+});
 
 // Add CORS for Blazor and other clients
 builder.Services.AddCors(options =>
@@ -44,6 +49,10 @@ var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationExcep
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer is required");
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience is required");
 
+Console.WriteLine($"[JWT Config] Key Length: {jwtKey.Length} chars");
+Console.WriteLine($"[JWT Config] Issuer: {jwtIssuer}");
+Console.WriteLine($"[JWT Config] Audience: {jwtAudience}");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -55,7 +64,62 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtIssuer,
             ValidAudience = jwtAudience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ClockSkew = TimeSpan.Zero // Sem tolerância de tempo
+        };
+
+        // Adicionar eventos para debug
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine($"[JWT] ✓ Token validado com sucesso");
+                Console.WriteLine($"[JWT] Usuário: {context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value}");
+                var roles = string.Join(", ", context.Principal?.FindAll(System.Security.Claims.ClaimTypes.Role)?.Select(c => c.Value) ?? new string[] { });
+                Console.WriteLine($"[JWT] Roles: {roles}");
+                return Task.CompletedTask;
+            },
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"[JWT] ✗ Falha na autenticação");
+                Console.WriteLine($"[JWT] Exception Type: {context.Exception?.GetType().Name}");
+                Console.WriteLine($"[JWT] Mensagem: {context.Exception?.Message}");
+                
+                var exceptionType = context.Exception?.GetType().Name ?? "";
+                if (exceptionType.Contains("Expired"))
+                {
+                    Console.WriteLine($"[JWT] Razão: Token expirado");
+                }
+                else if (exceptionType.Contains("InvalidSignature"))
+                {
+                    Console.WriteLine($"[JWT] Razão: Assinatura inválida");
+                }
+                else if (exceptionType.Contains("InvalidIssuer"))
+                {
+                    Console.WriteLine($"[JWT] Razão: Issuer inválido");
+                }
+                else if (exceptionType.Contains("InvalidAudience"))
+                {
+                    Console.WriteLine($"[JWT] Razão: Audience inválido");
+                }
+                else
+                {
+                    Console.WriteLine($"[JWT] Razão: Outro erro de autenticação");
+                }
+                return Task.CompletedTask;
+            },
+            OnChallenge = context =>
+            {
+                Console.WriteLine($"[JWT] ⚠️ Challenge (sem token ou token inválido)");
+                Console.WriteLine($"[JWT] Error: {context.Error}");
+                Console.WriteLine($"[JWT] ErrorDescription: {context.ErrorDescription}");
+                return Task.CompletedTask;
+            },
+            OnForbidden = context =>
+            {
+                Console.WriteLine($"[JWT] 🚫 Forbidden (usuário não tem permissão para este recurso)");
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -199,13 +263,19 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    // Middleware para injetar Bearer Token support no Swagger
+    // DEVE estar antes do UseSwaggerUi para interceptar a resposta
+    app.UseMiddleware<Livora_Lite_API.Middleware.SwaggerBearerSecurityMiddleware>();
+    
     app.UseOpenApi();
     app.UseSwaggerUi();
 }
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+
+// Add authentication logging middleware to see if Bearer token is being sent
+app.UseMiddleware<Livora_Lite_API.Middleware.AuthenticationLoggingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

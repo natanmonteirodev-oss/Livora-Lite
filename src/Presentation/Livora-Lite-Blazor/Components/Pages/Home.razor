@@ -1,7 +1,193 @@
 ﻿@page "/"
+@using Livora_Lite_Blazor.Services
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Livora Lite - Gerenciador de Imóveis</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (AuthService.IsAuthenticated())
+{
+    // Se autenticado, redireciona para o dashboard
+    <meta http-equiv="refresh" content="0; url=/dashboard" />
+}
+else
+{
+    <!-- Landing Page -->
+    <div style="background: linear-gradient(135deg, #1e5128 0%, #2d8659 100%); min-height: 100vh; display: flex; align-items: center;">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Lado Esquerdo - Texto -->
+                <div class="col-lg-6 text-white mb-5 mb-lg-0">
+                    <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 20px;">
+                        Gerenciador de Imóveis Inteligente
+                    </h1>
+                    <p style="font-size: 1.25rem; margin-bottom: 30px; opacity: 0.95;">
+                        Simplifique o gerenciamento de suas propriedades com nossa plataforma completa. 
+                        Controle contratos, pagamentos, inquilinos e manutenção tudo em um lugar.
+                    </p>
 
-Welcome to your new app.
+                    <!-- Features -->
+                    <div style="margin-bottom: 40px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                            <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-right: 15px;"></i>
+                            <span style="font-size: 1.1rem;">Gerenciamento completo de propriedades</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                            <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-right: 15px;"></i>
+                            <span style="font-size: 1.1rem;">Acompanhamento de pagamentos e faturas</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                            <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-right: 15px;"></i>
+                            <span style="font-size: 1.1rem;">Contratos digitalizados e seguros</span>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-right: 15px;"></i>
+                            <span style="font-size: 1.1rem;">Dashboard em tempo real com análises</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <a href="/register" class="btn" style="background-color: #fff; color: #1e5128; font-weight: 600; padding: 12px 30px; font-size: 1.1rem; border: none; border-radius: 5px; cursor: pointer;">
+                            Registrar Agora
+                        </a>
+                        <a href="/login" class="btn" style="background-color: transparent; color: #fff; font-weight: 600; padding: 12px 30px; font-size: 1.1rem; border: 2px solid #fff; border-radius: 5px; cursor: pointer;">
+                            Já tem Conta? Entrar
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lado Direito - Ilustração / Cards -->
+                <div class="col-lg-6">
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 40px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="background: rgba(255,255,255,0.95); border-radius: 12px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+                            <div style="margin-bottom: 25px;">
+                                <h5 style="color: #1e5128; font-weight: 600; margin-bottom: 10px;">
+                                    <i class="fas fa-building" style="margin-right: 10px;"></i>Seus Imóveis
+                                </h5>
+                                <p style="color: #666; margin: 0;">Gerenciar propriedades de forma centralizada</p>
+                            </div>
+
+                            <div style="margin-bottom: 25px;">
+                                <h5 style="color: #2d8659; font-weight: 600; margin-bottom: 10px;">
+                                    <i class="fas fa-file-contract" style="margin-right: 10px;"></i>Contratos
+                                </h5>
+                                <p style="color: #666; margin: 0;">Crie e acompanhe contratos digitais</p>
+                            </div>
+
+                            <div style="margin-bottom: 25px;">
+                                <h5 style="color: #3a9f6a; font-weight: 600; margin-bottom: 10px;">
+                                    <i class="fas fa-money-bill" style="margin-right: 10px;"></i>Pagamentos
+                                </h5>
+                                <p style="color: #666; margin: 0;">Controle de recebimentos automático</p>
+                            </div>
+
+                            <div>
+                                <h5 style="color: #449a76; font-weight: 600; margin-bottom: 10px;">
+                                    <i class="fas fa-wrench" style="margin-right: 10px;"></i>Manutenção
+                                </h5>
+                                <p style="color: #666; margin: 0;">Solicitações de manutenção organizadas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="container mt-5 mb-5">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <h3 style="font-size: 2.5rem; color: #1e5128; font-weight: 700;">10K+</h3>
+                <p style="color: #666;">Imóveis Gerenciados</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h3 style="font-size: 2.5rem; color: #1e5128; font-weight: 700;">50K+</h3>
+                <p style="color: #666;">Usuários Ativos</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h3 style="font-size: 2.5rem; color: #1e5128; font-weight: 700;">99.9%</h3>
+                <p style="color: #666;">Uptime</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h3 style="font-size: 2.5rem; color: #1e5128; font-weight: 700;">24/7</h3>
+                <p style="color: #666;">Suporte</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div style="background: #f8f9fa; padding: 60px 0;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 style="font-size: 2.5rem; color: #1e5128; font-weight: 700; margin-bottom: 15px;">
+                    Por que escolher Livora?
+                </h2>
+                <p style="font-size: 1.1rem; color: #666;">Tudo o que você precisa para gerenciar imóveis com eficiência</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div style="background: white; padding: 30px; border-radius: 10px; border-left: 4px solid #1e5128; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <h5 style="color: #1e5128; font-weight: 600; margin-bottom: 12px;">
+                            <i class="fas fa-lock" style="margin-right: 10px;"></i>Segurança de Dados
+                        </h5>
+                        <p style="color: #666; margin: 0;">Seus dados são protegidos com criptografia de nível empresarial</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div style="background: white; padding: 30px; border-radius: 10px; border-left: 4px solid #2d8659; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <h5 style="color: #2d8659; font-weight: 600; margin-bottom: 12px;">
+                            <i class="fas fa-mobile-alt" style="margin-right: 10px;"></i>Qualquer Local
+                        </h5>
+                        <p style="color: #666; margin: 0;">Acesse de qualquer dispositivo, em qualquer lugar</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div style="background: white; padding: 30px; border-radius: 10px; border-left: 4px solid #3a9f6a; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <h5 style="color: #3a9f6a; font-weight: 600; margin-bottom: 12px;">
+                            <i class="fas fa-chart-line" style="margin-right: 10px;"></i>Relatórios Detalhados
+                        </h5>
+                        <p style="color: #666; margin: 0;">Análises e gráficos para tomar melhores decisões</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div style="background: white; padding: 30px; border-radius: 10px; border-left: 4px solid #449a76; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <h5 style="color: #449a76; font-weight: 600; margin-bottom: 12px;">
+                            <i class="fas fa-headset" style="margin-right: 10px;"></i>Suporte Técnico
+                        </h5>
+                        <p style="color: #666; margin: 0;">Equipe experiente pronta para ajudar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer CTA -->
+    <div style="background: #1e5128; padding: 60px 0; color: white; text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 2rem; margin-bottom: 20px;">Pronto para começar?</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 30px; opacity: 0.9;">
+                Gerencie seus imóveis com confiança e organização
+            </p>
+            <a href="/register" class="btn" style="background-color: #fff; color: #1e5128; font-weight: 600; padding: 14px 40px; font-size: 1.1rem; border: none; border-radius: 5px; cursor: pointer;">
+                Criar Conta Grátis
+            </a>
+        </div>
+    </div>
+}
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthService.IsAuthenticated())
+        {
+            NavigationManager.NavigateTo("/dashboard", forceLoad: true);
+        }
+    }
+}
+

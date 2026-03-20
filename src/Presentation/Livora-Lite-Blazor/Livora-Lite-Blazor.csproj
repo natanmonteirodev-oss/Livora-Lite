@@ -10,14 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Aplication\Application.csproj" />
-    <ProjectReference Include="..\..\Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.4" PrivateAssets="all" />
-    <PackageReference Include="System.Net.Http.Json" Version="10.0.0" />
+    <ProjectReference Include="../../Aplication/Application.csproj" />
   </ItemGroup>
 
 </Project>

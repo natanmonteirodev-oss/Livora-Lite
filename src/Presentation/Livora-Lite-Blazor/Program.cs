@@ -1,7 +1,4 @@
 using Livora_Lite_Blazor.Components;
-using Livora_Lite.Application.Interface;
-using Livora_Lite.Application.Services;
-using Livora_Lite.Application.Mappings;
 using Livora_Lite_Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,37 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Configure HttpClient for API communication
-var apiBaseAddress = builder.Configuration["ApiBaseAddress"] ?? "https://localhost:7001";
-builder.Services.AddHttpClient("API", client =>
-{
-    client.BaseAddress = new Uri(apiBaseAddress);
-})
-.ConfigureHttpClient(client =>
-{
-    client.Timeout = TimeSpan.FromMinutes(5);
-});
+// Register Auth Service (NO handler - this is the service that handles auth)
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAuthService>(sp => sp.GetRequiredService<AuthService>());
+builder.Services.AddHttpClient<AuthService>();
 
-// Add AutoMapper
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
-// Register API HTTP Client Service
-builder.Services.AddScoped<ApiHttpClientService>();
-
-// Register Services - Transient services that depend on HttpClient
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPropertyService, PropertyService>();
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.AddScoped<IContractService, ContractService>();
-builder.Services.AddScoped<IBillingService, BillingService>();
-builder.Services.AddScoped<IBillingStatusService, BillingStatusService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
-builder.Services.AddScoped<IMaintenanceRequestService, MaintenanceRequestService>();
-builder.Services.AddScoped<IAuditService, AuditService>();
-builder.Services.AddScoped<IDashboardService, DashboardService>();
-builder.Services.AddScoped<IReportService, ReportService>();
+// Register Dashboard Service with authorization handler
+// Register handler AFTER IAuthService is available
+builder.Services.AddScoped<AuthorizationDelegatingHandler>();
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<IDashboardService>(sp => sp.GetRequiredService<DashboardService>());
+builder.Services.AddHttpClient<DashboardService>()
+    .AddHttpMessageHandler<AuthorizationDelegatingHandler>();
 
 var app = builder.Build();
 
@@ -48,7 +26,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);

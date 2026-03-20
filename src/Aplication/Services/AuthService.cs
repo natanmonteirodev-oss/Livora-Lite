@@ -31,8 +31,12 @@ namespace Livora_Lite.Application.Services
         {
             try
             {
+                Console.WriteLine($"[AuthService] === INICIANDO LOGIN ===");
+                Console.WriteLine($"[AuthService] Email: {request.Email}");
+
                 if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
                 {
+                    Console.WriteLine($"[AuthService] ✗ Email ou senha vazios");
                     return new AuthResponseDTO
                     {
                         Success = false,
@@ -43,6 +47,7 @@ namespace Livora_Lite.Application.Services
                 var user = await _userRepository.GetByEmailAsync(request.Email);
                 if (user == null || !user.IsActive)
                 {
+                    Console.WriteLine($"[AuthService] ✗ Usuário não encontrado ou inativo");
                     return new AuthResponseDTO
                     {
                         Success = false,
@@ -50,8 +55,12 @@ namespace Livora_Lite.Application.Services
                     };
                 }
 
+                Console.WriteLine($"[AuthService] Usuário encontrado: {user.FirstName} {user.LastName}");
+                Console.WriteLine($"[AuthService] Role do usuário: {user.Role}");
+
                 if (!ValidatePassword(request.Password, user.PasswordHash))
                 {
+                    Console.WriteLine($"[AuthService] ✗ Senha incorreta");
                     return new AuthResponseDTO
                     {
                         Success = false,
@@ -59,9 +68,15 @@ namespace Livora_Lite.Application.Services
                     };
                 }
 
+                Console.WriteLine($"[AuthService] ✓ Senha validada com sucesso");
+                Console.WriteLine($"[AuthService] Gerando token JWT...");
+
                 var token = await GenerateJwtToken(user);
 
                 var userDTO = _mapper.Map<UserDTO>(user);
+
+                Console.WriteLine($"[AuthService] ✓ Login realizado com sucesso");
+                Console.WriteLine($"[AuthService] Usuário mapeado para DTO com role: {userDTO.Role}");
 
                 return new AuthResponseDTO
                 {
@@ -73,6 +88,9 @@ namespace Livora_Lite.Application.Services
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[AuthService] ✗ Erro ao fazer login: {ex.GetType().Name}");
+                Console.WriteLine($"[AuthService] Mensagem: {ex.Message}");
+                Console.WriteLine($"[AuthService] StackTrace: {ex.StackTrace}");
                 return new AuthResponseDTO
                 {
                     Success = false,
@@ -140,10 +158,19 @@ namespace Livora_Lite.Application.Services
                     Email = request.Email.Trim().ToLower(),
                     PasswordHash = HashPassword(request.Password),
                     CreatedAt = DateTime.UtcNow,
-                    IsActive = true
+                    IsActive = true,
+                    Role = "User" // ✓ Atribuir role padrão "User"
                 };
 
+                Console.WriteLine($"[AuthService] === REGISTRANDO NOVO USUÁRIO ===");
+                Console.WriteLine($"[AuthService] Email: {user.Email}");
+                Console.WriteLine($"[AuthService] Nome: {user.FirstName} {user.LastName}");
+                Console.WriteLine($"[AuthService] Role Atribuída: {user.Role}");
+
                 var createdUser = await _userRepository.CreateAsync(user);
+
+                Console.WriteLine($"[AuthService] ✓ Usuário criado com sucesso (ID: {createdUser.Id})");
+                Console.WriteLine($"[AuthService] Gerando token JWT com role: {createdUser.Role}");
 
                 var token = await GenerateJwtToken(createdUser);
 
@@ -200,13 +227,35 @@ namespace Livora_Lite.Application.Services
                 timeoutMinutes = parsed;
             }
 
-            var claims = new[]
+            // Converter string de roles separadas por vírgula em claims individuais
+            var roles = !string.IsNullOrEmpty(user.Role) 
+                ? user.Role.Split(',').Select(r => r.Trim()) 
+                : new[] { "User" }; // Role padrão se não houver
+
+            var claimsList = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Importante para ClaimTypes.NameIdentifier
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName)
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+                new Claim(ClaimTypes.Email, user.Email)
             };
+
+            // Adicionar cada role como um claim separado
+            foreach (var role in roles)
+            {
+                claimsList.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            Console.WriteLine($"[AuthService] === GERANDO JWT TOKEN ===");
+            Console.WriteLine($"[AuthService] Usuário: {user.Id} - {user.Email}");
+            Console.WriteLine($"[AuthService] Roles no Token: {string.Join(", ", roles)}");
+            Console.WriteLine($"[AuthService] Total de claims: {claimsList.Count}");
+            foreach (var claim in claimsList)
+            {
+                Console.WriteLine($"[AuthService]   - {claim.Type}: {claim.Value}");
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -214,11 +263,14 @@ namespace Livora_Lite.Application.Services
             var token = new JwtSecurityToken(
                 issuer: jwtIssuer,
                 audience: jwtAudience,
-                claims: claims,
+                claims: claimsList,
                 expires: DateTime.Now.AddMinutes(timeoutMinutes),
                 signingCredentials: creds);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            Console.WriteLine($"[AuthService] ✓ Token gerado com sucesso ({tokenString.Length} chars)");
+            
+            return tokenString;
         }
 
         private static bool ValidatePassword(string password, string hash)

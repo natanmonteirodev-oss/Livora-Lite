@@ -1,3 +1,5 @@
+#nullable disable
+
 using AutoMapper;
 using Livora_Lite.Application.DTO;
 using Livora_Lite.Application.Interface;

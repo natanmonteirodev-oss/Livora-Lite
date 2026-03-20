@@ -1,0 +1,220 @@
+@page "/login"
+@using Livora_Lite_Blazor.Services
+@using Livora_Lite.Application.DTO
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Login - Livora Lite</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Login</h4>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(ErrorMessage))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @ErrorMessage
+                            <button type="button" class="btn-close" @onclick="() => ErrorMessage = string.Empty"></button>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(SuccessMessage))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @SuccessMessage
+                            <button type="button" class="btn-close" @onclick="() => SuccessMessage = string.Empty"></button>
+                        </div>
+                    }
+
+                    <form @onsubmit="HandleLogin">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" 
+                                   placeholder="seu.email@exemplo.com" 
+                                   @bind="Email" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" 
+                                   placeholder="Digite sua senha" 
+                                   @bind="Password" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100" disabled="@IsLoading">
+                            @if (IsLoading)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                                <span>Entrando...</span>
+                            }
+                            else
+                            {
+                                <span>Entrar</span>
+                            }
+                        </button>
+                    </form>
+
+                    <hr />
+
+                    <!-- Debug Panel - Sempre Visível -->
+                    <div class="alert alert-warning" style="font-size: 0.9rem; max-height: 300px; overflow-y: auto;">
+                        <strong>🔍 Painel de Debug:</strong>
+                        <div style="margin-top: 10px; background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace;">
+                            @if (string.IsNullOrEmpty(DebugLogs))
+                            {
+                                <p style="color: #999;">Aguardando ação...</p>
+                            }
+                            else
+                            {
+                                @foreach (var line in DebugLogs.Split('\n'))
+                                {
+                                    @if (!string.IsNullOrEmpty(line))
+                                    {
+                                        <div style="color: @GetLogColor(line); margin: 5px 0;">
+                                            @line
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(LastStatus))
+                    {
+                        <div class="alert alert-secondary">
+                            <strong>Status Atual:</strong> @LastStatus
+                        </div>
+                    }
+
+                    <hr />
+
+                    <p class="text-center">
+                        Não tem conta? 
+                        <a href="/register" class="text-decoration-none">Registre-se aqui</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string Email = string.Empty;
+    private string Password = string.Empty;
+    private string ErrorMessage = string.Empty;
+    private string SuccessMessage = string.Empty;
+    private string LastStatus = string.Empty;
+    private string ApiBaseUrl = string.Empty;
+    private string DebugLogs = string.Empty;
+    private bool IsLoading = false;
+
+    protected override void OnInitialized()
+    {
+        ApiBaseUrl = "http://localhost:5145";
+        AddLog("🟢 Página de Login inicializada");
+        AddLog($"API Base URL: {ApiBaseUrl}");
+    }
+
+    private void AddLog(string message)
+    {
+        var timestamp = DateTime.Now.ToString("HH:mm:ss.fff");
+        DebugLogs += $"[{timestamp}] {message}\n";
+        StateHasChanged();
+    }
+
+    private string GetLogColor(string line)
+    {
+        if (line.Contains("✓") || line.Contains("sucesso") || line.Contains("bem-sucedido"))
+            return "#28a745"; // Verde
+        if (line.Contains("✗") || line.Contains("erro") || line.Contains("falha") || line.Contains("Erro"))
+            return "#dc3545"; // Vermelho
+        if (line.Contains("→") || line.Contains("Enviando") || line.Contains("Processando"))
+            return "#0066cc"; // Azul
+        return "#333"; // Preto
+    }
+
+    private async Task HandleLogin()
+    {
+        AddLog($"🔵 Iniciando processo de login para: {Email}");
+
+        if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+        {
+            ErrorMessage = "Email e senha são obrigatórios.";
+            AddLog("❌ Email ou senha vazio(a)");
+            return;
+        }
+
+        IsLoading = true;
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
+        LastStatus = "Enviando credenciais para API...";
+
+        try
+        {
+            AddLog($"→ Enviando requisição para: POST /api/auth/login");
+            AddLog($"  Email: {Email}");
+            
+            var response = await AuthService.LoginAsync(Email, Password);
+
+            AddLog($"← Resposta recebida da API");
+            AddLog($"  Success: {response.Success}");
+            AddLog($"  Message: {response.Message}");
+            AddLog($"  Token: {(response.Token != null ? "✓ Presente" : "✗ Nulo")}");
+            AddLog($"  User: {(response.User != null ? $"✓ {response.User.Email}" : "✗ Nulo")}");
+
+            if (response.Success && response.User != null)
+            {
+                AddLog($"✓ Autenticação bem-sucedida!");
+                AddLog($"  Usuário: {response.User.FirstName} {response.User.LastName}");
+                AddLog($"  Role: {response.User.Role}");
+                
+                SuccessMessage = $"✓ Login bem-sucedido! Bem-vindo, {response.User.FirstName}";
+                LastStatus = $"✓ Login realizado para {response.User.Email}";
+                
+                AddLog("→ Aguardando 2 segundos para exibir mensagem de sucesso...");
+                await Task.Delay(2000);
+                
+                AddLog("→ Redirecionando para /dashboard...");
+                NavigationManager.NavigateTo("/dashboard", forceLoad: false);
+                
+                AddLog("✓ Redirecionamento iniciado");
+            }
+            else
+            {
+                var errorMsg = response.Message ?? "Credenciais inválidas ou erro desconhecido";
+                ErrorMessage = errorMsg;
+                LastStatus = $"✗ Falha na autenticação";
+                
+                AddLog($"✗ Falha na autenticação: {errorMsg}");
+                AddLog($"  Verifique o email e a senha");
+                AddLog($"  Se não tem conta, registre-se em /register");
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            ErrorMessage = $"Erro de conexão com a API: {httpEx.Message}";
+            LastStatus = "✗ Erro de conexão";
+            
+            AddLog($"❌ HttpRequestException: {httpEx.Message}");
+            AddLog($"  Verifique se a API está rodando em {ApiBaseUrl}");
+            AddLog($"  Mesagem completa: {httpEx.InnerException?.Message ?? "N/A"}");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Erro inesperado: {ex.Message}";
+            LastStatus = "✗ Erro na aplicação";
+            
+            AddLog($"❌ {ex.GetType().Name}: {ex.Message}");
+            AddLog($"  StackTrace: {ex.StackTrace}");
+        }
+        finally
+        {
+            IsLoading = false;
+            AddLog("✓ Processo de login finalizado");
+        }
+    }
+}

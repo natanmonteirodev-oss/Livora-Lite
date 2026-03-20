@@ -1,0 +1,31 @@
+@using Livora_Lite_Blazor.Services
+@using Livora_Lite.Application.DTO
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+@if (AuthService.IsAuthenticated())
+{
+    <div class="d-flex align-items-center gap-3">
+        <span class="text-muted">
+            Bem-vindo, <strong>@(AuthService.GetCurrentUser()?.FirstName ?? "Usuário")</strong>
+        </span>
+        <button class="btn btn-outline-danger btn-sm" @onclick="HandleLogout">
+            Sair
+        </button>
+    </div>
+}
+else
+{
+    <div class="d-flex gap-2">
+        <a href="/login" class="btn btn-primary btn-sm">Login</a>
+        <a href="/register" class="btn btn-success btn-sm">Registrar</a>
+    </div>
+}
+
+@code {
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+        NavigationManager.NavigateTo("/login");
+    }
+}

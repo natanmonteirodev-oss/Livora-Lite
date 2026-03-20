@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+#nullable disable
+
 using Livora_Lite.Domain.Entities;
 using Livora_Lite.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;

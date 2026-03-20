@@ -108,7 +108,7 @@ public class ContractsController : Controller
                 await LoadViewBagAsync();
                 return View(request);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Error"] = "Erro ao criar contrato. Por favor, tente novamente.";
                 await LoadViewBagAsync();

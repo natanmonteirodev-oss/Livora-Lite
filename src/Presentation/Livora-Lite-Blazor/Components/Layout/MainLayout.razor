@@ -1,23 +1,54 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<!-- Navigation Bar -->
+<NavMenu />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+<!-- Main Content -->
+<div class="page" style="display: flex; flex-direction: column; min-height: 100vh;">
+    <main style="flex: 1;">
+        <article class="content">
             @Body
         </article>
     </main>
+
+    <!-- Footer -->
+    <footer style="background: #f8f9fa; border-top: 1px solid #dee2e6; padding: 30px 0; margin-top: 50px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h6 style="font-weight: 600; color: #1e5128;">Livora Lite</h6>
+                    <p style="color: #666; font-size: 0.9rem; margin: 0;">Gerenciador de imóveis inteligente</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 style="font-weight: 600; color: #1e5128;">Links Rápidos</h6>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li><a href="/" style="color: #666; text-decoration: none; font-size: 0.9rem;">Home</a></li>
+                        <li><a href="/dashboard" style="color: #666; text-decoration: none; font-size: 0.9rem;">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p style="color: #666; font-size: 0.9rem; margin: 0;">
+                        &copy; 2026 Livora Lite. Todos os direitos reservados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+<div id="blazor-error-ui" data-nosnippet style="position: fixed; top: 0; left: 0; right: 0; background: #f8d7da; color: #721c24; padding: 20px; border-bottom: 1px solid #f5c6cb; display: none; z-index: 9999;">
+    <div class="container">
+        <strong>Erro não tratado!</strong> A aplicação encontrou um erro.
+        <a href="." class="btn btn-sm btn-light ms-2">Recarregar</a>
+        <button type="button" class="btn-close" aria-label="Close" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%);"></button>
+    </div>
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Adicione estilos dinâmicos aqui se necessário
+    }
+}
+
+

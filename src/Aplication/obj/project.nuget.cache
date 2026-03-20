@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "yvhzTtOk8bo=",
+  "dgSpecHash": "HxpkONcurww=",
   "success": true,
   "projectFilePath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\natan\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\natan\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\natan\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.5\\microsoft.entityframeworkcore.10.0.5.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.5\\microsoft.entityframeworkcore.abstractions.10.0.5.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\10.0.5\\microsoft.entityframeworkcore.analyzers.10.0.5.nupkg.sha512",
@@ -23,18 +24,5 @@
     "C:\\Users\\natan\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.3.0\\microsoft.identitymodel.tokens.7.3.0.nupkg.sha512",
     "C:\\Users\\natan\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.3.0\\system.identitymodel.tokens.jwt.7.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "O pacote 'AutoMapper' 13.0.1 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
-      "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj",
-      "libraryId": "AutoMapper",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

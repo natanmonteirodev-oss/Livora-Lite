@@ -1,0 +1,125 @@
+@using Livora_Lite.Application.DTO
+
+@if (Dashboard == null)
+{
+    <div class="text-center">
+        <p>Carregando dados do dashboard administrativo...</p>
+    </div>
+}
+else
+{
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #1e5128 0%, #2d8659 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Total de Usuários</h6>
+                <p style="font-size: 2.5rem; margin: 0; font-weight: 700;">@Dashboard.TotalUsers</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Usuários cadastrados</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Propriedades</h6>
+                <p style="font-size: 2.5rem; margin: 0; font-weight: 700;">@Dashboard.TotalProperties</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Imóveis cadastrados</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #9c27b0 0%, #b565d8 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Contratos Ativos</h6>
+                <p style="font-size: 2.5rem; margin: 0; font-weight: 700;">@Dashboard.TotalContracts_Active</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Acordos em vigência</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Pagamentos Pendentes</h6>
+                <p style="font-size: 2.5rem; margin: 0; font-weight: 700;">@Dashboard.PendingPayments</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Cobranças em atraso</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue and Alert Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #1e5128;">
+                <h5 style="color: #1e5128; margin-bottom: 10px; font-weight: 600;">
+                    <i class="fas fa-money-bill me-2"></i>Receita Esperada
+                </h5>
+                <h3 style="font-size: 2rem; margin: 15px 0 0 0; color: #1e5128; font-weight: 700;">
+                    R$ @Dashboard.TotalRevenueExpected.ToString("N2")
+                </h3>
+                <p style="color: #666; margin: 10px 0 0 0; font-size: 0.95rem;">Soma de todos os aluguéis ativos</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #dc3545;">
+                <h5 style="color: #dc3545; margin-bottom: 10px; font-weight: 600;">
+                    <i class="fas fa-exclamation-circle me-2"></i>Valores Pendentes
+                </h5>
+                <h3 style="font-size: 2rem; margin: 15px 0 0 0; color: #dc3545; font-weight: 700;">
+                    R$ @Dashboard.PendingPaymentsAmount.ToString("N2")
+                </h3>
+                <p style="color: #666; margin: 10px 0 0 0; font-size: 0.95rem;">@Dashboard.PendingPayments pagamentos em atraso</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Maintenance Requests Card -->
+    @if (Dashboard.PendingMaintenance > 0)
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div style="background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%); color: white; padding: 20px; border-radius: 10px;">
+                    <i class="fas fa-tools me-2"></i>
+                    <strong>@Dashboard.PendingMaintenance manutenção(ões) pendente(s)</strong>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Recent Activities -->
+    @if (Dashboard.RecentActivities != null && Dashboard.RecentActivities.Any())
+    {
+        <div class="row">
+            <div class="col-12">
+                <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h5 style="color: #1e5128; margin-bottom: 20px; font-weight: 600;">
+                        <i class="fas fa-history me-2"></i>Atividades Recentes
+                    </h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        @foreach (var activity in Dashboard.RecentActivities.Take(10))
+                        {
+                            <div style="display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #eee;">
+                                <div style="flex-shrink: 0; width: 40px; height: 40px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                    <i class="fas fa-user" style="color: #1e5128;"></i>
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <p style="margin: 0; font-weight: 500; color: #333;">
+                                        @activity.UserName
+                                    </p>
+                                    <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9rem;">
+                                        @activity.Action em @activity.Entity
+                                    </p>
+                                    <p style="margin: 5px 0 0 0; color: #999; font-size: 0.85rem;">
+                                        @activity.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public AdminDashboardDTO? Dashboard { get; set; }
+}

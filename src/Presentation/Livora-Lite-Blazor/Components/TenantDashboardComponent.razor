@@ -1,0 +1,170 @@
+@using Livora_Lite.Application.DTO
+
+@if (Dashboard == null)
+{
+    <div class="text-center">
+        <p>Carregando seus dados...</p>
+    </div>
+}
+else
+{
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #1e5128 0%, #2d8659 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Contratos Ativos</h6>
+                <p style="font-size: 2.5rem; margin: 0; font-weight: 700;">@Dashboard.ActiveContracts</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Acordos em vigência</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Aluguel Mensal</h6>
+                <p style="font-size: 1.8rem; margin: 0; font-weight: 700;">R$ @Dashboard.TotalMonthlyRent.ToString("N2")</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Valor total do aluguel</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #9c27b0 0%, #b565d8 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Pagamentos Pendentes</h6>
+                <p style="font-size: 2.5rem; margin: 0; font-weight: 700;">@Dashboard.PendingPayments</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Cobranças pendentes</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div style="background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%); color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h6 style="margin: 0 0 10px 0; opacity: 0.9;">Manutenções</h6>
+                <p style="font-size: 2.5rem; margin: 0; font-weight: 700;">@Dashboard.MaintenanceRequests</p>
+                <p style="margin: 10px 0 0 0; opacity: 0.8; font-size: 0.9rem;">Solicitações abertas</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Next Payment Due and Overdue Amounts -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #0066cc;">
+                <h5 style="color: #0066cc; margin-bottom: 10px; font-weight: 600;">
+                    <i class="fas fa-calendar me-2"></i>Próximo Vencimento
+                </h5>
+                <h3 style="font-size: 2rem; margin: 15px 0 0 0; color: #0066cc; font-weight: 700;">
+                    @Dashboard.NextPaymentDue.ToString("dd/MM/yyyy")
+                </h3>
+                <p style="color: #666; margin: 10px 0 0 0; font-size: 0.95rem;">
+                    @{
+                        var daysUntil = (Dashboard.NextPaymentDue - DateTime.Today).TotalDays;
+                        if (daysUntil > 0)
+                        {
+                            @($"{(int)daysUntil} dias para o vencimento")
+                        }
+                        else
+                        {
+                            @("Vencimento em atraso")
+                        }
+                    }
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #dc3545;">
+                <h5 style="color: #dc3545; margin-bottom: 10px; font-weight: 600;">
+                    <i class="fas fa-exclamation-circle me-2"></i>Valores em Atraso
+                </h5>
+                <h3 style="font-size: 2rem; margin: 15px 0 0 0; color: #dc3545; font-weight: 700;">
+                    R$ @Dashboard.PendingPaymentsAmount.ToString("N2")
+                </h3>
+                <p style="color: #666; margin: 10px 0 0 0; font-size: 0.95rem;">@Dashboard.PendingPayments pagamento(s) para pagar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert for Pending Payments -->
+    @if (Dashboard.PendingPayments > 0)
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div style="background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%); color: white; padding: 20px; border-radius: 10px;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Atenção!</strong> Você possui R$ @Dashboard.PendingPaymentsAmount.ToString("N2") em pagamentos pendentes.
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Active Contracts Card -->
+    @if (Dashboard.ActiveContracts_Details != null && Dashboard.ActiveContracts_Details.Any())
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h5 style="color: #1e5128; margin-bottom: 20px; font-weight: 600;">
+                        <i class="fas fa-file-contract me-2"></i>Meus Contratos
+                    </h5>
+
+                    @foreach (var contract in Dashboard.ActiveContracts_Details.Take(3))
+                    {
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #1e5128;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 style="color: #333; margin: 0 0 8px 0; font-weight: 600;">@contract.PropertyName</h6>
+                                    <p style="color: #666; margin: 0 0 8px 0; font-size: 0.9rem;">@contract.PropertyAddress</p>
+                                    <p style="color: #999; margin: 0; font-size: 0.85rem;">Inquilino: @contract.TenantName</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div style="text-align: right;">
+                                        <p style="color: #1e5128; font-size: 1.5rem; margin: 0; font-weight: 700;">
+                                            R$ @contract.RentValue.ToString("N2")
+                                        </p>
+                                        <p style="color: #666; margin: 5px 0 0 0; font-size: 0.85rem;">
+                                            De @contract.StartDate.ToString("dd/MM/yyyy") a @(contract.EndDate != null ? contract.EndDate?.ToString("dd/MM/yyyy") : "Indefinido")
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- User Info Card -->
+    <div class="row">
+        <div class="col-12">
+            <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h5 style="color: #1e5128; margin-bottom: 20px; font-weight: 600;">
+                    <i class="fas fa-info-circle me-2"></i>Informações Rápidas
+                </h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Contratos ativos</p>
+                        <p style="color: #1e5128; font-size: 1.5rem; margin: 5px 0 0 0; font-weight: 700;">
+                            @Dashboard.ActiveContracts
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Contratos expirando</p>
+                        <p style="color: #ff9800; font-size: 1.5rem; margin: 5px 0 0 0; font-weight: 700;">
+                            @Dashboard.ExpiringContracts
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Total de manutenções</p>
+                        <p style="color: #dc3545; font-size: 1.5rem; margin: 5px 0 0 0; font-weight: 700;">
+                            @Dashboard.MaintenanceRequests
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public TenantDashboardDTO? Dashboard { get; set; }
+}

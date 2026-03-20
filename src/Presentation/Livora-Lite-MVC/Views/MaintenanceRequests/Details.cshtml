@@ -42,7 +42,7 @@
                             <p><strong>Endereço:</strong> 
                                 @if (Model?.Property?.Address != null)
                                 {
-                                    <text>@Model.Property.Address.Street, @Model.Property.Address.Number - @Model.Property.Address.City</text>
+                                    <text>@(Model.Property.Address?.Street!), @(Model.Property.Address?.Number!) - @(Model.Property.Address?.City!)</text>
                                 }
                                 else
                                 {
@@ -52,7 +52,7 @@
                             <p><strong>Contrato:</strong> 
                                 @if (Model?.Contract != null)
                                 {
-                                    <text>Contrato #@Model.Contract.Id - @(Model.Contract.Tenant != null ? $"{Model.Contract.Tenant.FirstName} {Model.Contract.Tenant.LastName}" : "N/A")</text>
+                                    <text>Contrato #@Model.Contract.Id - @(Model.Contract.Tenant != null ? $"{(Model.Contract.Tenant.FirstName ?? "")!} {(Model.Contract.Tenant.LastName ?? "")!}" : "N/A")</text>
                                 }
                                 else
                                 {

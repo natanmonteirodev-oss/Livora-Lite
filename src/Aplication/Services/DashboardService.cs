@@ -88,9 +88,9 @@ namespace Livora_Lite.Application.Services
                         .Select(p => new PropertySummaryDTO
                         {
                             Id = p.Id,
-                            Name = p.Name,
-                            Address = p.Address?.Street ?? "N/A",
-                            Status = p.PropertyStatus?.Name ?? "N/A",
+                            Name = p.Name!,
+                            Address = (p.Address?.Street ?? "N/A")!,
+                            Status = (p.PropertyStatus?.Name ?? "N/A")!,
                             TotalMonthlyRevenue = activeContracts.Where(c => c.PropertyId == p.Id).Sum(c => c.RentValue),
                             ActiveTenants = activeContracts.Count(c => c.PropertyId == p.Id)
                         }).ToList()
