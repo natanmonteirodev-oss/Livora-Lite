@@ -418,11 +418,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
+      "projectUniqueName": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
       "projectName": "Livora-Lite-Blazor",
-      "projectPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
+      "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\Livora-Lite-Blazor.csproj",
       "packagesPath": "C:\\Users\\natan\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\obj\\",
+      "outputPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Presentation\\Livora-Lite-Blazor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -443,8 +443,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
-              "projectPath": "c:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj"
+            "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj": {
+              "projectPath": "C:\\Users\\natan\\repos\\Livora-Lite\\src\\Aplication\\Application.csproj"
             }
           }
         }
