@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livora Lite API - Guia de Autenticação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .step {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-color: #0c5460;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-color: #155724;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-color: #856404;
+        }
+        
+        .endpoint-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .endpoint-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            background: #f9f9f9;
+        }
+        
+        .endpoint-method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+        }
+        
+        .method-post { background: #61affe; color: white; }
+        .method-get { background: #49cc90; color: white; }
+        .method-put { background: #fca130; color: white; }
+        .method-delete { background: #f93e3e; color: white; }
+        
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: 600;
+            word-break: break-all;
+        }
+        
+        .endpoint-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 Livora Lite API</h1>
+            <p>Guia de Autenticação com JWT</p>
+        </div>
+        
+        <div class="content">
+            <!-- Alerta de Sucesso -->
+            <div class="alert alert-info">
+                <strong>ℹ️ Info:</strong> O script de autenticação JWT foi injetado nesta página. Quando você fizer login, o token será capturado automaticamente!
+            </div>
+            
+            <!-- Seção: Quick Start -->
+            <div class="section">
+                <h2>🚀 Quick Start</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Fazer Login</div>
+                    <div class="step-description">
+                        Clique no botão abaixo para fazer login no Swagger UI
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Token Capturado</div>
+                    <div class="step-description">
+                        Após o login bem-sucedido, o token JWT será capturado automaticamente
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Acessar Endpoints Protegidos</div>
+                    <div class="step-description">
+                        Você pode acessar todos os endpoints protegidos com o token automaticamente injetado nos headers
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <a href="/swagger" class="btn btn-primary">
+                        📖 Abrir Swagger UI
+                    </a>
+                    <a href="http://localhost:5000/swagger" class="btn btn-secondary">
+                        🔗 Swagger (Port 5000)
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Seção: Endpoints -->
+            <div class="section">
+                <h2>📍 Endpoints Principais</h2>
+                
+                <h3 style="margin: 20px 0 16px 0; color: #555; font-size: 1.1em;">🔑 Autenticação (Públicos)</h3>
+                <div class="endpoint-list">
+                    <div class="endpoint-card">
+                        <div class="endpoint-method method-post">POST</div>
+                        <div class="endpoint-path">/api/auth/login</div>
+                        <div class="endpoint-description">
+                            Fazer login e obter JWT token
+                        </div>
+                    </div>
+                    <div class="endpoint-card">
+                        <div class="endpoint-method method-post">POST</div>
+                        <div class="endpoint-path">/api/auth/register</div>
+                        <div class="endpoint-description">
+                            Registrar novo usuário
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="margin: 20px 0 16px 0; color: #555; font-size: 1.1em;">🔒 Endpoints Protegidos</h3>
+                <div class="endpoint-list">
+                    <div class="endpoint-card">
+                        <div class="endpoint-method method-get">GET</div>
+                        <div class="endpoint-path">/api/users</div>
+                        <div class="endpoint-description">
+                            Listar todos os usuários
+                        </div>
+                    </div>
+                    <div class="endpoint-card">
+                        <div class="endpoint-method method-get">GET</div>
+                        <div class="endpoint-path">/api/properties</div>
+                        <div class="endpoint-description">
+                            Listar todas as propriedades
+                        </div>
+                    </div>
+                    <div class="endpoint-card">
+                        <div class="endpoint-method method-get">GET</div>
+                        <div class="endpoint-path">/api/dashboard/admin</div>
+                        <div class="endpoint-description">
+                            Dashboard administrativo (Admin only)
+                        </div>
+                    </div>
+                    <div class="endpoint-card">
+                        <div class="endpoint-method method-get">GET</div>
+                        <div class="endpoint-path">/api/dashboard/owner</div>
+                        <div class="endpoint-description">
+                            Dashboard do proprietário
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção: Credenciais para Teste -->
+            <div class="section">
+                <h2>🧪 Credenciais de Teste</h2>
+                
+                <div class="alert alert-warning">
+                    <strong>⚠️ Atenção:</strong> Estas credenciais são para ambiente de desenvolvimento apenas!
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">Admin</div>
+                    <div class="code-block">
+Email: admin@livora.com
+Senha: (senha padrão do admin)
+Role: Admin
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">Criar novo usuário</div>
+                    <div class="step-description">Use o endpoint POST /api/auth/register</div>
+                </div>
+            </div>
+            
+            <!-- Seção: Como Funciona -->
+            <div class="section">
+                <h2>🔧 Como Funciona o JWT</h2>
+                
+                <div class="step">
+                    <div class="step-title">1. Login</div>
+                    <div class="code-block">
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@livora.com",
+  "password": "sua-senha"
+}
+
+Resposta:
+{
+  "success": true,
+  "message": "Login realizado com sucesso.",
+  "user": { ... },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">2. Usar Token</div>
+                    <div class="code-block">
+GET /api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+Resposta: [ { "id": 1, "email": "...", ... } ]
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">3. Token Expirado</div>
+                    <div class="code-block">
+GET /api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+Resposta (Error): 401 Unauthorized
+"Token expirado"
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção: Troubleshooting -->
+            <div class="section">
+                <h2>❓ Troubleshooting</h2>
+                
+                <div class="step">
+                    <div class="step-title">❌ 401 Unauthorized</div>
+                    <div class="step-description">
+                        <strong>Causa:</strong> Token ausente, inválido ou expirado<br>
+                        <strong>Solução:</strong> Faça login novamente para obter um novo token
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">❌ 403 Forbidden</div>
+                    <div class="step-description">
+                        <strong>Causa:</strong> Token válido mas sem permissão para acessar o recurso<br>
+                        <strong>Solução:</strong> Verifique se seu usuário tem a role necessária (ex: Admin)
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">❌ Token não aparece no Swagger</div>
+                    <div class="step-description">
+                        <strong>Causa:</strong> JavaScript não foi carregado<br>
+                        <strong>Solução:</strong> Abra o console (F12) e verifique se há erros
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">ℹ️ Ver logs no console</div>
+                    <div class="step-description">
+                        Pressione F12 para abrir o DevTools e veja os logs do JWT Helper:<br>
+                        <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px;">[Swagger JWT Helper]</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>💡 <strong>Dica:</strong> O token é válido por 5 minutos. Após expirar, faça login novamente.</p>
+            <p>© 2026 Livora Lite - Gerenciamento de Propriedades e Aluguéis</p>
+        </div>
+    </div>
+    
+    <script>
+        console.log("✅ Página de autenticação carregada");
+        console.log("🔗 Tipos de endpoints disponíveis:");
+        console.log("  🔑 Públicos: /api/auth/login, /api/auth/register");
+        console.log("  🔒 Protegidos: /api/users, /api/properties, /api/dashboard/*");
+    </script>
+</body>
+</html>

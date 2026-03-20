@@ -235,7 +235,6 @@ namespace Livora_Lite.Application.Services
             var claimsList = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Importante para ClaimTypes.NameIdentifier
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
@@ -264,7 +263,7 @@ namespace Livora_Lite.Application.Services
                 issuer: jwtIssuer,
                 audience: jwtAudience,
                 claims: claimsList,
-                expires: DateTime.Now.AddMinutes(timeoutMinutes),
+                expires: DateTime.UtcNow.AddMinutes(timeoutMinutes),
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);

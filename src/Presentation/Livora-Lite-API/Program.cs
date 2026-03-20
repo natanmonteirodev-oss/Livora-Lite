@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,18 @@ builder.Services.AddOpenApiDocument(config =>
     config.Title = "Livora Lite API";
     config.Description = "API para gerenciamento de propriedades e aluguéis";
     config.Version = "1.0";
+    
+    // ✅ Adicionar suporte a Bearer Token (JWT) para autenticação no Swagger
+    config.AddSecurity("Bearer", new OpenApiSecurityScheme
+    {
+        Type = OpenApiSecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        Description = "JWT Authorization header. Formato: Bearer {token}. Obtenha o token em POST /api/auth/login"
+    });
+    
+    // Marcar endpoints protegidos como requerendo Bearer
+    config.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("Bearer"));
 });
 
 // Add CORS for Blazor and other clients
@@ -65,7 +79,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = jwtIssuer,
             ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ClockSkew = TimeSpan.Zero // Sem tolerância de tempo
+            ClockSkew = TimeSpan.FromSeconds(30) // Tolerância de 30 segundos para sincronização de relógio
         };
 
         // Adicionar eventos para debug
@@ -266,6 +280,9 @@ if (app.Environment.IsDevelopment())
     // Middleware para injetar Bearer Token support no Swagger
     // DEVE estar antes do UseSwaggerUi para interceptar a resposta
     app.UseMiddleware<Livora_Lite_API.Middleware.SwaggerBearerSecurityMiddleware>();
+    
+    // Middleware para injetar JWT Helper script no Swagger UI
+    app.UseMiddleware<Livora_Lite_API.Middleware.SwaggerJwtHelperScriptMiddleware>();
     
     app.UseOpenApi();
     app.UseSwaggerUi();

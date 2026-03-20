@@ -561,6 +561,11 @@
             Middleware para injetar suporte a Bearer Token (JWT) no documento OpenAPI/Swagger
             </summary>
         </member>
+        <member name="T:Livora_Lite_API.Middleware.SwaggerJwtHelperScriptMiddleware">
+            <summary>
+            Middleware para injetar o script JWT Helper no Swagger UI HTML
+            </summary>
+        </member>
         <member name="T:Program">
             <summary>
             Auto-generated public partial Program class for top-level statement apps.
