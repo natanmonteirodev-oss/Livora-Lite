@@ -1,0 +1,79 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options directory
+.vs/
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build folder
+out/
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Resharper
+_Resharper/
+*.resharper
+
+# Local history for Visual Studio Code
+.history/
+.vscode-ctags
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+
+# dotnet
+*.dll
+*.exe
+*.nuget
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Additional exclusions
+bin/
+obj/
+.bak
