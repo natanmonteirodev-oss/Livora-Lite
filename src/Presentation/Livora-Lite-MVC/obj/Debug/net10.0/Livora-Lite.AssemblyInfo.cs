@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Livora-Lite")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d3404afec0f242de7b9ce7de3002d2989f96cb7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ec7630d83cc688777943137821489036197a150")]
 [assembly: System.Reflection.AssemblyProductAttribute("Livora-Lite")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Livora-Lite")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
