@@ -1,0 +1,91 @@
+/* MainCard Component Styles */
+
+.main-card {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  transition: all var(--transition-base);
+}
+
+/* Shadow variants */
+.main-card-shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.main-card-shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.main-card-shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.main-card-shadow-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+/* Hover effect */
+.main-card-hover:hover {
+  border-color: var(--primary-lighter);
+  transition: all var(--transition-base);
+}
+
+.main-card-shadow-sm:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.main-card-shadow-md:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.main-card-shadow-lg:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+.main-card-shadow-xl:hover {
+  box-shadow: var(--shadow-2xl);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

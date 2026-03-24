@@ -107,6 +107,37 @@ public class AuthController : Controller
         return View(request);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RefreshSession()
+    {
+        try
+        {
+            // Verifica se o usuário está autenticado
+            if (!User.Identity?.IsAuthenticated ?? false)
+            {
+                return Unauthorized();
+            }
+
+            // Renova a sessão do usuário extendendo o tempo de expiração
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // Renova por mais 30 minutos
+            };
+
+            // Reconhece o usuário com as novas propriedades de autenticação
+            await HttpContext.SignInAsync("CookieAuth", HttpContext.User, authProperties);
+
+            // Retorna JSON de sucesso
+            return Json(new { success = true, message = "Sessão renovada com sucesso" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { success = false, message = "Erro ao renovar sessão: " + ex.Message });
+        }
+    }
+
     [HttpGet]
     public async Task<IActionResult> Logout()
     {

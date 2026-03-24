@@ -1,0 +1,104 @@
+/* FeatureCard Component Styles */
+
+.feature-card {
+  text-align: center;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base);
+}
+
+.feature-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+  margin: 0 auto var(--spacing-md);
+  font-size: 32px;
+  transition: all var(--transition-base);
+}
+
+.feature-card-icon.icon-size-sm {
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+}
+
+.feature-card-icon.icon-size-md {
+  width: 64px;
+  height: 64px;
+  font-size: 32px;
+}
+
+.feature-card-icon.icon-size-lg {
+  width: 80px;
+  height: 80px;
+  font-size: 40px;
+}
+
+/* Icon color variants */
+.feature-card-icon-primary {
+  background-color: var(--primary-lighter);
+  color: var(--primary-main);
+}
+
+.feature-card-icon-secondary {
+  background-color: var(--secondary-lighter);
+  color: var(--secondary-main);
+}
+
+.feature-card-icon-success {
+  background-color: var(--success-lighter);
+  color: var(--success-main);
+}
+
+.feature-card-icon-warning {
+  background-color: var(--warning-lighter);
+  color: var(--warning-main);
+}
+
+.feature-card-icon-error {
+  background-color: var(--error-lighter);
+  color: var(--error-main);
+}
+
+.feature-card-icon-info {
+  background-color: var(--info-lighter);
+  color: var(--info-main);
+}
+
+.feature-card-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.feature-card-description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Hover effect */
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.feature-card:hover .feature-card-icon {
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .feature-card {
+    padding: var(--spacing-md);
+  }
+
+  .feature-card-icon.icon-size-lg {
+    width: 64px;
+    height: 64px;
+    font-size: 32px;
+  }
+}

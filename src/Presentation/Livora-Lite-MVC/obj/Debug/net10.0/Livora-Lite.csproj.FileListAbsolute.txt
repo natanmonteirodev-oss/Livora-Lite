@@ -687,7 +687,6 @@ C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net1
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\scopedcss\bundle\Livora-Lite.styles.css
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\scopedcss\projectbundle\Livora-Lite.bundle.scp.css
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\j40563gmp1-{0}-n2igjycs4t-n2igjycs4t.gz
-C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\xaqr90zurx-{0}-ci7fk9ie45-ci7fk9ie45.gz
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\s0z2hdk8ob-{0}-rbwcua98g4-rbwcua98g4.gz
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\u2de86uudn-{0}-bdfuyxv0tg-bdfuyxv0tg.gz
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\3crh2f3isg-{0}-rygvbujoae-rygvbujoae.gz
@@ -783,3 +782,8 @@ C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net1
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\Livora-Lite.genruntimeconfig.cache
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\ref\Livora-Lite.dll
 C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\bin\Debug\net10.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\s2hm3z5hpg-{0}-ln18xeek6r-ln18xeek6r.gz
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\xaqr90zurx-{0}-893xe2tv1l-893xe2tv1l.gz
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\kf22kq2bmr-{0}-0aah13itbm-0aah13itbm.gz
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\m22z81ag7b-{0}-q5dv4avqza-q5dv4avqza.gz
+C:\Users\natan\repos\Livora-Lite\src\Presentation\Livora-Lite-MVC\obj\Debug\net10.0\compressed\9wzo50f06m-{0}-qd6la535nx-qd6la535nx.gz

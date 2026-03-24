@@ -1,0 +1,185 @@
+.crud-page {
+  flex: 1;
+  padding: 40px 0;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.page-header h1 {
+  color: var(--primary-color);
+  font-size: 32px;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--dark-text);
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 129, 167, 0.1);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled,
+.form-group select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.form-actions .btn {
+  flex: 1;
+  max-width: 200px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-available {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-rented {
+  background-color: #cfe2ff;
+  color: #084298;
+}
+
+.badge-active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-expired {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-paid {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-maintenance {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.badge-unavailable {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-terminated {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-in-progress {
+  background-color: #cfe2ff;
+  color: #084298;
+}
+
+.loading {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 129, 167, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .crud-page {
+    padding: 20px 0;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .page-header button {
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn {
+    max-width: 100%;
+  }
+}

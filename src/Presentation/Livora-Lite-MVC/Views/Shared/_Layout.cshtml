@@ -16,189 +16,7 @@
     <link href="~/css/tiny-slider.css" rel="stylesheet">
     <link href="~/css/style.css" rel="stylesheet">
     <link href="~/css/livora-custom.css" rel="stylesheet" asp-append-version="true">
-    
-    <style>
-        :root {
-            --livora-primary: #0081a7;
-            --livora-secondary: #00afb9;
-            --livora-accent: #f07167;
-            --livora-light: #fdfcdc;
-            --livora-peach: #fed9b7;
-        }
-        
-        body {
-            background-color: #f8f9fa;
-            margin-bottom: 60px;
-        }
-        
-        .custom-navbar {
-            background-color: var(--livora-primary) !important;
-            padding-top: 15px;
-            padding-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .custom-navbar .navbar-brand {
-            color: #ffffff !important;
-            font-weight: 700;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .custom-navbar .navbar-brand img {
-            max-height: 45px;
-            width: auto;
-        }
-        
-        .custom-navbar .custom-navbar-nav li a {
-            color: #ffffff !important;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        
-        .custom-navbar .custom-navbar-nav li a:hover {
-            color: #ffffff !important;
-        }
-        
-        .custom-navbar .custom-navbar-cta {
-            margin-left: 40px !important;
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
-            color: #ffffff;
-            padding: 80px 0;
-            min-height: 500px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 16px;
-            margin-bottom: 30px;
-            opacity: 0.95;
-        }
-        
-        .btn-secondary {
-            background-color: var(--livora-accent) !important;
-            border-color: var(--livora-accent) !important;
-            color: #ffffff !important;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #e85a52 !important;
-            border-color: #e85a52 !important;
-        }
-        
-        .section-title {
-            color: var(--livora-primary);
-            font-weight: 700;
-            font-size: 36px;
-            margin-bottom: 30px;
-        }
-        
-        .product-section {
-            padding: 60px 0;
-        }
-        
-        .card {
-            border: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-        }
-        
-        .table {
-            background-color: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .table thead {
-            background-color: var(--livora-primary);
-            color: #ffffff;
-        }
-        
-        .table tbody tr:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .form-control, .form-select {
-            border-color: #e0e0e0;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--livora-primary);
-            box-shadow: 0 0 0 0.2rem rgba(0, 129, 167, 0.25);
-        }
-        
-        .livora-footer {
-            background-color: var(--livora-primary);
-            color: #ffffff;
-            padding: 40px 0;
-            margin-top: 80px;
-        }
-        
-        .livora-footer a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none !important;
-        }
-        
-        .livora-footer a:hover {
-            color: #ffffff;
-            text-decoration: none !important;
-        }
-        
-        .breadcrumb {
-            background-color: transparent;
-            margin-top: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .breadcrumb-item.active {
-            color: var(--livora-primary);
-            font-weight: 600;
-        }
-        
-        .breadcrumb-item a {
-            color: var(--livora-secondary);
-            font-weight: 500;
-        }
-        
-        .badge {
-            background-color: var(--livora-secondary);
-            color: #ffffff;
-        }
-        
-        .btn-primary {
-            background-color: var(--livora-primary) !important;
-            border-color: var(--livora-primary) !important;
-        }
-        
-        .btn-primary:hover {
-            background-color: #006a8b !important;
-            border-color: #006a8b !important;
-        }
-        
-        .alert-info {
-            background-color: rgba(0, 129, 167, 0.1);
-            border-color: var(--livora-primary);
-            color: var(--livora-primary);
-        }
-    </style>
+    <link href="~/css/page-styles.css" rel="stylesheet" asp-append-version="true">
 </head>
 <body>
     <!-- Start Header/Navigation -->
@@ -349,6 +167,9 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
+    <!-- SweetAlert2 - Alertas modernos com notificações -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <!-- Chart.js - Gráficos (CDN with Fallback) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
     <script src="~/js/chart-loader.js"></script>
@@ -384,6 +205,12 @@
     <script src="~/js/tiny-slider.js"></script>
     <script src="~/js/custom.js"></script>
     <script src="~/js/site.js"></script>
+    
+    <!-- Storage Manager - Acesso seguro a localStorage/sessionStorage -->
+    <script src="~/js/storage-manager.js"></script>
+    
+    <!-- Session Timeout Manager -->
+    <script src="~/js/session-timeout.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

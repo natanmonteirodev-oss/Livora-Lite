@@ -1,0 +1,519 @@
+/* ========================================
+   PAGE-SPECIFIC STYLES
+   Consolidates all page styles from Views
+   ======================================== */
+
+/* ========================================
+   AUTH PAGES (Login, Register)
+   ======================================== */
+.auth-container {
+    min-height: calc(100vh - 280px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0081a7 0%, #00afb9 100%);
+    padding: 40px 20px;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 16px;
+    padding: 50px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.auth-header h1 {
+    color: #0081a7;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.auth-header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.auth-form-group {
+    margin-bottom: 20px;
+}
+
+.auth-form-label {
+    display: block;
+    color: #0081a7;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.auth-form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.auth-form-control:focus {
+    outline: none;
+    border-color: #00afb9;
+    box-shadow: 0 0 0 3px rgba(0, 175, 185, 0.1);
+}
+
+.auth-form-control.input-validation-error {
+    border-color: #f07167;
+}
+
+.auth-text-danger {
+    color: #f07167;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #0081a7 0%, #00afb9 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 129, 167, 0.3);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.auth-footer p {
+    color: #666;
+    margin: 0;
+}
+
+.auth-footer a {
+    color: #00afb9;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.alert-auth-danger {
+    background-color: #fff5f5;
+    border: 2px solid #f07167;
+    color: #c74345;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #0081a7 0%, #00afb9 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 129, 167, 0.3);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-hint {
+    color: #999;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* ========================================
+   FORM PAGES (Create, Edit)
+   ======================================== */
+.form-card .card-header {
+    background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
+    color: #ffffff;
+}
+
+.form-card .card-header h5 {
+    color: #ffffff;
+}
+
+.card-header.bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+}
+
+.form-card .form-label {
+    font-weight: 600;
+    color: var(--livora-primary);
+}
+
+.form-control-lg,
+.form-select-lg {
+    padding: 12px 16px;
+    font-size: 15px;
+}
+
+/* ========================================
+   DASHBOARD PAGES
+   ======================================== */
+
+/* Dashboard Card Values with Color Variants */
+.livora-card-green {
+    color: var(--livora-primary-green) !important;
+}
+
+.livora-card-red {
+    color: #dc3545 !important;
+}
+
+.livora-card-blue {
+    color: var(--livora-secondary-blue) !important;
+}
+
+.livora-card-warning {
+    color: #ffc107 !important;
+}
+
+.livora-card-danger {
+    color: #f07167 !important;
+}
+
+.livora-card-cyan {
+    color: #00afb9 !important;
+}
+
+.livora-card-dark-blue {
+    color: var(--livora-dark-blue) !important;
+}
+
+/* Dashboard Headings */
+.dashboard-h5 {
+    color: var(--livora-primary-green);
+}
+
+.dashboard-h3-red {
+    color: #dc3545;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.dashboard-h3-green {
+    color: var(--livora-primary-green);
+    font-weight: 700;
+}
+
+.dashboard-h3-blue {
+    color: #00afb9;
+}
+
+.dashboard-h3-dark-blue {
+    color: #0081a7;
+}
+
+.dashboard-h5-secondary-blue {
+    color: var(--livora-secondary-blue);
+}
+
+/* Chart Containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+.chart-container-lg {
+    position: relative;
+    height: 350px;
+}
+
+/* Badges with Colors */
+.badge-custom-primary {
+    background-color: #0081a7;
+    padding: 0.35em 0.65em;
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-custom-dark {
+    background-color: #003d5c;
+    padding: 0.35em 0.65em;
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-custom-warning {
+    background-color: #ffc107;
+    padding: 0.35em 0.65em;
+    border-radius: 4px;
+    color: #333333;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-custom-danger {
+    background-color: #dc3545;
+    padding: 0.35em 0.65em;
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-custom-success {
+    background-color: #28a745;
+    padding: 0.35em 0.65em;
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-custom-info {
+    background-color: #00afb9;
+    padding: 0.35em 0.65em;
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Table Row Highlight */
+.table-row-warning {
+    background-color: #fffacd;
+}
+
+/* Progress Bar Custom Colors */
+.progress-bar-custom {
+    background-color: #00afb9;
+}
+
+/* ========================================
+   REPORT PAGES
+   ======================================== */
+
+/* Report Cards */
+.report-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 30px 25px;
+}
+
+.report-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.report-card i {
+    transition: all 0.3s ease;
+}
+
+.report-card:hover i {
+    transform: scale(1.1);
+}
+
+/* Report Table Styles */
+.report-table-head {
+    background-color: #f8f9fa;
+}
+
+.report-table thead tr {
+    border-bottom: 2px solid var(--livora-secondary-blue);
+}
+
+/* Report Values */
+.report-value-green {
+    color: var(--livora-primary-green);
+    font-weight: 700;
+}
+
+.report-value-danger {
+    color: #f07167;
+    font-weight: 700;
+}
+
+.report-value-warning {
+    color: #ffc107;
+    font-weight: 700;
+}
+
+.report-value-info {
+    color: #00afb9;
+    font-weight: 700;
+}
+
+.report-value-primary {
+    color: #0081a7;
+    font-weight: 700;
+}
+
+/* Report Text Colors */
+.text-report-green {
+    color: var(--livora-primary-green) !important;
+}
+
+.text-report-blue {
+    color: var(--livora-secondary-blue) !important;
+}
+
+/* ========================================
+   TAB STYLES
+   ======================================== */
+.nav-tabs .nav-link {
+    color: var(--livora-text-light);
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom-color: var(--livora-secondary-blue);
+    color: var(--livora-secondary-blue);
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom-color: var(--livora-primary-green);
+    color: var(--livora-primary-green);
+    background-color: transparent;
+}
+
+.text-md-end {
+    text-align: start;
+}
+
+@media (min-width: 768px) {
+    .text-md-end {
+        text-align: end;
+    }
+}
+
+/* ========================================
+   TABLE STYLES
+   ======================================== */
+.table-dark {
+    background-color: var(--livora-primary) !important;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* ========================================
+   AUDIT LOG & DETAILS
+   ======================================== */
+pre {
+    margin: 0;
+    font-size: 0.875rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* ========================================
+   TIMELINE STYLES
+   ======================================== */
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 20px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -30px;
+    width: 16px;
+    height: 16px;
+    background-color: var(--livora-primary);
+    border-radius: 50%;
+    top: 5px;
+    z-index: 1;
+    color: var(--livora-secondary-blue);
+}
+
+.timeline-marker i {
+    color: white;
+    font-size: 0.75rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.timeline-content {
+    padding: 12px;
+    background-color: var(--livora-light-gray);
+    border-radius: 4px;
+    padding-left: 15px;
+}
+
+.timeline-item:last-child .timeline-content {
+    border-left: none;
+}
+
+/* ========================================
+   MAINTAINANCE LAYOUT
+   ======================================== */
+.primary-accent,
+.secondary-accent,
+.dark-accent {
+    /* Variants defined in livora-custom.css */
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+@media (max-width: 768px) {
+    .auth-container {
+        min-height: auto;
+        padding: 20px 15px;
+    }
+
+    .chart-container,
+    .chart-container-lg {
+        height: 250px;
+    }
+
+    .dashboard-h3-red {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,88 @@
+/* Section Component Styles */
+
+.section {
+  width: 100%;
+}
+
+.section-padding-sm {
+  padding: var(--spacing-2xl) 0;
+}
+
+.section-padding-md {
+  padding: var(--spacing-3xl) 0;
+}
+
+.section-padding-lg {
+  padding: 4rem 0;
+}
+
+.section-padding-xl {
+  padding: 6rem 0;
+}
+
+.section-darker {
+  background-color: var(--bg-light);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-header {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.section-header-centered {
+  text-align: center;
+}
+
+.section-title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.section-header-centered .section-title {
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-subtitle {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.section-header-centered .section-subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .section-padding-sm {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .section-padding-md {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .section-padding-lg {
+    padding: var(--spacing-3xl) 0;
+  }
+
+  .section-padding-xl {
+    padding: var(--spacing-3xl) 0;
+  }
+
+  .section-header {
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+  }
+
+  .section-subtitle {
+    font-size: var(--text-base);
+  }
+}

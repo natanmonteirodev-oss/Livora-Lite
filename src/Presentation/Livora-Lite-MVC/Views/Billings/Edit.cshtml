@@ -11,7 +11,7 @@
         <div class="mb-3"><label asp-for="Period" class="form-label">Período</label><input asp-for="Period" class="form-control form-control-lg" /></div>
         <div class="row"><div class="col-md-6"><div class="mb-3"><label asp-for="Amount" class="form-label">Valor</label><input asp-for="Amount" type="number" class="form-control form-control-lg" step="0.01" /></div></div><div class="col-md-6"><div class="mb-3"><label asp-for="DueDate" class="form-label">Vencimento</label><input asp-for="DueDate" type="date" class="form-control form-control-lg" /></div></div></div>
         <div class="mb-3"><label asp-for="BillingStatusId" class="form-label">Status</label><select asp-for="BillingStatusId" class="form-select form-select-lg" asp-items="@(new SelectList(ViewBag.BillingStatuses, "Id", "Name"))"></select></div>
-    </div><div class="card-footer bg-light d-flex gap-2 justify-content-end"><a asp-action="Index" class="btn btn-secondary">Cancelar</a><button type="submit" class="btn btn-primary">Atualizar</button></div></form></div></div>
+    </div><div class="card-footer bg-light d-flex gap-2 justify-content-end"><a asp-action="Index" class="btn btn-cancel">Cancelar</a><button type="submit" class="btn btn-primary">Atualizar</button></div></form></div></div>
 </div>
 
 @section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

@@ -205,7 +205,7 @@
                     <!-- Footer -->
                     <div class="card-footer bg-light">
                         <div class="d-flex gap-2 justify-content-end">
-                            <a asp-action="Index" class="btn btn-secondary">
+                            <a asp-action="Index" class="btn btn-cancel">
                                 <i class="fas fa-times me-2"></i> Cancelar
                             </a>
                             <button type="submit" class="btn btn-primary btn-lg">
@@ -222,24 +222,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-<style>
-    .card-header {
-        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
-        color: #ffffff;
-    }
-
-    .card-header h5 {
-        color: #ffffff;
-    }
-
-    .form-label {
-        font-weight: 600;
-        color: var(--livora-primary);
-    }
-
-    .form-control-lg, .form-select-lg {
-        padding: 12px 16px;
-        font-size: 15px;
-    }
-</style>

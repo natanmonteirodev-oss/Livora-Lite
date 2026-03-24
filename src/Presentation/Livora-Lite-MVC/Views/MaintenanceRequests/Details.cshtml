@@ -52,19 +52,19 @@
                             <p><strong>Contrato:</strong> 
                                 @if (Model?.Contract != null)
                                 {
-                                    <text>Contrato #@Model.Contract.Id - @(Model.Contract.Tenant != null ? $"{(Model.Contract.Tenant.FirstName ?? "")!} {(Model.Contract.Tenant.LastName ?? "")!}" : "N/A")</text>
+                                    <text>Contrato #@Model.Contract.Id - @(Model.Contract.Tenant != null ? $"{(Model.Contract.Tenant.FirstName ?? "")} {(Model.Contract.Tenant.LastName ?? "")}" : "N/A")</text>
                                 }
                                 else
                                 {
                                     <span class="text-muted">N/A</span>
                                 }
                             </p>
-                            <p><strong>Data da Solicitação:</strong> @Model.RequestDate.ToString("dd/MM/yyyy")</p>
+                            <p><strong>Data da Solicitação:</strong> @(Model != null ? Model.RequestDate.ToString("dd/MM/yyyy") : "N/A")</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Prioridade:</strong> <span class="badge bg-warning">@Model.Priority</span></p>
                             <p><strong>Status:</strong> <span class="badge bg-info">@Model.Status</span></p>
-                            <p><strong>Data de Criação:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p><strong>Data de Criação:</strong> @(Model != null ? Model.CreatedAt.ToString("dd/MM/yyyy HH:mm") : "N/A")</p>
                         </div>
                     </div>
                     <hr />
@@ -82,7 +82,7 @@
                     <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
                         <i class="fas fa-trash me-2"></i> Excluir
                     </a>
-                    <a asp-action="Index" class="btn btn-secondary">
+                    <a asp-action="Index" class="btn btn-cancel">
                         <i class="fas fa-list me-2"></i> Voltar à Lista
                     </a>
                 </div>
@@ -90,14 +90,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    .card-header {
-        background: linear-gradient(135deg, var(--livora-primary) 0%, var(--livora-secondary) 100%);
-        color: #ffffff;
-    }
-
-    .card-header h5 {
         color: #ffffff;
     }
 </style>

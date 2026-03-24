@@ -57,7 +57,7 @@
                                     <p class="form-control-plaintext">
                                         @if (Model?.Property != null)
                                         {
-                                            @(Model.Property?.Name!)
+                                            @(Model.Property.Name)
                                         }
                                         else
                                         {
@@ -70,7 +70,7 @@
                                     <label class="form-label fw-bold">
                                         <i class="fas fa-calendar me-2"></i> Data da Solicitação
                                     </label>
-                                    <p class="form-control-plaintext">@Model.RequestDate.ToString("dd/MM/yyyy")</p>
+                                    <p class="form-control-plaintext">@(Model != null ? Model.RequestDate.ToString("dd/MM/yyyy") : "N/A")</p>
                                 </div>
                             </div>
 
@@ -79,7 +79,7 @@
                                     <label class="form-label fw-bold">
                                         <i class="fas fa-arrow-up me-2"></i> Prioridade
                                     </label>
-                                    <p class="form-control-plaintext">@Model.Priority</p>
+                                    <p class="form-control-plaintext">@(Model != null ? Model.Priority.ToString() : "N/A")</p>
                                 </div>
 
                                 <div class="mb-3">
@@ -106,7 +106,7 @@
                     <!-- Footer -->
                     <div class="card-footer bg-light">
                         <div class="d-flex gap-2 justify-content-end">
-                            <a asp-action="Index" class="btn btn-secondary">
+                            <a asp-action="Index" class="btn btn-cancel btn-lg">
                                 <i class="fas fa-times me-2"></i> Cancelar
                             </a>
                             <button type="submit" class="btn btn-danger btn-lg">
@@ -119,13 +119,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .form-control-plaintext {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        padding-left: 0;
-        color: var(--bs-body-color);
-        font-weight: 500;
-    }
-</style>
